@@ -3,5 +3,7 @@ module.exports = {
 	env: {
 		node: true,
 	},
-	extends: ["@kaciras/core"],
+	extends: [
+		"@kaciras/core",
+	],
 };
