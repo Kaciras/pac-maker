@@ -1,9 +1,13 @@
 module.exports = {
 	root: true,
-	env: {
-		node: true,
-	},
 	extends: [
 		"@kaciras/core",
 	],
+	env: {
+		node: true,
+	},
+	overrides: [{
+		files: "**/__tests__/**/*.[jt]s?(x)",
+		extends: ["@kaciras/jest"],
+	}],
 };
