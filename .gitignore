@@ -1,21 +1,12 @@
 .DS_Store
 .env
-.flaskenv
-*.pyc
-*.pyo
 env/
 env*
-dist/
 build/
-*.egg
-*.egg-info/
-_mailinglist
-.tox/
-.cache/
-.pytest_cache/
 .idea/
+*.iml
 .vs/
-docs/_build/
+.vscode
 node_modules/
 
 # Coverage reports
@@ -23,10 +14,3 @@ htmlcov/
 .coverage
 .coverage.*
 *,cover
-
-# IntelliJ related files
-.idea
-*.iml
-
-# VS Code related files
-.vscode
