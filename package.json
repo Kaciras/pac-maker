@@ -21,8 +21,11 @@
 		"gfw"
 	],
 	"dependencies": {
+		"ini": "^2.0.0",
 		"node-browser-history": "^2.4.4",
-		"node-fetch": "^2.6.1"
+		"node-fetch": "^2.6.1",
+		"sqlite": "^4.0.22",
+		"sqlite3": "^5.0.2"
 	},
 	"devDependencies": {
 		"@kaciras/eslint-config-core": "^1.4.0",

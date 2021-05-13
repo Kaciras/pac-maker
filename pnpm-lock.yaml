@@ -4,13 +4,19 @@ specifiers:
   '@kaciras/eslint-config-core': ^1.4.0
   '@kaciras/eslint-config-jest': ^1.4.0
   eslint: ^7.26.0
+  ini: ^2.0.0
   jest: ^26.6.3
   node-browser-history: ^2.4.4
   node-fetch: ^2.6.1
+  sqlite: ^4.0.22
+  sqlite3: ^5.0.2
 
 dependencies:
+  ini: 2.0.0
   node-browser-history: 2.4.4
   node-fetch: 2.6.1
+  sqlite: 4.0.22
+  sqlite3: 5.0.2
 
 devDependencies:
   '@kaciras/eslint-config-core': 1.4.0_eslint@7.26.0
@@ -2125,6 +2131,11 @@ packages:
     resolution: {integrity: sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==}
     dev: false
 
+  /ini/2.0.0:
+    resolution: {integrity: sha512-7PnF4oN3CvZF23ADhA5wRaYEQpJ8qygSkbtTXWBeXWXmEVRXK+1ITciHWwHhsjv1TmW0MgacIv6hEi5pX5NQdA==}
+    engines: {node: '>=10'}
+    dev: false
+
   /is-accessor-descriptor/0.1.6:
     resolution: {integrity: sha1-qeEss66Nh2cn7u84Q/igiXtcmNY=}
     engines: {node: '>=0.10.0'}
@@ -3963,6 +3974,10 @@ packages:
   /sprintf-js/1.0.3:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=}
     dev: true
+
+  /sqlite/4.0.22:
+    resolution: {integrity: sha512-i2qvk6PyZJ35cpdocdO1DF+wMU5a6eRkcn+Dmt+HpGvYJ+pKodK6tZM0DnouCf4tXt1Whs2T2smtrEyFWAauWg==}
+    dev: false
 
   /sqlite3/5.0.2:
     resolution: {integrity: sha512-1SdTNo+BVU211Xj1csWa8lV6KM0CtucDwRyA0VHl91wEH1Mgh7RxUpI4rVvG7OhHrzCSGaVyW5g8vKvlrk9DJA==}
