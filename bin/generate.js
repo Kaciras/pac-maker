@@ -1,8 +1,8 @@
 import { generate } from "../lib/generator.js";
 import { builtInRuleSet, gfwlist } from "../lib/source.js";
-import { projectRoot } from "../lib/utils.js";
+import { root } from "../lib/utils.js";
 
-process.chdir(projectRoot);
+process.chdir(root);
 
 const config = {
 	path: "dist/proxy.pac",
