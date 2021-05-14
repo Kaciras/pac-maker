@@ -1,39 +1,27 @@
 /**
  *
  */
-import { URL } from "url";
-import fs from "fs";
-import { firefox } from "../lib/history.js";
+import fs from "fs/promises";
+import { getAllBrowserHistories } from "../lib/history.js";
 import { root } from "../lib/utils.js";
-import { loadPac } from "../lib/generator.js";
+import { loadPac, matchFindProxyFn } from "../lib/generator.js";
 
 process.chdir(root);
 
 async function match() {
-	const pac = fs.readFileSync("dist/proxy.pac", "utf8");
+	const pac = await fs.readFile("dist/proxy.pac", "utf8");
 	const { FindProxyForURL } = loadPac(pac);
 
-	const histories = await firefox();
-	const map = {};
-	const visited = new Set();
+	const histories = await getAllBrowserHistories();
+	const { rules, domains } = matchFindProxyFn(histories, FindProxyForURL);
 
-	for (const { url } of histories) {
-		if (!/^https?:/.test(url)) {
-			continue;
-		}
-		const host = new URL(url).hostname;
-		if (visited.has(host)) {
-			continue;
-		}
-		visited.add(host);
-		const proxy = FindProxyForURL(url, host);
-		(map[proxy] ?? (map[proxy] = [])).push(host);
-	}
-
-	console.info(`Inspect ${histories.length} urls, ${visited.size} distinct domains.`);
-	const table = Object.fromEntries(Object.entries(map).map(([k, v]) => [k, v.length]));
+	console.info(`Inspect ${histories.length} urls, ${domains.size} distinct domains.`);
+	const table = Object.fromEntries(Object.entries(rules).map(([k, v]) => [k, v.length]));
 	console.table(table, ["matched domains"]);
+
+	const file = "matches.json";
+	await fs.writeFile(file, JSON.stringify(rules, null, "\t"));
+	console.info(`Rules saved to ${file}`);
 }
 
-console.info("");
 match().catch(err => console.error(err));
