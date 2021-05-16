@@ -8,7 +8,7 @@ const config = {
 	path: "dist/proxy.pac",
 	direct: "DIRECT",
 	rules: {
-		"SOCKS5 localhost:2080": [
+		"SOCKS5 localhost:1080": [
 			gfwlist(),
 			builtInRuleSet("default"),
 		],

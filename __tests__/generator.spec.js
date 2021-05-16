@@ -1,8 +1,32 @@
 import fs from "fs";
-import { parse } from "../lib/generator.js";
+import { buildPac, loadPac } from "../lib/generator.js";
 
-it("should TODO", () => {
-	const pac = fs.readFileSync("dist/pac.js", { encoding: "UTF8" });
-	const ctx = parse(pac);
-	expect(ctx.FindProxyForURL("", "www.tianshie.com")).toBe("SOCKS5 localhost:2080");
+it("should load PAC script", () => {
+	const pac = fs.readFileSync("__tests__/fixtures/proxy.pac", "utf8");
+	const { direct, proxies, rules, FindProxyForURL } = loadPac(pac);
+
+	expect(direct).toBe("DIRECT");
+	expect(proxies).toEqual(["SOCKS5 localhost:1080"]);
+	expect(rules).toEqual({ "example.com": 0 });
+
+	expect(FindProxyForURL("", "")).toBe("DIRECT");
+	expect(FindProxyForURL("", "com")).toBe("DIRECT");
+	expect(FindProxyForURL("", "example.com")).toBe("SOCKS5 localhost:1080");
+	expect(FindProxyForURL("", "www.example.com")).toBe("SOCKS5 localhost:1080");
+});
+
+it("should build PAC script", async () => {
+	const code = await buildPac({
+		direct: "DIRECT",
+		domains: {
+			"SOCKS5 localhost:1080": ["example.com"],
+			"HTTP [::1]:2080": ["foo.bar"],
+		},
+	});
+	const { FindProxyForURL } = loadPac(code);
+
+	expect(FindProxyForURL("", "")).toBe("DIRECT");
+	expect(FindProxyForURL("", "com")).toBe("DIRECT");
+	expect(FindProxyForURL("", "example.com")).toBe("SOCKS5 localhost:1080");
+	expect(FindProxyForURL("", "www.example.com")).toBe("SOCKS5 localhost:1080");
 });
