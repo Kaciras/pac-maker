@@ -1,9 +1,9 @@
 import fs from "fs";
-import { buildPac, loadPac } from "../lib/generator.js";
+import { buildPac, BuiltInPacGlobals, loadPac } from "../lib/generator";
 
 it("should load PAC script", () => {
 	const pac = fs.readFileSync("__tests__/fixtures/proxy.pac", "utf8");
-	const { direct, proxies, rules, FindProxyForURL } = loadPac(pac);
+	const { direct, proxies, rules, FindProxyForURL } = loadPac<BuiltInPacGlobals>(pac);
 
 	expect(direct).toBe("DIRECT");
 	expect(proxies).toEqual(["SOCKS5 localhost:1080"]);

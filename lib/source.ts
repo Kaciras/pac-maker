@@ -2,12 +2,12 @@ import fs from "fs/promises";
 import { basename, join } from "path";
 import { URL } from "url";
 import fetch from "node-fetch";
-import { root } from "./utils.js";
+import { root } from "./utils";
 
 /**
  * Fetch domains from https://github.com/gfwlist/gfwlist
  *
- * @return {Promise<string[]>} domain list
+ * @return domain list
  */
 export async function gfwlist() {
 	const response = await fetch("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt");
@@ -49,9 +49,9 @@ export async function gfwlist() {
  * Read domains from rule file.
  *
  * @param file the file path
- * @return {Promise<string[]>} domain list
+ * @return domain list
  */
-export async function ruleFile(file) {
+export async function ruleFile(file: string) {
 	const content = await fs.readFile(file, "utf8");
 	return content.split("\n")
 		.map(line => line.trim())
@@ -62,9 +62,9 @@ export async function ruleFile(file) {
  * Read domains from built-in rule file.
  *
  * @param name filename without extension
- * @return {Promise<string[]>} domain list
+ * @return domain list
  */
-export function builtInRuleSet(name) {
+export function builtInRuleSet(name: string) {
 	if (name !== basename(name)) {
 		throw new Error("Invalid rule set name: " + name);
 	}

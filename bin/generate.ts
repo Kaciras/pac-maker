@@ -1,6 +1,6 @@
-import { generate } from "../lib/generator.js";
-import { builtInRuleSet, gfwlist } from "../lib/source.js";
-import { root } from "../lib/utils.js";
+import { generate } from "../lib/generator";
+import { builtInRuleSet, gfwlist } from "../lib/source";
+import { root } from "../lib/utils";
 
 process.chdir(root);
 

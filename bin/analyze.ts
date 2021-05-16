@@ -2,9 +2,9 @@
  *
  */
 import fs from "fs/promises";
-import { getAllBrowserHistories } from "../lib/history.js";
-import { root } from "../lib/utils.js";
-import { loadPac, matchFindProxyFn } from "../lib/generator.js";
+import { getAllBrowserHistories } from "../lib/history";
+import { root } from "../lib/utils";
+import { loadPac, matchFindProxyFn } from "../lib/generator";
 
 process.chdir(root);
 

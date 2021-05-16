@@ -1,8 +1,21 @@
 import fs from "fs/promises";
 import vm from "vm";
 import { join } from "path";
-import { ensureDirectory, root } from "./utils.js";
 import { URL } from "url";
+import { HistoryEntry } from "./history";
+import { ensureDirectory, root } from "./utils";
+
+export type FinProxyFn = (url: string, host: string) => string;
+
+export interface PacGlobals {
+	FindProxyForURL: FinProxyFn;
+}
+
+export interface BuiltInPacGlobals extends PacGlobals {
+	direct: string;
+	proxies: string[];
+	rules: Record<string, number>;
+}
 
 const placeholder = /__(.+?)__/g;
 
@@ -13,26 +26,31 @@ const placeholder = /__(.+?)__/g;
  * PAC file will be executed as JavaScript, so you should only load the code from trusted source.
  *
  * @param code PAC file content.
- * @return object the object represent the script exports.
+ * @return an object represent the script exports.
  */
-export function loadPac(code) {
+export function loadPac<T = PacGlobals>(code: string) {
 	const contextObject = {};
 	vm.runInNewContext(code, contextObject, { timeout: 5000 });
-	return contextObject;
+	return contextObject as T;
+}
+
+interface BuildPacOptions {
+	direct: string;
+	domains: Record<string, string[]>;
 }
 
 /**
  * Generate a PAC script use the built-in template.
  *
  * @param options An object that contain proxy and rules
- * @return {Promise<string>} the PAC file content
+ * @return the PAC file content
  */
-export async function buildPac(options) {
+export async function buildPac(options: BuildPacOptions) {
 	const { direct, domains } = options;
-	const packageJson = JSON.parse(await fs.readFile(join(root, "package.json")));
+	const packageJson = JSON.parse(await fs.readFile(join(root, "package.json"), "utf8"));
 
-	const proxies = [];
-	const domainMap = {};
+	const proxies: string[] = [];
+	const domainMap: Record<string, number> = {};
 
 	for (const [k, v] of Object.entries(domains)) {
 		const i = proxies.length;
@@ -40,7 +58,7 @@ export async function buildPac(options) {
 		v.forEach(domain => domainMap[domain] = i);
 	}
 
-	const replacements = {
+	const replacements: Record<any, string> = {
 		VERSION: packageJson.version,
 		DIRECT: JSON.stringify(direct),
 		PROXIES: JSON.stringify(proxies, null, "\t"),
@@ -53,10 +71,16 @@ export async function buildPac(options) {
 	return template.replaceAll(placeholder, (_, v) => replacements[v]);
 }
 
-export async function generate(options) {
+interface PacMakerConfig {
+	path: string;
+	direct: string;
+	rules: Record<string, Promise<string[]>[]>;
+}
+
+export async function generate(options: PacMakerConfig) {
 	const { path, direct, rules } = options;
 
-	const domains = {};
+	const domains: Record<string, string[]> = {};
 	for (const [k, v] of Object.entries(rules)) {
 		domains[k] = (await Promise.all(v)).flat();
 	}
@@ -67,9 +91,14 @@ export async function generate(options) {
 	await fs.writeFile(path, result, "utf8");
 }
 
-export function matchFindProxyFn(urls, fn) {
-	const rules = {};
-	const domains = new Set();
+interface DomainMatchResult {
+	domains: Set<string>;
+	rules: Record<string, string[]>;
+}
+
+export function matchFindProxyFn(urls: HistoryEntry[], fn: FinProxyFn) {
+	const domains = new Set<string>();
+	const rules: Record<string, string[]> = {};
 
 	for (const { url } of urls) {
 		if (!/^https?:/.test(url)) {
@@ -84,5 +113,5 @@ export function matchFindProxyFn(urls, fn) {
 		(rules[proxy] ?? (rules[proxy] = [])).push(host);
 	}
 
-	return { rules, domains };
+	return { rules, domains } as DomainMatchResult;
 }
