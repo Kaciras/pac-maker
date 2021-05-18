@@ -1,6 +1,6 @@
 # pac-maker
 
-Proxy Auto Configuration (PAC) generator & maintenance tools .
+Proxy Auto Configuration (PAC) generator & maintenance tool.
 
 # Usage
 

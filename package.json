@@ -1,7 +1,7 @@
 {
 	"name": "pac-maker",
 	"version": "1.0.0",
-	"description": "",
+	"description": "PAC generator & maintenance tool",
 	"author": "Kaciras <Kaciras@protonmail.com>",
 	"license": "MIT",
 	"repository": {
@@ -21,7 +21,9 @@
 		"gfw"
 	],
 	"dependencies": {
+		"@koa/cors": "^3.1.0",
 		"ini": "^2.0.0",
+		"koa": "^2.13.1",
 		"node-fetch": "^2.6.1",
 		"sqlite": "^4.0.22",
 		"sqlite3": "^5.0.2"

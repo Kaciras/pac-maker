@@ -1,19 +1,13 @@
-import { generate } from "../lib/generator.js";
-import { builtInRuleSet, gfwlist } from "../lib/source.js";
-import { root } from "../lib/utils.js";
+import fs from "fs/promises";
+import { ensureDirectory, getSettings, root } from "../lib/utils.js";
+import { buildPac, getAllRules } from "../lib/generator.js";
 
 process.chdir(root);
 
-const config = {
-	path: "dist/proxy.pac",
-	direct: "DIRECT",
-	rules: {
-		"SOCKS5 localhost:2080": [
-			gfwlist(),
-			builtInRuleSet("default"),
-			builtInRuleSet("forbidden"),
-		],
-	},
-};
+const { path, direct, sources } = await getSettings();
 
-generate(config).catch(e => console.error(e));
+const rules = await getAllRules(sources);
+const code = await buildPac(rules, direct);
+
+await ensureDirectory(path);
+await fs.writeFile(path, code, "utf8");
