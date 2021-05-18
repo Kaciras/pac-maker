@@ -1,27 +1,24 @@
 /**
- *
+ * Find what domains are proxied in browser history.
  */
 import fs from "fs/promises";
-import { getAllBrowserHistories } from "../lib/history.js";
-import { root } from "../lib/utils.js";
 import { loadPac, matchFindProxyFn } from "../lib/generator.js";
+import { getSettings, root } from "../lib/utils.js";
+import { getAllBrowserHistories } from "../lib/history.js";
 
 process.chdir(root);
 
-async function match() {
-	const pac = await fs.readFile("dist/proxy.pac", "utf8");
-	const { FindProxyForURL } = loadPac(pac);
+const { path } = await getSettings();
 
-	const histories = await getAllBrowserHistories();
-	const { rules, domains } = matchFindProxyFn(histories, FindProxyForURL);
+const { FindProxyForURL } = loadPac(await fs.readFile(path, "utf8"));
 
-	console.info(`Inspect ${histories.length} urls, ${domains.size} distinct domains.`);
-	const table = Object.fromEntries(Object.entries(rules).map(([k, v]) => [k, v.length]));
-	console.table(table, ["matched domains"]);
+const histories = await getAllBrowserHistories();
+const { rules, domains } = matchFindProxyFn(histories, FindProxyForURL);
 
-	const file = "matches.json";
-	await fs.writeFile(file, JSON.stringify(rules, null, "\t"));
-	console.info(`Rules saved to ${file}`);
-}
+console.info(`Inspect ${histories.length} urls, ${domains.size} distinct domains.`);
+const table = Object.fromEntries(Object.entries(rules).map(([k, v]) => [k, v.length]));
+console.table(table, ["matched domains"]);
 
-match().catch(err => console.error(err));
+const file = "matches.json";
+await fs.writeFile(file, JSON.stringify(rules, null, "\t"));
+console.info(`Rules saved to ${file}`);
