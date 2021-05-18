@@ -1,4 +1,4 @@
-import { builtInRuleSet, gfwlist } from "./lib/source.js";
+import { builtInList, gfwlist } from "./lib/source.js";
 
 export default {
 	path: "dist/proxy.pac",
@@ -6,8 +6,8 @@ export default {
 	sources: {
 		"SOCKS5 localhost:2080": [
 			gfwlist(),
-			builtInRuleSet("default"),
-			builtInRuleSet("forbidden"),
+			builtInList("default"),
+			builtInList("forbidden"),
 		],
 	},
 };

@@ -13,9 +13,9 @@ const { path } = await getSettings();
 const { FindProxyForURL } = loadPac(await fs.readFile(path, "utf8"));
 
 const histories = await getAllBrowserHistories();
-const { rules, domains } = matchFindProxyFn(histories, FindProxyForURL);
+const { rules, hostnameSet } = matchFindProxyFn(histories, FindProxyForURL);
 
-console.info(`Inspect ${histories.length} urls, ${domains.size} distinct domains.`);
+console.info(`Inspect ${histories.length} urls, ${hostnameSet.size} distinct hosts.`);
 const table = Object.fromEntries(Object.entries(rules).map(([k, v]) => [k, v.length]));
 console.table(table, ["matched domains"]);
 

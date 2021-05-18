@@ -1,20 +1,20 @@
-import { builtInRuleSet, gfwlist } from "../lib/source";
+import { builtInList, gfwlist } from "../lib/source";
 import { isIP } from "net";
 
-// https://stackoverflow.com/a/26093611
-const domainName = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/;
+// https://stackoverflow.com/a/106223
+const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
 
 expect.extend({
 	toBeDomain(received) {
-		if (isIP(received) || domainName.test(received)) {
+		if (isIP(received) || hostname.test(received)) {
 			return {
 				pass: true,
-				message: () => `${received} is a valid domain`,
+				message: () => `${received} is a valid hostname`,
 			};
 		}
 		return {
 			pass: false,
-			message: () => `${received} is not a domain`,
+			message: () => `${received} is not a hostname`,
 		};
 	},
 });
@@ -23,7 +23,7 @@ expect.extend({
  * This test may fail with bad network.
  */
 it("should parse gfwlist", async () => {
-	const list = await gfwlist();
+	const list = await gfwlist().getHostnames();
 
 	for (const item of list) {
 		expect(item).toBeDomain();
@@ -32,11 +32,11 @@ it("should parse gfwlist", async () => {
 });
 
 it("should load built-in rule set", async () => {
-	const list = await builtInRuleSet("default");
+	const list = await builtInList("forbidden").getHostnames();
 	expect(list).not.toContain("");
 	expect(list).toContain("www.tianshie.com");
 });
 
 it("should failed with invalid rule set name", async () => {
-	expect(() => builtInRuleSet("../default")).toThrow();
+	expect(() => builtInList("../default")).toThrow();
 });
