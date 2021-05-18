@@ -3,7 +3,7 @@
  */
 import cors from "@koa/cors";
 import Koa from "koa";
-import { buildPac, getAllRules } from "../lib/generator.js";
+import { buildPac, getRuleFromSources } from "../lib/generator.js";
 import { getSettings } from "../lib/utils.js";
 
 let script = "";
@@ -21,7 +21,7 @@ app.on("error", err => console.error(err));
 const { direct, sources } = await getSettings();
 
 async function refresh() {
-	const rules = await getAllRules(sources);
+	const rules = await getRuleFromSources(sources);
 	script = await buildPac(rules, direct);
 	console.info("PAC file updated at " + new Date());
 }

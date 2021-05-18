@@ -1,12 +1,12 @@
 import fs from "fs/promises";
 import { ensureDirectory, getSettings, root } from "../lib/utils.js";
-import { buildPac, getAllRules } from "../lib/generator.js";
+import { buildPac, getRuleFromSources } from "../lib/generator.js";
 
 process.chdir(root);
 
 const { path, direct, sources } = await getSettings();
 
-const rules = await getAllRules(sources);
+const rules = await getRuleFromSources(sources);
 const code = await buildPac(rules, direct);
 
 await ensureDirectory(path);

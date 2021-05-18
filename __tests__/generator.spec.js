@@ -1,7 +1,7 @@
 import { join } from "path";
 import fs from "fs";
 import { jest } from "@jest/globals";
-import { buildPac, loadPac } from "../lib/generator.js";
+import { buildPac, getRuleFromSources, loadPac } from "../lib/generator.js";
 import { root } from "../lib/utils";
 
 jest.useFakeTimers("modern");
@@ -35,4 +35,23 @@ it("should build PAC script", async () => {
 		"SOCKS5 localhost:1080": ["example.com"],
 	});
 	expect(code).toBe(stubPac);
+});
+
+function mockSource(...hostnames) {
+	return { getHostnames: () => Promise.resolve(hostnames) };
+}
+
+it("should get rules from sources", async () => {
+	const { foo, bar } = await getRuleFromSources({
+		foo: [
+			mockSource("example.com"),
+		],
+		bar: [
+			mockSource("alice.com"),
+			mockSource("bob.com", "charlie.com"),
+		],
+	});
+
+	expect(foo).toEqual(["example.com"]);
+	expect(bar).toEqual(["alice.com", "bob.com", "charlie.com"]);
 });
