@@ -1,12 +1,37 @@
 /**
  * Serve PAC file with http protocol, and update when source have changes.
+ * Usage: node bin/watch.js [--save]
  */
-import cors from "@koa/cors";
+import fs from "fs/promises";
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 import Koa from "koa";
+import cors from "@koa/cors";
 import { buildPac, getRuleFromSources } from "../lib/generator.js";
-import { getSettings } from "../lib/utils.js";
+import { ensureDirectory, getSettings, root } from "../lib/utils.js";
+
+const { argv } = yargs(hideBin(process.argv));
+const { path, direct, sources } = await getSettings();
+
+process.chdir(root);
 
 let script = "";
+
+async function refresh() {
+	const rules = await getRuleFromSources(sources);
+	script = await buildPac(rules, direct);
+
+	if (argv.save) {
+		await ensureDirectory(path);
+		await fs.writeFile(path, script, "utf8");
+	}
+
+	console.info("PAC file updated at " + new Date());
+}
+
+for (const list of Object.values(sources)) {
+	list.forEach(source => source.watch(refresh));
+}
 
 const app = new Koa();
 app.use(cors());
@@ -17,18 +42,6 @@ app.use(ctx => {
 });
 
 app.on("error", err => console.error(err));
-
-const { direct, sources } = await getSettings();
-
-async function refresh() {
-	const rules = await getRuleFromSources(sources);
-	script = await buildPac(rules, direct);
-	console.info("PAC file updated at " + new Date());
-}
-
-for (const list of Object.values(sources)) {
-	list.forEach(source => source.watch(refresh));
-}
 
 await refresh();
 
