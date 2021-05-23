@@ -1,4 +1,4 @@
-import { builtInList, gfwlist } from "../lib/source";
+import { builtinList, gfwlist } from "../lib/source";
 import { isIP } from "net";
 
 // https://stackoverflow.com/a/106223
@@ -32,11 +32,11 @@ it("should parse gfwlist", async () => {
 });
 
 it("should load built-in rule set", async () => {
-	const list = await builtInList("forbidden").getHostnames();
+	const list = await builtinList("forbidden").getHostnames();
 	expect(list).not.toContain("");
 	expect(list).toContain("www.tianshie.com");
 });
 
 it("should failed with invalid rule set name", async () => {
-	expect(() => builtInList("../default")).toThrow();
+	expect(() => builtinList("../default")).toThrow();
 });
