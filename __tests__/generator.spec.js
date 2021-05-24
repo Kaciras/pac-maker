@@ -1,8 +1,9 @@
 import { join } from "path";
 import fs from "fs";
 import { jest } from "@jest/globals";
-import { buildPac, getRuleFromSources, loadPac } from "../lib/generator.js";
+import { buildPac, HostnameListLoader, loadPac } from "../lib/generator.js";
 import { root } from "../lib/utils";
+import { MemoryHostnameSource } from "../lib/source.js";
 
 jest.useFakeTimers("modern");
 jest.setSystemTime(new Date(2021, 5, 17, 0, 0, 0, 0));
@@ -37,21 +38,72 @@ it("should build PAC script", async () => {
 	expect(code).toBe(stubPac);
 });
 
-function mockSource(...hostnames) {
-	return { getHostnames: () => Promise.resolve(hostnames) };
-}
+describe("HostnameListLoader", () => {
 
-it("should get rules from sources", async () => {
-	const { foo, bar } = await getRuleFromSources({
-		foo: [
-			mockSource("example.com"),
-		],
-		bar: [
-			mockSource("alice.com"),
-			mockSource("bob.com", "charlie.com"),
-		],
+	it("should throw when call method before initialized", () => {
+		const loader = new HostnameListLoader({
+			foo: [new MemoryHostnameSource([])],
+		});
+		expect(() => loader.getRules()).toThrow();
+		expect(() => loader.watch(() => {})).toThrow();
 	});
 
-	expect(foo).toEqual(["example.com"]);
-	expect(bar).toEqual(["alice.com", "bob.com", "charlie.com"]);
+	it("should allow empty sources", () => {
+		const loader = new HostnameListLoader({});
+		loader.watch(() => {});
+		expect(loader.getRules()).toEqual({});
+	});
+
+	it("should load rules", async () => {
+		const loader = new HostnameListLoader({
+			foo: [
+				new MemoryHostnameSource(["example.com"]),
+			],
+			bar: [
+				new MemoryHostnameSource(["alice.com"]),
+				new MemoryHostnameSource(["bob.com", "charlie.com"]),
+			],
+		});
+
+		await loader.refresh();
+		const rules = loader.getRules();
+
+		expect(rules).toEqual({
+			foo: ["example.com"],
+			bar: ["alice.com", "bob.com", "charlie.com"],
+		});
+	});
+
+	it("should watch source updates", async () => {
+		const source = new MemoryHostnameSource(["kaciras.com"]);
+		const loader = new HostnameListLoader({ foo: [source] });
+		await loader.refresh();
+
+		const handler = jest.fn();
+		loader.watch(handler);
+
+		source.update(["example.com"]);
+		expect(handler).toHaveBeenCalledTimes(1);
+		expect(loader.getRules()).toEqual({ foo: ["example.com"] });
+	});
+
+	it("should cache fetched results", async () => {
+		const source = new MemoryHostnameSource(["foobar.com"]);
+		const noChange = new MemoryHostnameSource(["kaciras.com"]);
+		const loader = new HostnameListLoader({
+			foo: [source],
+			bar: [noChange],
+		});
+
+		await loader.refresh();
+		noChange.getHostnames = jest.fn();
+		loader.watch(() => {});
+		source.update(["example.com"]);
+
+		expect(loader.getRules()).toEqual({
+			foo: ["example.com"],
+			bar: ["kaciras.com"],
+		});
+		expect(noChange.getHostnames).not.toHaveBeenCalled();
+	});
 });
