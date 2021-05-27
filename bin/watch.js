@@ -11,7 +11,7 @@ import { buildPac, HostnameListLoader } from "../lib/generator.js";
 import { ensureDirectory, getSettings, root } from "../lib/utils.js";
 
 const { argv } = yargs(hideBin(process.argv));
-const { path, direct, sources } = await getSettings();
+const { path, direct, sources } = await getSettings(argv.config);
 
 process.chdir(root);
 

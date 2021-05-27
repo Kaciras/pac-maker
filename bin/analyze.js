@@ -2,13 +2,17 @@
  * Find what domains are proxied in browser history.
  */
 import fs from "fs/promises";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 import { loadPac, matchFindProxyFn } from "../lib/generator.js";
 import { getSettings, root } from "../lib/utils.js";
 import { getAllBrowserHistories } from "../lib/history.js";
 
 process.chdir(root);
 
-const { path } = await getSettings();
+const { argv } = yargs(hideBin(process.argv));
+const { path } = await getSettings(argv.config);
+
 const file = "matches.json";
 
 const { FindProxyForURL } = loadPac(await fs.readFile(path, "utf8"));
