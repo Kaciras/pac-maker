@@ -1,6 +1,6 @@
 import { tmpdir } from "os";
 import { join } from "path";
-import { MemoryHostnameSource } from "../lib/source.js";
+import { MemoryHostnameSource } from "../../lib/source.js";
 
 export default {
 	path: join(tmpdir(), "pac-maker/proxy.pac"),

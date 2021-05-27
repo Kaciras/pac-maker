@@ -2,14 +2,20 @@ import { join } from "path";
 import fs from "fs";
 import fetch from "node-fetch";
 import execa from "execa";
-import { root } from "../lib/utils.js";
-import config from "./test.config.js";
+import { getSettings, root } from "../lib/utils.js";
 import { mockTime } from "./share.js";
+
+const configPath = "__tests__/fixtures/test.config.js";
 
 const fixture = join(root, "__tests__/fixtures/proxy.pac");
 const stubPac = fs.readFileSync(fixture, "utf8");
 
+let config;
 let commandProcess = null;
+
+beforeAll(async () => {
+	config = await getSettings(configPath);
+});
 
 afterEach(() => {
 	commandProcess?.kill();
@@ -20,7 +26,7 @@ afterEach(() => {
 it("should serve PAC script with HTTP", async () => {
 	commandProcess = execa("node", [
 		"bin/watch.js",
-		"--config=__tests__/test.config.js",
+		`--config=${configPath}`,
 	], {
 		cwd: root,
 		env: { MOCK_TIME: mockTime.getTime().toString() },
@@ -38,7 +44,7 @@ it("should serve PAC script with HTTP", async () => {
 it("should save PAC as file when --save is specified", async () => {
 	commandProcess = execa("node", [
 		"bin/watch.js",
-		"--config=__tests__/test.config.js",
+		`--config=${configPath}`,
 		"--save",
 	], {
 		cwd: root,
