@@ -1,7 +1,8 @@
 export default {
-	clearMocks: true,
-	transform: {},
+	testEnvironment: "node",
 	coverageDirectory: "coverage",
 	coverageProvider: "v8",
-	testEnvironment: "node",
+	transform: {},
+	clearMocks: true,
+	testMatch: ["**/__tests__/*.spec.js"],
 };

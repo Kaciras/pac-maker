@@ -1,6 +1,6 @@
 /**
  * Serve PAC file with http protocol, and update when source have changes.
- * Usage: node bin/watch.js [--save]
+ * Usage: node bin/watch.js [--config=<file>] [--save]
  */
 import fs from "fs/promises";
 import yargs from 'yargs';
@@ -35,12 +35,12 @@ await refreshScript();
 loader.watch(refreshScript);
 
 const app = new Koa();
+app.on("error", err => console.error(err));
 app.use(cors());
 app.use(ctx => {
 	ctx.type = "application/x-ns-proxy-autoconfig";
 	ctx.body = script;
 });
-app.on("error", err => console.error(err));
 app.listen(7568, "localhost", () => {
 	console.info("server started, http://localhost:7568/proxy.pac");
 });
