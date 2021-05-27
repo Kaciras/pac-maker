@@ -1,18 +1,24 @@
 /*
- * Proxy Auto-Configuration file made by pac-maker v__VERSION__
+ * Proxy Auto-Configuration file made by pac-maker v1.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: __TIME__
+ * Generated at: 2021-06-16T16:00:00.000Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
  */
 
-globalThis.direct = __DIRECT__;
+globalThis.direct = "DIRECT";
 
-globalThis.proxies = __PROXIES__;
+globalThis.proxies = [
+	"HTTP [::1]:2080",
+	"SOCKS5 localhost:1080"
+];
 
-globalThis.rules = __RULES__;
+globalThis.rules = {
+	"foo.bar": 0,
+	"example.com": 1
+};
 
 function FindProxyForURL(url, host) {
 	let pos = 0;

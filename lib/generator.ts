@@ -2,8 +2,8 @@ import fs from "fs/promises";
 import vm from "vm";
 import { join } from "path";
 import { URL } from "url";
-import { HistoryEntry } from "./history";
-import { ensureDirectory, root } from "./utils";
+import { HistoryEntry } from "./history.js";
+import { ensureDirectory, root } from "./utils.js";
 
 export type FinProxyFn = (url: string, host: string) => string;
 
@@ -16,6 +16,7 @@ export interface BuiltInPacGlobals extends PacGlobals {
 	proxies: string[];
 	rules: Record<string, number>;
 }
+import { root } from "./utils.js";
 
 const placeholder = /__(.+?)__/g;
 
@@ -42,29 +43,37 @@ interface BuildPacOptions {
 /**
  * Generate a PAC script use the built-in template.
  *
- * @param options An object that contain proxy and rules
- * @return the PAC file content
+ * @return {Promise<string>} the PAC file content
  */
-export async function buildPac(options: BuildPacOptions) {
-	const { direct, domains } = options;
-	const packageJson = JSON.parse(await fs.readFile(join(root, "package.json"), "utf8"));
+export async function buildPac(rules, direct = "DIRECT") {
+	const packageJson = JSON.parse(await fs.readFile(join(root, "package.json")));
 
 	const proxies: string[] = [];
-	const domainMap: Record<string, number> = {};
+	const hostMap: Record<string, number> = {};
 
-	for (const [k, v] of Object.entries(domains)) {
+	for (const [k, v] of Object.entries(rules)) {
 		const i = proxies.length;
 		proxies.push(k);
-		v.forEach(domain => domainMap[domain] = i);
+		v.forEach(domain => hostMap[domain] = i);
 	}
 
 	const replacements: Record<any, string> = {
 		VERSION: packageJson.version,
 		DIRECT: JSON.stringify(direct),
 		PROXIES: JSON.stringify(proxies, null, "\t"),
-		RULES: JSON.stringify(domainMap, null, "\t"),
+		RULES: JSON.stringify(hostMap, null, "\t"),
 		TIME: new Date().toISOString(),
 	};
+
+	// Make time consistent in tests, also can be specified by user.
+	const mockTime = process.env.MOCK_TIME;
+	if (mockTime) {
+		const value = parseInt(mockTime);
+		if (!Number.isInteger(value)) {
+			throw new Error("Invalid MOCK_TIME:" + mockTime);
+		}
+		replacements.TIME = new Date(value).toISOString();
+	}
 
 	const file = join(root, "lib/template.js");
 	const template = await fs.readFile(file, "utf8");
@@ -77,18 +86,60 @@ interface PacMakerConfig {
 	rules: Record<string, Promise<string[]>[]>;
 }
 
-export async function generate(options: PacMakerConfig) {
-	const { path, direct, rules } = options;
+export class HostnameListLoader {
 
-	const domains: Record<string, string[]> = {};
-	for (const [k, v] of Object.entries(rules)) {
-		domains[k] = (await Promise.all(v)).flat();
+	constructor(map) {
+		this.sources = [];
+		this.proxies = [];
+		this.lists = [];
+
+		const { sources, proxies } = this;
+
+		for (const k of Object.keys(map)) {
+			for (const source of map[k]) {
+				proxies.push(k);
+				sources.push(source);
+			}
+		}
 	}
 
-	const result = await buildPac({ direct, domains });
+	async refresh() {
+		this.lists = await Promise.all(this.sources.map(s => s.getHostnames()));
+	}
 
-	await ensureDirectory(path);
-	await fs.writeFile(path, result, "utf8");
+	getRules() {
+		const { proxies, lists } = this;
+
+		if (lists.length !== proxies.length) {
+			throw new Error("Please call refresh() first");
+		}
+
+		const rules = {};
+		for (let i = 0; i < lists.length; i++) {
+			const p = proxies[i];
+			(rules[p] ?? (rules[p] = [])).push(...lists[i]);
+		}
+		return rules;
+	}
+
+	watch(onRuleUpdated) {
+		const { sources, lists } = this;
+
+		if (lists.length !== sources.length) {
+			throw new Error("Please call refresh() first");
+		}
+		if (this.onRuleUpdated) {
+			throw new Error("Already watched");
+		}
+
+		for (let i = 0; i < sources.length; i++) {
+			sources[i].watch(v => {
+				lists[i] = v;
+				onRuleUpdated();
+			});
+		}
+		this.onRuleUpdated = onRuleUpdated;
+	}
 }
 
 interface DomainMatchResult {
@@ -97,7 +148,7 @@ interface DomainMatchResult {
 }
 
 export function matchFindProxyFn(urls: HistoryEntry[], fn: FinProxyFn) {
-	const domains = new Set<string>();
+	const hostnameSet = new Set<string>();
 	const rules: Record<string, string[]> = {};
 
 	for (const { url } of urls) {
@@ -105,13 +156,13 @@ export function matchFindProxyFn(urls: HistoryEntry[], fn: FinProxyFn) {
 			continue;
 		}
 		const host = new URL(url).hostname;
-		if (domains.has(host)) {
+		if (hostnameSet.has(host)) {
 			continue;
 		}
-		domains.add(host);
+		hostnameSet.add(host);
 		const proxy = fn(url, host);
 		(rules[proxy] ?? (rules[proxy] = [])).push(host);
 	}
 
-	return { rules, domains } as DomainMatchResult;
+	return { rules, hostnameSet } as DomainMatchResult;
 }

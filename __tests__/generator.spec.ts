@@ -1,13 +1,28 @@
+import { join } from "path";
 import fs from "fs";
-import { buildPac, BuiltInPacGlobals, loadPac } from "../lib/generator";
+import { jest } from "@jest/globals";
+import { buildPac, HostnameListLoader, loadPac } from "../lib/generator.js";
+import { root } from "../lib/utils";
+import { MemoryHostnameSource } from "../lib/source.js";
+
+jest.useFakeTimers("modern");
+jest.setSystemTime(new Date(2021, 5, 17, 0, 0, 0, 0));
+
+const fixture = join(root, "__tests__/fixtures/proxy.pac");
+const stubPac = fs.readFileSync(fixture, "utf8");
 
 it("should load PAC script", () => {
-	const pac = fs.readFileSync("__tests__/fixtures/proxy.pac", "utf8");
-	const { direct, proxies, rules, FindProxyForURL } = loadPac<BuiltInPacGlobals>(pac);
+	const { direct, proxies, rules, FindProxyForURL } = loadPac(stubPac);
 
+	expect(proxies).toEqual([
+		"HTTP [::1]:2080",
+		"SOCKS5 localhost:1080",
+	]);
+	expect(rules).toEqual({
+		"foo.bar": 0,
+		"example.com": 1,
+	});
 	expect(direct).toBe("DIRECT");
-	expect(proxies).toEqual(["SOCKS5 localhost:1080"]);
-	expect(rules).toEqual({ "example.com": 0 });
 
 	expect(FindProxyForURL("", "")).toBe("DIRECT");
 	expect(FindProxyForURL("", "com")).toBe("DIRECT");
@@ -17,16 +32,78 @@ it("should load PAC script", () => {
 
 it("should build PAC script", async () => {
 	const code = await buildPac({
-		direct: "DIRECT",
-		domains: {
-			"SOCKS5 localhost:1080": ["example.com"],
-			"HTTP [::1]:2080": ["foo.bar"],
-		},
+		"HTTP [::1]:2080": ["foo.bar"],
+		"SOCKS5 localhost:1080": ["example.com"],
 	});
-	const { FindProxyForURL } = loadPac(code);
+	expect(code).toBe(stubPac);
+});
 
-	expect(FindProxyForURL("", "")).toBe("DIRECT");
-	expect(FindProxyForURL("", "com")).toBe("DIRECT");
-	expect(FindProxyForURL("", "example.com")).toBe("SOCKS5 localhost:1080");
-	expect(FindProxyForURL("", "www.example.com")).toBe("SOCKS5 localhost:1080");
+describe("HostnameListLoader", () => {
+
+	it("should throw when call method before initialized", () => {
+		const loader = new HostnameListLoader({
+			foo: [new MemoryHostnameSource([])],
+		});
+		expect(() => loader.getRules()).toThrow();
+		expect(() => loader.watch(() => {})).toThrow();
+	});
+
+	it("should allow empty sources", () => {
+		const loader = new HostnameListLoader({});
+		loader.watch(() => {});
+		expect(loader.getRules()).toEqual({});
+	});
+
+	it("should load rules", async () => {
+		const loader = new HostnameListLoader({
+			foo: [
+				new MemoryHostnameSource(["example.com"]),
+			],
+			bar: [
+				new MemoryHostnameSource(["alice.com"]),
+				new MemoryHostnameSource(["bob.com", "charlie.com"]),
+			],
+		});
+
+		await loader.refresh();
+		const rules = loader.getRules();
+
+		expect(rules).toEqual({
+			foo: ["example.com"],
+			bar: ["alice.com", "bob.com", "charlie.com"],
+		});
+	});
+
+	it("should watch source updates", async () => {
+		const source = new MemoryHostnameSource(["kaciras.com"]);
+		const loader = new HostnameListLoader({ foo: [source] });
+		await loader.refresh();
+
+		const handler = jest.fn();
+		loader.watch(handler);
+
+		source.update(["example.com"]);
+		expect(handler).toHaveBeenCalledTimes(1);
+		expect(loader.getRules()).toEqual({ foo: ["example.com"] });
+	});
+
+	it("should cache fetched results", async () => {
+		const source = new MemoryHostnameSource(["foobar.com"]);
+		const noChange = new MemoryHostnameSource(["kaciras.com"]);
+		const loader = new HostnameListLoader({
+			foo: [source],
+			bar: [noChange],
+		});
+
+		await loader.refresh();
+		noChange.getHostnames = jest.fn();
+		loader.watch(() => {});
+		source.update(["example.com"]);
+
+		expect(loader.getRules()).toEqual({
+			foo: ["example.com"],
+			bar: ["kaciras.com"],
+		});
+		expect(noChange.getHostnames).not.toHaveBeenCalled();
+	});
 });

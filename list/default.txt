@@ -1,0 +1,4 @@
+# 自己收集的一些被 GFW 屏蔽的站点
+
+nextjs.org
+aka.ms

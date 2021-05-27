@@ -1,18 +1,17 @@
-import { generate } from "../lib/generator";
-import { builtInRuleSet, gfwlist } from "../lib/source";
-import { root } from "../lib/utils";
+import fs from "fs/promises";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
+import { ensureDirectory, getSettings, root } from "../lib/utils.js";
+import { buildPac, HostnameListLoader } from "../lib/generator.js";
 
 process.chdir(root);
 
-const config = {
-	path: "dist/proxy.pac",
-	direct: "DIRECT",
-	rules: {
-		"SOCKS5 localhost:1080": [
-			gfwlist(),
-			builtInRuleSet("default"),
-		],
-	},
-};
+const { argv } = yargs(hideBin(process.argv));
+const { path, direct, sources } = await getSettings(argv.config);
 
-generate(config).catch(e => console.error(e));
+const loader = new HostnameListLoader(sources);
+await loader.refresh();
+const code = await buildPac(loader.getRules(), direct);
+
+await ensureDirectory(path);
+await fs.writeFile(path, code, "utf8");

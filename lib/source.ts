@@ -1,72 +1,149 @@
-import fs from "fs/promises";
 import { basename, join } from "path";
+import fs from "fs";
+import { readFile } from "fs/promises";
 import { URL } from "url";
 import fetch from "node-fetch";
-import { root } from "./utils";
+import { root } from "./utils.js";
 
-/**
- * Fetch domains from https://github.com/gfwlist/gfwlist
- *
- * @return domain list
- */
-export async function gfwlist() {
-	const response = await fetch("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt");
-	const content = Buffer.from(await response.text(), "base64").toString();
+const GFW_LIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
 
-	const result = [];
+class GFWListSource {
 
-	for (let line of content.split("\n")) {
-		if (line.includes("General List End")) {
-			break; // rules after this are unusable
+	constructor(period = 21600) {
+		if (period <= 0) {
+			throw new Error("Period must be greater than 1 second");
 		}
-		if (/^\s*$/.test(line)) {
-			continue; // blank line
-		}
-		if (/^[[!]/.test(line)) {
-			continue; // comment
-		}
-		if (line.startsWith("/")) {
-			continue; // regexp
-		}
-		if (line.startsWith("@@")) {
-			continue; // white list
-		}
-		if (line.includes("*")) {
-			continue; // wildcard is not supported
-		}
-
-		line = line.replaceAll(/^[|.]+/g, "");
-		if (!/^https?:/.test(line)) {
-			line = "http://" + line;
-		}
-		result.push(new URL(decodeURIComponent(line)).hostname);
+		this.listeners = [];
+		this.lastModified = 0;
+		this.period = period * 1000;
 	}
 
-	return result;
+	async getHostnames() {
+		const response = await fetch(GFW_LIST_URL);
+		const content = Buffer.from(await response.text(), "base64").toString();
+
+		const result = [];
+
+		for (let line of content.split("\n")) {
+			if (line.includes("General List End")) {
+				break; // rules after this are unusable
+			}
+			if (line.startsWith("! Last Modified: ")) {
+				this.lastModified = new Date(line.slice(17));
+			}
+			if (/^\s*$/.test(line)) {
+				continue; // blank line
+			}
+			if (/^[[!]/.test(line)) {
+				continue; // comment
+			}
+			if (line.startsWith("/")) {
+				continue; // regexp
+			}
+			if (line.startsWith("@@")) {
+				continue; // white list
+			}
+			if (line.includes("*")) {
+				continue; // wildcard is not supported
+			}
+
+			line = line.replaceAll(/^[|.]+/g, "");
+			if (!/^https?:/.test(line)) {
+				line = "http://" + line;
+			}
+			result.push(new URL(decodeURIComponent(line)).hostname);
+		}
+
+		return result;
+	}
+
+	watch(handler) {
+		const { timer, period, checkUpdate } = this;
+		if (!timer) {
+			const bound = checkUpdate.bind(this);
+			this.timer = setInterval(bound, period);
+		}
+		this.listeners.push(handler);
+	}
+
+	async checkUpdate() {
+		const oldTime = this.lastModified.getTime();
+		const list = this.getHostnames();
+
+		if (this.lastModified.getTime() > oldTime) {
+			this.listeners.forEach(fn => fn(list));
+		}
+	}
+}
+
+class HostnameFileSource {
+
+	constructor(path) {
+		this.path = path;
+	}
+
+	async getHostnames() {
+		const content = await readFile(this.path, "utf8");
+		return content.split("\n")
+			.map(line => line.trim())
+			.filter(line => line.length > 0 && !line.startsWith("#"));
+	}
+
+	watch(handler) {
+		this.watcher ??= fs.watch(this.path);
+		this.watcher.on("change", () => this.getHostnames().then(handler));
+	}
+}
+
+export class MemoryHostnameSource {
+
+	constructor(hostnames) {
+		this.hostnames = hostnames;
+		this.listeners = [];
+	}
+
+	getHostnames() {
+		return Promise.resolve(this.hostnames);
+	}
+
+	watch(handler) {
+		this.listeners.push(handler);
+	}
+
+	update(newValues = this.hostnames) {
+		this.hostnames = newValues;
+		this.listeners.forEach(fn => fn(newValues));
+	}
 }
 
 /**
- * Read domains from rule file.
+ * Fetch hostnames from https://github.com/gfwlist/gfwlist
  *
- * @param file the file path
- * @return domain list
+ * @return {GFWListSource} hostname list
  */
-export async function ruleFile(file: string) {
-	const content = await fs.readFile(file, "utf8");
-	return content.split("\n")
-		.map(line => line.trim())
-		.filter(line => line.length > 0 && !line.startsWith("#"));
+export function gfwlist() {
+	return new GFWListSource();
 }
 
 /**
- * Read domains from built-in rule file.
+ * Read hostnames from rule file.
+ *
+ * @param path the file path
+ * @return {HostnameFileSource} hostname list
+ */
+export function hostnameFile(path) {
+	return new HostnameFileSource(path);
+}
+
+/**
+ * Read hostnames from built-in rule file.
  *
  * @param name filename without extension
- * @return domain list
+ * @return {HostnameFileSource} hostname list
  */
-export function builtInRuleSet(name: string) {
+export function builtinList(name) {
 	if (name !== basename(name)) {
-		throw new Error("Invalid rule set name: " + name);
+		throw new Error("Invalid hostname list: " + name);
 	}
-	return ruleFile(join(root, "rules", name + ".txt"));
+	return hostnameFile(join(root, "list", name + ".txt"));
 }
