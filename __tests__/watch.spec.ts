@@ -1,7 +1,7 @@
 import { join } from "path";
 import fs from "fs";
 import fetch from "node-fetch";
-import execa from "execa";
+import execa, { ExecaChildProcess } from "execa";
 import { root } from "../lib/utils.js";
 import config from "./test.config.js";
 import { mockTime } from "./share.js";
@@ -9,7 +9,7 @@ import { mockTime } from "./share.js";
 const fixture = join(root, "__tests__/fixtures/proxy.pac");
 const stubPac = fs.readFileSync(fixture, "utf8");
 
-let commandProcess = null;
+let commandProcess: ExecaChildProcess | null = null;
 
 afterEach(() => {
 	commandProcess?.kill();

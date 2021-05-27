@@ -1,20 +1,33 @@
 import { basename, join } from "path";
-import fs from "fs";
+import fs, { FSWatcher } from "fs";
 import { readFile } from "fs/promises";
 import { URL } from "url";
 import fetch from "node-fetch";
 import { root } from "./utils.js";
 
+type ChangeHandler = (newValues: string[]) => void;
+
+export interface HostnameSource {
+
+	getHostnames(): Promise<string[]>;
+
+	watch(handler: ChangeHandler): void;
+}
+
 const GFW_LIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
 
-class GFWListSource {
+class GFWListSource implements HostnameSource {
+
+	private readonly listeners: ChangeHandler[] = []
+
+	private period: number;
+	private lastModified = new Date(0);
+	private timer?: NodeJS.Timer;
 
 	constructor(period = 21600) {
 		if (period <= 0) {
 			throw new Error("Period must be greater than 1 second");
 		}
-		this.listeners = [];
-		this.lastModified = 0;
 		this.period = period * 1000;
 	}
 
@@ -57,7 +70,7 @@ class GFWListSource {
 		return result;
 	}
 
-	watch(handler) {
+	watch(handler: ChangeHandler) {
 		const { timer, period, checkUpdate } = this;
 		if (!timer) {
 			const bound = checkUpdate.bind(this);
@@ -68,7 +81,7 @@ class GFWListSource {
 
 	async checkUpdate() {
 		const oldTime = this.lastModified.getTime();
-		const list = this.getHostnames();
+		const list = await this.getHostnames();
 
 		if (this.lastModified.getTime() > oldTime) {
 			this.listeners.forEach(fn => fn(list));
@@ -76,9 +89,13 @@ class GFWListSource {
 	}
 }
 
-class HostnameFileSource {
+class HostnameFileSource implements HostnameSource {
 
-	constructor(path) {
+	private readonly path: string;
+
+	private watcher?: FSWatcher;
+
+	constructor(path: string) {
 		this.path = path;
 	}
 
@@ -89,24 +106,28 @@ class HostnameFileSource {
 			.filter(line => line.length > 0 && !line.startsWith("#"));
 	}
 
-	watch(handler) {
+	watch(handler: ChangeHandler) {
 		this.watcher ??= fs.watch(this.path);
 		this.watcher.on("change", () => this.getHostnames().then(handler));
 	}
 }
 
-export class MemoryHostnameSource {
+export class MemoryHostnameSource implements HostnameSource {
 
-	constructor(hostnames) {
-		this.hostnames = hostnames;
+	private readonly listeners: ChangeHandler[] = [];
+
+	private hostnames: string[] = [];
+
+	constructor(hostnames: string[]) {
 		this.listeners = [];
+		this.hostnames = hostnames;
 	}
 
 	getHostnames() {
 		return Promise.resolve(this.hostnames);
 	}
 
-	watch(handler) {
+	watch(handler: ChangeHandler) {
 		this.listeners.push(handler);
 	}
 
@@ -131,7 +152,7 @@ export function gfwlist() {
  * @param path the file path
  * @return {HostnameFileSource} hostname list
  */
-export function hostnameFile(path) {
+export function hostnameFile(path: string) {
 	return new HostnameFileSource(path);
 }
 
@@ -141,7 +162,7 @@ export function hostnameFile(path) {
  * @param name filename without extension
  * @return {HostnameFileSource} hostname list
  */
-export function builtinList(name) {
+export function builtinList(name: string) {
 	if (name !== basename(name)) {
 		throw new Error("Invalid hostname list: " + name);
 	}

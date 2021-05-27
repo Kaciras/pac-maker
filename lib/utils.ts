@@ -5,12 +5,12 @@ import { dirname, resolve } from "path";
 /** Path of pac-maker root directory */
 export const root = dirname(dirname(fileURLToPath(import.meta.url)));
 
-export function getSettings(file) {
+export function getSettings(file: string) {
 	file ??= resolve(root, "pac.config.js");
-	file = pathToFileURL(file);
+	file = pathToFileURL(file).toString();
 	return import(file).then(m => m.default);
 }
 
-export function ensureDirectory(file) {
+export function ensureDirectory(file: string) {
 	return fs.mkdir(dirname(file), { recursive: true });
 }

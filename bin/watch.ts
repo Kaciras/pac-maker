@@ -3,8 +3,8 @@
  * Usage: node bin/watch.js [--config=<file>] [--save]
  */
 import fs from "fs/promises";
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 import Koa from "koa";
 import cors from "@koa/cors";
 import { buildPac, HostnameListLoader } from "../lib/generator.js";

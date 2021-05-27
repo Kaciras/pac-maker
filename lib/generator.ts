@@ -3,7 +3,8 @@ import vm from "vm";
 import { join } from "path";
 import { URL } from "url";
 import { HistoryEntry } from "./history.js";
-import { ensureDirectory, root } from "./utils.js";
+import { root } from "./utils.js";
+import { HostnameSource } from "./source";
 
 export type FinProxyFn = (url: string, host: string) => string;
 
@@ -16,7 +17,6 @@ export interface BuiltInPacGlobals extends PacGlobals {
 	proxies: string[];
 	rules: Record<string, number>;
 }
-import { root } from "./utils.js";
 
 const placeholder = /__(.+?)__/g;
 
@@ -45,8 +45,8 @@ interface BuildPacOptions {
  *
  * @return {Promise<string>} the PAC file content
  */
-export async function buildPac(rules, direct = "DIRECT") {
-	const packageJson = JSON.parse(await fs.readFile(join(root, "package.json")));
+export async function buildPac(rules: Record<string, string[]>, direct = "DIRECT") {
+	const packageJson = JSON.parse(await fs.readFile(join(root, "package.json"), "utf8"));
 
 	const proxies: string[] = [];
 	const hostMap: Record<string, number> = {};
@@ -83,12 +83,18 @@ export async function buildPac(rules, direct = "DIRECT") {
 interface PacMakerConfig {
 	path: string;
 	direct: string;
-	rules: Record<string, Promise<string[]>[]>;
+	rules: Record<string, HostnameSource[]>;
 }
 
 export class HostnameListLoader {
 
-	constructor(map) {
+	private readonly sources: HostnameSource[];
+	private readonly proxies: string[];
+
+	private lists: string[][];
+	private onRuleUpdated?: () => void;
+
+	constructor(map: Record<string, HostnameSource[]>) {
 		this.sources = [];
 		this.proxies = [];
 		this.lists = [];
@@ -114,7 +120,7 @@ export class HostnameListLoader {
 			throw new Error("Please call refresh() first");
 		}
 
-		const rules = {};
+		const rules: Record<string, string[]> = {};
 		for (let i = 0; i < lists.length; i++) {
 			const p = proxies[i];
 			(rules[p] ?? (rules[p] = [])).push(...lists[i]);
@@ -122,7 +128,7 @@ export class HostnameListLoader {
 		return rules;
 	}
 
-	watch(onRuleUpdated) {
+	watch(onRuleUpdated: () => void) {
 		const { sources, lists } = this;
 
 		if (lists.length !== sources.length) {
@@ -143,7 +149,7 @@ export class HostnameListLoader {
 }
 
 interface DomainMatchResult {
-	domains: Set<string>;
+	hostnameSet: Set<string>;
 	rules: Record<string, string[]>;
 }
 
