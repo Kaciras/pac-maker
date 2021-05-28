@@ -29,7 +29,7 @@ export function matchFindProxyFn(histories, fn) {
 		}
 		hostnameSet.add(host);
 		const proxy = fn(url, host);
-		(rules[proxy] ?? (rules[proxy] = [])).push(host);
+		(rules[proxy] ??= []).push(host);
 	}
 
 	return { rules, hostnameSet };
