@@ -1,5 +1,4 @@
 export default {
-	testEnvironment: "node",
 	coverageDirectory: "coverage",
 	coverageProvider: "v8",
 	transform: {},

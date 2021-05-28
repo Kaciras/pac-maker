@@ -5,7 +5,7 @@ import { buildPac, HostnameListLoader, loadPac } from "../lib/generator.js";
 import { root } from "../lib/utils";
 import { MemoryHostnameSource } from "../lib/source.js";
 
-jest.useFakeTimers("modern");
+jest.useFakeTimers();
 jest.setSystemTime(new Date(2021, 5, 17, 0, 0, 0, 0));
 
 const fixture = join(root, "__tests__/fixtures/proxy.pac");

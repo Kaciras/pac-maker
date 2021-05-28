@@ -25,15 +25,15 @@
 		"ini": "^2.0.0",
 		"koa": "^2.13.1",
 		"node-fetch": "^2.6.1",
-		"sqlite": "^4.0.22",
+		"sqlite": "^4.0.23",
 		"sqlite3": "^5.0.2",
 		"yargs": "^17.0.1"
 	},
 	"devDependencies": {
 		"@kaciras/eslint-config-core": "^1.5.0",
 		"@kaciras/eslint-config-jest": "^1.5.0",
-		"eslint": "^7.26.0",
+		"eslint": "^7.27.0",
 		"execa": "^5.0.0",
-		"jest": "^26.6.3"
+		"jest": "^27.0.1"
 	}
 }
