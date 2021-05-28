@@ -1,4 +1,5 @@
 import { join } from "path";
+import { setTimeout } from "timers/promises";
 import fs from "fs";
 import fetch from "node-fetch";
 import execa from "execa";
@@ -23,15 +24,25 @@ afterEach(() => {
 	fs.rmSync(config.path, { force: true });
 });
 
-it("should serve PAC script with HTTP", async () => {
+/**
+ * run watch command with test config, and wait a while.
+ *
+ * @return {Promise<*>} A Promise to wait for command initialization.
+ */
+function runWatchCommand(...args) {
 	commandProcess = execa("node", [
 		"bin/watch.js",
 		`--config=${configPath}`,
+		...args,
 	], {
 		cwd: root,
 		env: { MOCK_TIME: mockTime.getTime().toString() },
 	});
-	await new Promise(resolve => setTimeout(resolve, 500));
+	return setTimeout(1000, commandProcess);
+}
+
+it("should serve PAC script with HTTP", async () => {
+	await runWatchCommand();
 
 	const response = await fetch("http://localhost:7568/proxy.pac");
 	const code = await response.text();
@@ -42,15 +53,6 @@ it("should serve PAC script with HTTP", async () => {
 });
 
 it("should save PAC as file when --save is specified", async () => {
-	commandProcess = execa("node", [
-		"bin/watch.js",
-		`--config=${configPath}`,
-		"--save",
-	], {
-		cwd: root,
-		env: { MOCK_TIME: mockTime.getTime().toString() },
-	});
-	await new Promise(resolve => setTimeout(resolve, 500));
-
+	await runWatchCommand("--save");
 	expect(fs.readFileSync(config.path, "utf8")).toBe(stubPac);
 });

@@ -3,10 +3,11 @@ import fs from "fs";
 import { jest } from "@jest/globals";
 import { buildPac, HostnameListLoader, loadPac } from "../lib/generator.js";
 import { root } from "../lib/utils";
-import { MemoryHostnameSource } from "../lib/source.js";
+import { arraySource } from "../lib/source.js";
+import { mockTime } from "./share.js";
 
 jest.useFakeTimers();
-jest.setSystemTime(new Date(2021, 5, 17, 0, 0, 0, 0));
+jest.setSystemTime(mockTime);
 
 const fixture = join(root, "__tests__/fixtures/proxy.pac");
 const stubPac = fs.readFileSync(fixture, "utf8");
@@ -42,7 +43,7 @@ describe("HostnameListLoader", () => {
 
 	it("should throw when call method before initialized", () => {
 		const loader = new HostnameListLoader({
-			foo: [new MemoryHostnameSource([])],
+			foo: [arraySource([])],
 		});
 		expect(() => loader.getRules()).toThrow();
 		expect(() => loader.watch(() => {})).toThrow();
@@ -57,11 +58,11 @@ describe("HostnameListLoader", () => {
 	it("should load rules", async () => {
 		const loader = new HostnameListLoader({
 			foo: [
-				new MemoryHostnameSource(["example.com"]),
+				arraySource(["example.com"]),
 			],
 			bar: [
-				new MemoryHostnameSource(["alice.com"]),
-				new MemoryHostnameSource(["bob.com", "charlie.com"]),
+				arraySource(["alice.com"]),
+				arraySource(["bob.com", "charlie.com"]),
 			],
 		});
 
@@ -75,7 +76,7 @@ describe("HostnameListLoader", () => {
 	});
 
 	it("should watch source updates", async () => {
-		const source = new MemoryHostnameSource(["kaciras.com"]);
+		const source = arraySource(["kaciras.com"]);
 		const loader = new HostnameListLoader({ foo: [source] });
 		await loader.refresh();
 
@@ -88,8 +89,8 @@ describe("HostnameListLoader", () => {
 	});
 
 	it("should cache fetched results", async () => {
-		const source = new MemoryHostnameSource(["foobar.com"]);
-		const noChange = new MemoryHostnameSource(["kaciras.com"]);
+		const source = arraySource(["foobar.com"]);
+		const noChange = arraySource(["kaciras.com"]);
 		const loader = new HostnameListLoader({
 			foo: [source],
 			bar: [noChange],

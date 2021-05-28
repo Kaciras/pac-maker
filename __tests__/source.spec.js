@@ -5,7 +5,7 @@ import { isIP } from "net";
 const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
 
 expect.extend({
-	toBeDomain(received) {
+	toBeHostname(received) {
 		if (isIP(received) || hostname.test(received)) {
 			return {
 				pass: true,
@@ -26,7 +26,7 @@ it("should parse gfwlist", async () => {
 	const list = await gfwlist().getHostnames();
 
 	for (const item of list) {
-		expect(item).toBeDomain();
+		expect(item).toBeHostname();
 	}
 	expect(list.length).toBeGreaterThan(5700);
 });
