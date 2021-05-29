@@ -1,54 +1,53 @@
 import { appendFileSync, mkdirSync, rmSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
-import { isIP } from "net";
 import { join } from "path";
-import { arraySource, builtinList, gfwlist, hostnameFile } from "../lib/source";
+import { arraySource, builtinList, gfwlist, hostnameFile } from "../lib/source.js";
 
-// https://stackoverflow.com/a/106223
-const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
+// Used to stop watch progress to ensure program exit.
+let source;
 
-expect.extend({
-	toBeHostname(received) {
-		if (isIP(received) || hostname.test(received)) {
-			return {
-				pass: true,
-				message: () => `${received} is a valid hostname`,
-			};
-		}
-		return {
-			pass: false,
-			message: () => `${received} is not a hostname`,
-		};
-	},
-});
+afterEach(() => source?.stopWatching());
+
+function waitForUpdate(source) {
+	return new Promise(resolve => source.watch(resolve));
+}
 
 /**
- * This test may fail with bad network.
+ * This test may fail with bad network. we still waiting for Jest to support mock ES modules.
  */
-it("should parse gfwlist", async () => {
-	const list = await gfwlist().getHostnames();
+describe("gfwlist", () => {
 
-	for (const item of list) {
-		expect(item).toBeHostname();
-	}
-	expect(list.length).toBeGreaterThan(5700);
+	it("should parse rules", async () => {
+		const list = await gfwlist().getHostnames();
+
+		for (const item of list) {
+			expect(item).toBeHostname();
+		}
+		expect(list.length).toBeGreaterThan(5700);
+	});
 });
 
 describe("file source", () => {
 	const tempDir = join(tmpdir(), "pac-maker");
 
-	beforeAll(() => mkdirSync(tempDir, { recursive: true }));
-	afterAll(() => rmSync(tempDir, { force: true }));
+	beforeEach(() => mkdirSync(tempDir, { recursive: true }));
+	afterEach(() => rmSync(tempDir, { force: true, recursive: true }));
+
+	it("should throw when file not exists", () => {
+		source = hostnameFile("not_exists.txt");
+		const task = source.getHostnames();
+		return expect(task).rejects.toThrow();
+	});
 
 	it("should trigger update on file modified", async () => {
 		const file = join(tempDir, "hostnames.txt");
 		writeFileSync(file, "example.com\n");
 
-		const source = hostnameFile(file);
+		source = hostnameFile(file);
 		const list = await source.getHostnames();
 		expect(list).toEqual(["example.com"]);
 
-		const watching = new Promise(resolve => source.watch(resolve));
+		const watching = waitForUpdate(source);
 		appendFileSync(file, "foobar.com\n");
 
 		expect(await watching).toEqual(["example.com", "foobar.com"]);
@@ -71,15 +70,15 @@ describe("built-in source", () => {
 describe("array source", () => {
 
 	it("should create from hostnames", async () => {
-		const source = arraySource(["foo.com", "bar.com"]);
+		source = arraySource(["foo.com", "bar.com"]);
 		const hostnames = await source.getHostnames();
 		expect(hostnames).toEqual(["foo.com", "bar.com"]);
 	});
 
 	it("should trigger update after update() called", async () => {
-		const source = arraySource(["foo.com", "bar.com"]);
+		source = arraySource(["foo.com", "bar.com"]);
 
-		const watching = new Promise(resolve => source.watch(resolve));
+		const watching = waitForUpdate(source);
 		source.update([]);
 
 		expect(await watching).toEqual([]);
