@@ -6,7 +6,7 @@ import cors from "@koa/cors";
 import { buildPac, HostnameListLoader } from "../lib/generator.js";
 import { getSettings, root } from "../lib/utils.js";
 
-const { argv, port = 7568 } = yargs(hideBin(process.argv));
+const { argv } = yargs(hideBin(process.argv));
 const { direct, sources } = await getSettings(argv.config);
 
 process.chdir(root);
@@ -22,6 +22,7 @@ const loader = new HostnameListLoader(sources);
 await loader.refresh();
 await rebuildPACScript();
 
+const { port = 7568 } = argv;
 const app = new Koa();
 app.on("error", err => console.error(err));
 app.use(cors());

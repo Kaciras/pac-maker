@@ -10,7 +10,7 @@ import { getSettings, root } from "../lib/utils.js";
 
 process.chdir(root);
 
-const { argv, json = "matches.json" } = yargs(hideBin(process.argv));
+const { argv } = yargs(hideBin(process.argv));
 const { path } = await getSettings(argv.config);
 
 console.info("Finding what hosts will be proxied by PAC in browser history...\n");
@@ -43,5 +43,6 @@ console.info(`Inspect ${histories.length} urls, ${hostnameSet.size} distinct hos
 const table = Object.entries(rules).map(([k, v]) => ({ Proxy: k, "Matched Hosts": v.length }));
 console.table(table);
 
+const { json = "matches.json" } = argv;
 await fs.writeFile(json, JSON.stringify(rules, null, "\t"));
 console.info(`\nRules are saved to ${resolve(json)}`);
