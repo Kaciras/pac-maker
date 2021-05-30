@@ -1,6 +1,6 @@
 # pac-maker
 
-Proxy Auto Configuration (PAC) generator & maintenance tool.
+Proxy Auto Configuration (PAC) file generator & maintenance tool.
 
 # Usage
 
@@ -22,7 +22,7 @@ export default {
 	// Fallback when no match any rule.
 	direct: "DIRECT",
 
-	// Proxy rule map, { proxy: [hostname sources] }
+	// Proxy rule map, { [proxy]: [hostname sources] }
 	sources: {
 		"SOCKS5 localhost:2080": [
 			gfwlist(),
