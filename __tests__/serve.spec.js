@@ -1,21 +1,17 @@
 import { setTimeout } from "timers/promises";
-import fs from "fs";
+import { rmSync } from "fs";
 import fetch from "node-fetch";
-import { getSettings } from "../lib/utils.js";
-import { configPath, readFixture, runBuiltinCommand } from "./share.js";
+import { getTestSettings, readFixture, runBuiltinCommand } from "./share.js";
 
 const stubPac = readFixture("proxy-1.pac");
 
-let config;
-let process = null;
+const config = await getTestSettings();
 
-beforeAll(async () => {
-	config = await getSettings(configPath);
-});
+let process = null;
 
 afterEach(() => {
 	process.kill();
-	fs.rmSync(config.path, { force: true });
+	rmSync(config.path, { force: true });
 });
 
 it("should serve PAC file with HTTP", async () => {

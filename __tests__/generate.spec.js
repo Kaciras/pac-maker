@@ -1,6 +1,6 @@
 import { setTimeout } from "timers/promises";
 import { readFileSync } from "fs";
-import { getTestSettings, readFixture, runBuiltinCommand } from "./share.js";
+import { getTestSettings, readFixture, runBuiltinCommand, testDir, useTempDirectory } from "./share.js";
 
 const stubPac1 = readFixture("proxy-1.pac");
 const stubPac2 = readFixture("proxy-2.pac");
@@ -9,8 +9,9 @@ const config = await getTestSettings();
 
 let process;
 
-afterEach(() => process?.kill());
+useTempDirectory(testDir);
 
+afterEach(() => process?.kill());
 
 it("should generate PAC file", async () => {
 	await runBuiltinCommand("generate");

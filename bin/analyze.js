@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import fs from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 import { URL } from "url";
 import yargs from "yargs";
@@ -35,7 +35,7 @@ export function matchFindProxyFn(histories, fn) {
 	return { rules, hostnameSet };
 }
 
-const { FindProxyForURL } = loadPac(await fs.readFile(path, "utf8"));
+const { FindProxyForURL } = loadPac(await readFile(path, "utf8"));
 const histories = await getAllBrowserHistories();
 const { rules, hostnameSet } = matchFindProxyFn(histories, FindProxyForURL);
 
@@ -44,5 +44,5 @@ const table = Object.entries(rules).map(([k, v]) => ({ Proxy: k, "Matched Hosts"
 console.table(table);
 
 const { json = "matches.json" } = argv;
-await fs.writeFile(json, JSON.stringify(rules, null, "\t"));
+await writeFile(json, JSON.stringify(rules, null, "\t"));
 console.info(`\nRules are saved to ${resolve(json)}`);

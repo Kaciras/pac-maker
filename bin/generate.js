@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import fs from "fs/promises";
+import { writeFile } from "fs/promises";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { ensureDirectory, getSettings, root } from "../lib/utils.js";
@@ -16,7 +16,7 @@ await loader.refresh();
 async function rebuildPACScript() {
 	const script = await buildPac(loader.getRules(), direct);
 	await ensureDirectory(path);
-	await fs.writeFile(path, script, "utf8");
+	await writeFile(path, script, "utf8");
 	console.info("PAC script updated at " + new Date());
 }
 

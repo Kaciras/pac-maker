@@ -1,7 +1,7 @@
-import { appendFileSync, mkdirSync, rmSync, writeFileSync } from "fs";
-import { tmpdir } from "os";
+import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { builtinList, gfwlist, hostnameFile, ofArray } from "../lib/source.js";
+import { testDir, useTempDirectory } from "./share.js";
 
 // Used to stop watch progress to ensure program exit.
 let source;
@@ -28,10 +28,7 @@ describe("gfwlist", () => {
 });
 
 describe("file source", () => {
-	const tempDir = join(tmpdir(), "pac-maker");
-
-	beforeEach(() => mkdirSync(tempDir, { recursive: true }));
-	afterEach(() => rmSync(tempDir, { force: true, recursive: true }));
+	useTempDirectory(testDir);
 
 	it("should throw when file not exists", () => {
 		source = hostnameFile("not_exists.txt");
@@ -40,7 +37,7 @@ describe("file source", () => {
 	});
 
 	it("should trigger update on file modified", async () => {
-		const file = join(tempDir, "hostnames.txt");
+		const file = join(testDir, "hostnames.txt");
 		writeFileSync(file, "example.com\n");
 
 		source = hostnameFile(file);
