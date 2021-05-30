@@ -1,16 +1,12 @@
-import { join } from "path";
-import fs from "fs";
 import { jest } from "@jest/globals";
 import { buildPac, HostnameListLoader, loadPac } from "../lib/generator.js";
-import { root } from "../lib/utils";
-import { arraySource } from "../lib/source.js";
-import { mockTime } from "./share.js";
+import { ofArray } from "../lib/source.js";
+import { mockTime, readFixture } from "./share.js";
 
 jest.useFakeTimers();
 jest.setSystemTime(mockTime);
 
-const fixture = join(root, "__tests__/fixtures/proxy.pac");
-const stubPac = fs.readFileSync(fixture, "utf8");
+const stubPac = readFixture("proxy-1.pac");
 
 it("should load PAC script", () => {
 	const { direct, proxies, rules, FindProxyForURL } = loadPac(stubPac);
@@ -43,7 +39,7 @@ describe("HostnameListLoader", () => {
 
 	it("should throw when call method before initialized", () => {
 		const loader = new HostnameListLoader({
-			foo: [arraySource([])],
+			foo: [ofArray([])],
 		});
 		expect(() => loader.getRules()).toThrow();
 		expect(() => loader.watch(() => {})).toThrow();
@@ -58,11 +54,11 @@ describe("HostnameListLoader", () => {
 	it("should load rules", async () => {
 		const loader = new HostnameListLoader({
 			foo: [
-				arraySource(["example.com"]),
+				ofArray(["example.com"]),
 			],
 			bar: [
-				arraySource(["alice.com"]),
-				arraySource(["bob.com", "charlie.com"]),
+				ofArray(["alice.com"]),
+				ofArray(["bob.com", "charlie.com"]),
 			],
 		});
 
@@ -76,7 +72,7 @@ describe("HostnameListLoader", () => {
 	});
 
 	it("should watch source updates", async () => {
-		const source = arraySource(["kaciras.com"]);
+		const source = ofArray(["kaciras.com"]);
 		const loader = new HostnameListLoader({ foo: [source] });
 		await loader.refresh();
 
@@ -89,8 +85,8 @@ describe("HostnameListLoader", () => {
 	});
 
 	it("should cache fetched results", async () => {
-		const source = arraySource(["foobar.com"]);
-		const noChange = arraySource(["kaciras.com"]);
+		const source = ofArray(["foobar.com"]);
+		const noChange = ofArray(["kaciras.com"]);
 		const loader = new HostnameListLoader({
 			foo: [source],
 			bar: [noChange],

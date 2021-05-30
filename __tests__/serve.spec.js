@@ -2,11 +2,9 @@ import { setTimeout } from "timers/promises";
 import fs from "fs";
 import fetch from "node-fetch";
 import { getSettings } from "../lib/utils.js";
-import { fixturePath, runBuiltinCommand } from "./share.js";
+import { configPath, readFixture, runBuiltinCommand } from "./share.js";
 
-const configPath = "__tests__/fixtures/test.config.js";
-
-const stubPac = fs.readFileSync(fixturePath("proxy.pac"), "utf8");
+const stubPac = readFixture("proxy-1.pac");
 
 let config;
 let process = null;
@@ -20,7 +18,7 @@ afterEach(() => {
 	fs.rmSync(config.path, { force: true });
 });
 
-it("should serve PAC script with HTTP", async () => {
+it("should serve PAC file with HTTP", async () => {
 	process = runBuiltinCommand("serve");
 	await setTimeout(1000);
 
@@ -31,3 +29,4 @@ it("should serve PAC script with HTTP", async () => {
 	expect(response.status).toBe(200);
 	expect(response.headers.get("content-type")).toBe("application/x-ns-proxy-autoconfig");
 });
+

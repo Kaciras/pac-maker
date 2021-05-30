@@ -75,7 +75,7 @@ describe("array source", () => {
 		expect(hostnames).toEqual(["foo.com", "bar.com"]);
 	});
 
-	it("should trigger update after update() called", async () => {
+	it("should trigger update when update() called", async () => {
 		source = ofArray(["foo.com", "bar.com"]);
 
 		const watching = waitForUpdate(source);
