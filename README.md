@@ -52,7 +52,7 @@ node bin/analyze.js [--config=<path>] [--json=<path>]
 Serve PAC file with http, and update when source have changes:
 
 ```shell
-node bin/watch.js [--config=<file>] [--port=<port>]
+node bin/serve.js [--config=<file>] [--port=<port>]
 ```
 
 * `--port` The port number that http server to listened on, default is `7568`.

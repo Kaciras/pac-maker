@@ -1,16 +1,18 @@
 import { tmpdir } from "os";
 import { join } from "path";
-import { MemoryHostnameSource } from "../../lib/source.js";
+import { ofArray } from "../../lib/source.js";
+
+export const dir = join(tmpdir(), "pac-maker");
 
 export default {
-	path: join(tmpdir(), "pac-maker/proxy.pac"),
+	path: join(dir, "proxy.pac"),
 	direct: "DIRECT",
 	sources: {
 		"HTTP [::1]:2080": [
-			new MemoryHostnameSource(["foo.bar"]),
+			ofArray(["foo.bar"]),
 		],
 		"SOCKS5 localhost:1080": [
-			new MemoryHostnameSource(["example.com"]),
+			ofArray(["example.com"]),
 		],
 	},
 };

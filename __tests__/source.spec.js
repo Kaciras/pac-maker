@@ -1,7 +1,7 @@
 import { appendFileSync, mkdirSync, rmSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
-import { arraySource, builtinList, gfwlist, hostnameFile } from "../lib/source.js";
+import { builtinList, gfwlist, hostnameFile, ofArray } from "../lib/source.js";
 
 // Used to stop watch progress to ensure program exit.
 let source;
@@ -70,13 +70,13 @@ describe("built-in source", () => {
 describe("array source", () => {
 
 	it("should create from hostnames", async () => {
-		source = arraySource(["foo.com", "bar.com"]);
+		source = ofArray(["foo.com", "bar.com"]);
 		const hostnames = await source.getHostnames();
 		expect(hostnames).toEqual(["foo.com", "bar.com"]);
 	});
 
 	it("should trigger update after update() called", async () => {
-		source = arraySource(["foo.com", "bar.com"]);
+		source = ofArray(["foo.com", "bar.com"]);
 
 		const watching = waitForUpdate(source);
 		source.update([]);
