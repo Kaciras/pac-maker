@@ -1,5 +1,5 @@
 import { join } from "path";
-import fs from "fs/promises";
+import { readFile } from "fs/promises";
 import ini from "ini";
 import sqlite3 from "sqlite3";
 import { open } from "sqlite";
@@ -10,21 +10,20 @@ export interface HistoryEntry {
 }
 
 async function getFirefoxProfilePath(): Promise<string> {
-	let file;
+	let directory;
 
 	switch (process.platform) {
 		case "win32":
-			file = join(process.env.APPDATA!, "Mozilla/Firefox");
+			directory = join(process.env.APPDATA, "Mozilla/Firefox");
 			break;
 		case "darwin":
-			file = join(process.env.HOME!, "Library/Application Support/Firefox");
+			directory = join(process.env.HOME, "Library/Application Support/Firefox");
 			break;
 		default:
 			throw new Error("Unsupported platform: " + process.platform);
 	}
 
-	file = join(file, "profiles.ini");
-	const content = await fs.readFile(file, "utf8");
+	const content = await readFile(join(directory, "profiles.ini"), "utf8");
 	const config = ini.parse(content);
 
 	const install = Object.keys(config).find(s => s.startsWith("Install"));
@@ -34,13 +33,24 @@ async function getFirefoxProfilePath(): Promise<string> {
 	throw new Error("Can not find install section in profiles.ini.");
 }
 
+async function getFromChromiumBased(profile, afterBy) {
+	const db = await open({
+		filename: join(profile, "Default/History"),
+		driver: sqlite3.Database,
+		mode: sqlite3.OPEN_READONLY,
+	});
+	const id = afterBy ? afterBy.id : 0;
+	return db.all("SELECT id,url FROM urls WHERE id > ?", id);
+}
+
 /**
  * Get Firefox browser history.
  *
- * @param profile Profile directory, if not specific
+ * @param profile Profile directory, use current user default if not specified.
+ * @param afterBy Only fetch rows after this history entry
  * @return histories
  */
-export async function firefox(profile?: string) {
+export async function firefox(profile?: string, afterBy) {
 	if (!profile) {
 		profile = await getFirefoxProfilePath();
 	}
@@ -49,21 +59,43 @@ export async function firefox(profile?: string) {
 		driver: sqlite3.Database,
 		mode: sqlite3.OPEN_READONLY,
 	});
-	return db.all<HistoryEntry>("SELECT id,url FROM moz_places");
+	const id = afterBy ? afterBy.id : 0;
+	return db.all<HistoryEntry>("SELECT id,url FROM moz_places WHERE id > ?", id);
 }
 
-export async function edge() {
-	const profile = join(process.env.LOCALAPPDATA!, "Microsoft/Edge/User Data/Default");
-	const db = await open({
-		filename: join(profile, "History"),
-		driver: sqlite3.Database,
-		mode: sqlite3.OPEN_READONLY,
-	});
-	return db.all<HistoryEntry>("SELECT id,url FROM urls");
+/**
+ * Get Edge browser history, only support Edge 79+
+ *
+ * @return {Promise<any[]>} histories
+ */
+export async function edge(afterBy) {
+	if (process.platform !== "win32") {
+		throw new Error("Unsupported platform: " + process.platform);
+	}
+	const profile = join(process.env.LOCALAPPDATA, "Microsoft/Edge/User Data");
+	return getFromChromiumBased(profile, afterBy);
+}
+
+export async function chrome(afterBy) {
+	let profile;
+	switch (process.platform) {
+		case "win32":
+			profile = join(process.env.LOCALAPPDATA, "Google/Chrome/User Data");
+			break;
+		case "darwin":
+			profile = join(process.env.HOME, "Library/Application Support/Google/Chrome");
+			break;
+		case "linux":
+			profile = join(process.env.HOME, ".config/google-chrome");
+			break;
+		default:
+			throw new Error("Unsupported platform: " + process.platform);
+	}
+	return getFromChromiumBased(profile, afterBy);
 }
 
 export async function getAllBrowserHistories() {
-	const tasks = await Promise.allSettled([firefox(), edge()]);
+	const tasks = await Promise.allSettled([firefox(), edge(), chrome()]);
 	return tasks
 		.filter(t => t.status === "fulfilled")
 		.flatMap(t => (t as PromiseFulfilledResult<HistoryEntry>).value);

@@ -1,42 +1,84 @@
-import { builtinList, gfwlist } from "../lib/source";
-import { isIP } from "net";
+import { appendFileSync, writeFileSync } from "fs";
+import { join } from "path";
+import { builtinList, gfwlist, hostnameFile, ofArray } from "../lib/source.js";
+import { testDir, useTempDirectory } from "./share.js";
 
-// https://stackoverflow.com/a/106223
-const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
+// Used to stop watch progress to ensure program exit.
+let source;
 
-expect.extend({
-	toBeDomain(received) {
-		if (isIP(received) || hostname.test(received)) {
-			return {
-				pass: true,
-				message: () => `${received} is a valid hostname`,
-			};
-		}
-		return {
-			pass: false,
-			message: () => `${received} is not a hostname`,
-		};
-	},
-});
+afterEach(() => source?.stopWatching());
+
+function waitForUpdate(source) {
+	return new Promise(resolve => source.watch(resolve));
+}
 
 /**
- * This test may fail with bad network.
+ * This test may fail with bad network. we still waiting for Jest to support mock ES modules.
  */
-it("should parse gfwlist", async () => {
-	const list = await gfwlist().getHostnames();
+describe("gfwlist", () => {
 
-	for (const item of list) {
-		expect(item).toBeDomain();
-	}
-	expect(list.length).toBeGreaterThan(5700);
+	it("should parse rules", async () => {
+		const list = await gfwlist().getHostnames();
+
+		for (const item of list) {
+			expect(item).toBeHostname();
+		}
+		expect(list.length).toBeGreaterThan(5700);
+	});
 });
 
-it("should load built-in rule set", async () => {
-	const list = await builtinList("forbidden").getHostnames();
-	expect(list).not.toContain("");
-	expect(list).toContain("www.tianshie.com");
+describe("file source", () => {
+	useTempDirectory(testDir);
+
+	it("should throw when file not exists", () => {
+		source = hostnameFile("not_exists.txt");
+		const task = source.getHostnames();
+		return expect(task).rejects.toThrow();
+	});
+
+	it("should trigger update on file modified", async () => {
+		const file = join(testDir, "hostnames.txt");
+		writeFileSync(file, "example.com\n");
+
+		source = hostnameFile(file);
+		const list = await source.getHostnames();
+		expect(list).toEqual(["example.com"]);
+
+		const watching = waitForUpdate(source);
+		appendFileSync(file, "foobar.com\n");
+
+		expect(await watching).toEqual(["example.com", "foobar.com"]);
+	});
 });
 
-it("should failed with invalid rule set name", async () => {
-	expect(() => builtinList("../default")).toThrow();
+describe("built-in source", () => {
+
+	it("should load hostnames", async () => {
+		const list = await builtinList("forbidden").getHostnames();
+		expect(list).not.toContain("");
+		expect(list).toContain("www.tianshie.com");
+	});
+
+	it("should failed with invalid name", async () => {
+		expect(() => builtinList("../default")).toThrow();
+	});
+});
+
+describe("array source", () => {
+
+	it("should create from hostnames", async () => {
+		source = ofArray(["foo.com", "bar.com"]);
+		const hostnames = await source.getHostnames();
+		expect(hostnames).toEqual(["foo.com", "bar.com"]);
+	});
+
+	it("should trigger update when update() called", async () => {
+		source = ofArray(["foo.com", "bar.com"]);
+
+		const watching = waitForUpdate(source);
+		source.update([]);
+
+		expect(await watching).toEqual([]);
+		expect(await source.getHostnames()).toEqual([]);
+	});
 });

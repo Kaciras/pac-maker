@@ -28,6 +28,8 @@ class GFWListSource implements HostnameSource {
 		if (period <= 0) {
 			throw new Error("Period must be greater than 1 second");
 		}
+		this.listeners = [];
+		this.lastModified = new Date(0);
 		this.period = period * 1000;
 	}
 
@@ -79,6 +81,11 @@ class GFWListSource implements HostnameSource {
 		this.listeners.push(handler);
 	}
 
+	stopWatching() {
+		clearInterval(this.timer);
+		this.listeners = [];
+	}
+
 	async checkUpdate() {
 		const oldTime = this.lastModified.getTime();
 		const list = await this.getHostnames();
@@ -106,13 +113,17 @@ class HostnameFileSource implements HostnameSource {
 			.filter(line => line.length > 0 && !line.startsWith("#"));
 	}
 
+	stopWatching() {
+		this.watcher?.close();
+	}
+
 	watch(handler: ChangeHandler) {
 		this.watcher ??= fs.watch(this.path);
 		this.watcher.on("change", () => this.getHostnames().then(handler));
 	}
 }
 
-export class MemoryHostnameSource implements HostnameSource {
+export class MemorySource implements HostnameSource {
 
 	private readonly listeners: ChangeHandler[] = [];
 
@@ -131,7 +142,11 @@ export class MemoryHostnameSource implements HostnameSource {
 		this.listeners.push(handler);
 	}
 
-	update(newValues = this.hostnames) {
+	stopWatching() {
+		this.listeners = [];
+	}
+
+	update(newValues: string[]) {
 		this.hostnames = newValues;
 		this.listeners.forEach(fn => fn(newValues));
 	}
@@ -140,17 +155,16 @@ export class MemoryHostnameSource implements HostnameSource {
 /**
  * Fetch hostnames from https://github.com/gfwlist/gfwlist
  *
- * @return {GFWListSource} hostname list
+ * @param period check update interval in seconds
  */
-export function gfwlist() {
-	return new GFWListSource();
+export function gfwlist(period?: number) {
+	return new GFWListSource(period);
 }
 
 /**
  * Read hostnames from rule file.
  *
  * @param path the file path
- * @return {HostnameFileSource} hostname list
  */
 export function hostnameFile(path: string) {
 	return new HostnameFileSource(path);
@@ -160,11 +174,19 @@ export function hostnameFile(path: string) {
  * Read hostnames from built-in rule file.
  *
  * @param name filename without extension
- * @return {HostnameFileSource} hostname list
  */
 export function builtinList(name: string) {
 	if (name !== basename(name)) {
-		throw new Error("Invalid hostname list: " + name);
+		throw new Error("Invalid list name: " + name);
 	}
 	return hostnameFile(join(root, "list", name + ".txt"));
+}
+
+/**
+ * Create a hostname source from arrays.
+ *
+ * @param hostnames array of hostnames
+ */
+export function ofArray(hostnames) {
+	return new MemorySource(hostnames);
 }

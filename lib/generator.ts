@@ -1,10 +1,11 @@
-import fs from "fs/promises";
+import { readFile } from "fs/promises";
 import vm from "vm";
 import { join } from "path";
 import { URL } from "url";
 import { HistoryEntry } from "./history.js";
 import { root } from "./utils.js";
 import { HostnameSource } from "./source";
+import { importJson, root } from "./utils.js";
 
 export type FinProxyFn = (url: string, host: string) => string;
 
@@ -46,7 +47,7 @@ interface BuildPacOptions {
  * @return {Promise<string>} the PAC file content
  */
 export async function buildPac(rules: Record<string, string[]>, direct = "DIRECT") {
-	const packageJson = JSON.parse(await fs.readFile(join(root, "package.json"), "utf8"));
+	const packageJson = await importJson("../package.json");
 
 	const proxies: string[] = [];
 	const hostMap: Record<string, number> = {};
@@ -76,7 +77,7 @@ export async function buildPac(rules: Record<string, string[]>, direct = "DIRECT
 	}
 
 	const file = join(root, "lib/template.js");
-	const template = await fs.readFile(file, "utf8");
+	const template = await readFile(file, "utf8");
 	return template.replaceAll(placeholder, (_, v) => replacements[v]);
 }
 
@@ -123,7 +124,7 @@ export class HostnameListLoader {
 		const rules: Record<string, string[]> = {};
 		for (let i = 0; i < lists.length; i++) {
 			const p = proxies[i];
-			(rules[p] ?? (rules[p] = [])).push(...lists[i]);
+			(rules[p] ??= []).push(...lists[i]);
 		}
 		return rules;
 	}
@@ -146,29 +147,4 @@ export class HostnameListLoader {
 		}
 		this.onRuleUpdated = onRuleUpdated;
 	}
-}
-
-interface DomainMatchResult {
-	hostnameSet: Set<string>;
-	rules: Record<string, string[]>;
-}
-
-export function matchFindProxyFn(urls: HistoryEntry[], fn: FinProxyFn) {
-	const hostnameSet = new Set<string>();
-	const rules: Record<string, string[]> = {};
-
-	for (const { url } of urls) {
-		if (!/^https?:/.test(url)) {
-			continue;
-		}
-		const host = new URL(url).hostname;
-		if (hostnameSet.has(host)) {
-			continue;
-		}
-		hostnameSet.add(host);
-		const proxy = fn(url, host);
-		(rules[proxy] ?? (rules[proxy] = [])).push(host);
-	}
-
-	return { rules, hostnameSet } as DomainMatchResult;
 }

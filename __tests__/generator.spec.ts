@@ -1,15 +1,12 @@
-import { join } from "path";
-import fs from "fs";
 import { jest } from "@jest/globals";
 import { buildPac, HostnameListLoader, loadPac } from "../lib/generator.js";
-import { root } from "../lib/utils";
-import { MemoryHostnameSource } from "../lib/source.js";
+import { ofArray } from "../lib/source.js";
+import { mockTime, readFixture } from "./share.js";
 
-jest.useFakeTimers("modern");
-jest.setSystemTime(new Date(2021, 5, 17, 0, 0, 0, 0));
+jest.useFakeTimers();
+jest.setSystemTime(mockTime);
 
-const fixture = join(root, "__tests__/fixtures/proxy.pac");
-const stubPac = fs.readFileSync(fixture, "utf8");
+const stubPac = readFixture("proxy-1.pac");
 
 it("should load PAC script", () => {
 	const { direct, proxies, rules, FindProxyForURL } = loadPac(stubPac);
@@ -42,7 +39,7 @@ describe("HostnameListLoader", () => {
 
 	it("should throw when call method before initialized", () => {
 		const loader = new HostnameListLoader({
-			foo: [new MemoryHostnameSource([])],
+			foo: [ofArray([])],
 		});
 		expect(() => loader.getRules()).toThrow();
 		expect(() => loader.watch(() => {})).toThrow();
@@ -57,11 +54,11 @@ describe("HostnameListLoader", () => {
 	it("should load rules", async () => {
 		const loader = new HostnameListLoader({
 			foo: [
-				new MemoryHostnameSource(["example.com"]),
+				ofArray(["example.com"]),
 			],
 			bar: [
-				new MemoryHostnameSource(["alice.com"]),
-				new MemoryHostnameSource(["bob.com", "charlie.com"]),
+				ofArray(["alice.com"]),
+				ofArray(["bob.com", "charlie.com"]),
 			],
 		});
 
@@ -75,7 +72,7 @@ describe("HostnameListLoader", () => {
 	});
 
 	it("should watch source updates", async () => {
-		const source = new MemoryHostnameSource(["kaciras.com"]);
+		const source = ofArray(["kaciras.com"]);
 		const loader = new HostnameListLoader({ foo: [source] });
 		await loader.refresh();
 
@@ -88,8 +85,8 @@ describe("HostnameListLoader", () => {
 	});
 
 	it("should cache fetched results", async () => {
-		const source = new MemoryHostnameSource(["foobar.com"]);
-		const noChange = new MemoryHostnameSource(["kaciras.com"]);
+		const source = ofArray(["foobar.com"]);
+		const noChange = ofArray(["kaciras.com"]);
 		const loader = new HostnameListLoader({
 			foo: [source],
 			bar: [noChange],
