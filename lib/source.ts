@@ -5,20 +5,22 @@ import { URL } from "url";
 import fetch from "node-fetch";
 import { root } from "./utils.js";
 
-type ChangeHandler = (newValues: string[]) => void;
+export type ChangeHandler = (newValues: string[]) => void;
 
 export interface HostnameSource {
 
 	getHostnames(): Promise<string[]>;
 
 	watch(handler: ChangeHandler): void;
+
+	stopWatching(): void;
 }
 
 const GFW_LIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
 
 class GFWListSource implements HostnameSource {
 
-	private readonly listeners: ChangeHandler[] = []
+	private listeners: ChangeHandler[] = []
 
 	private period: number;
 	private lastModified = new Date(0);
@@ -82,7 +84,7 @@ class GFWListSource implements HostnameSource {
 	}
 
 	stopWatching() {
-		clearInterval(this.timer);
+		clearInterval(this.timer!);
 		this.listeners = [];
 	}
 
@@ -125,7 +127,7 @@ class HostnameFileSource implements HostnameSource {
 
 export class MemorySource implements HostnameSource {
 
-	private readonly listeners: ChangeHandler[] = [];
+	private listeners: ChangeHandler[] = [];
 
 	private hostnames: string[] = [];
 
@@ -187,6 +189,6 @@ export function builtinList(name: string) {
  *
  * @param hostnames array of hostnames
  */
-export function ofArray(hostnames) {
+export function ofArray(hostnames: string[]) {
 	return new MemorySource(hostnames);
 }

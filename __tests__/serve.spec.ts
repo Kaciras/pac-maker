@@ -1,13 +1,14 @@
 import { setTimeout } from "timers/promises";
 import { rmSync } from "fs";
 import fetch from "node-fetch";
+import { ExecaChildProcess } from "execa";
 import { getTestSettings, readFixture, runBuiltinCommand } from "./share.js";
 
 const stubPac = readFixture("proxy-1.pac");
 
 const config = await getTestSettings();
 
-let process = null;
+let process: ExecaChildProcess;
 
 afterEach(() => {
 	process.kill();

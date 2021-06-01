@@ -31,6 +31,7 @@
 		"yargs": "^17.0.1"
 	},
 	"devDependencies": {
+		"@jest/globals": "^27.0.3",
 		"@kaciras/eslint-config-core": "^1.5.0",
 		"@kaciras/eslint-config-jest": "^1.5.0",
 		"@kaciras/eslint-config-typescript": "^1.5.0",

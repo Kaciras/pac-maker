@@ -1,5 +1,5 @@
 import { jest } from "@jest/globals";
-import { buildPac, HostnameListLoader, loadPac } from "../lib/generator.js";
+import { buildPac, BuiltInPacGlobals, HostnameListLoader, loadPac } from "../lib/generator.js";
 import { ofArray } from "../lib/source.js";
 import { mockTime, readFixture } from "./share.js";
 
@@ -9,7 +9,7 @@ jest.setSystemTime(mockTime);
 const stubPac = readFixture("proxy-1.pac");
 
 it("should load PAC script", () => {
-	const { direct, proxies, rules, FindProxyForURL } = loadPac(stubPac);
+	const { direct, proxies, rules, FindProxyForURL } = loadPac<BuiltInPacGlobals>(stubPac);
 
 	expect(proxies).toEqual([
 		"HTTP [::1]:2080",

@@ -1,5 +1,6 @@
 import { setTimeout } from "timers/promises";
 import { readFileSync } from "fs";
+import { ExecaChildProcess } from "execa";
 import { getTestSettings, readFixture, runBuiltinCommand, testDir, useTempDirectory } from "./share.js";
 
 const stubPac1 = readFixture("proxy-1.pac");
@@ -7,7 +8,7 @@ const stubPac2 = readFixture("proxy-2.pac");
 
 const config = await getTestSettings();
 
-let process;
+let process: ExecaChildProcess;
 
 useTempDirectory(testDir);
 

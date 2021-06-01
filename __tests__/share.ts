@@ -3,7 +3,7 @@ import { join } from "path";
 import { mkdirSync, readFileSync, rmSync } from "fs";
 import execa from "execa";
 import { getSettings, root } from "../lib/utils.js";
-import { MemorySource } from "../lib/source.js";
+import { ChangeHandler, MemorySource } from "../lib/source.js";
 
 export const mockTime = new Date(2021, 5, 17, 0, 0, 0, 0);
 
@@ -15,9 +15,9 @@ export const testDir = join(tmpdir(), "pac-maker");
 /**
  * Ensure the directory exists before tests and delete it after.
  *
- * @param path {string} A path to a directory
+ * @param path A path to a directory
  */
-export function useTempDirectory(path) {
+export function useTempDirectory(path: string) {
 	beforeEach(() => mkdirSync(path, { recursive: true }));
 	afterEach(() => rmSync(path, { force: true, recursive: true }));
 }
@@ -28,7 +28,9 @@ export function useTempDirectory(path) {
  */
 export class ProcessMessageSource extends MemorySource {
 
-	watch(handler) {
+	private boundUpdate?: ChangeHandler;
+
+	watch(handler: ChangeHandler) {
 		super.watch(handler);
 
 		if (!this.boundUpdate) {
@@ -39,18 +41,18 @@ export class ProcessMessageSource extends MemorySource {
 
 	stopWatching() {
 		super.stopWatching();
-		process.off("message", this.boundUpdate);
+		process.off("message", this.boundUpdate!);
 	}
 }
 
-export function fixturePath(filename) {
+export function fixturePath(filename: string) {
 	return join(root, "__tests__/fixtures", filename);
 }
 
 /**
  * Read test fixture file as string.
  */
-export function readFixture(filename) {
+export function readFixture(filename: string) {
 	return readFileSync(fixturePath(filename), "utf8");
 }
 
@@ -68,9 +70,9 @@ export function getTestSettings() {
  *
  * @param name filename without ext
  * @param args additional arguments
- * @return {execa.ExecaChildProcess} the process object
+ * @return the process object
  */
-export function runBuiltinCommand(name, ...args) {
+export function runBuiltinCommand(name: string, ...args: string[]) {
 	return execa.node(`bin/${name}.js`, [
 		...args,
 		`--config=${configPath}`,

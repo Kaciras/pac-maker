@@ -1,14 +1,14 @@
 import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
-import { builtinList, gfwlist, hostnameFile, ofArray } from "../lib/source.js";
+import { builtinList, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source.js";
 import { testDir, useTempDirectory } from "./share.js";
 
 // Used to stop watch progress to ensure program exit.
-let source;
+let source: HostnameSource;
 
 afterEach(() => source?.stopWatching());
 
-function waitForUpdate(source) {
+function waitForUpdate() {
 	return new Promise(resolve => source.watch(resolve));
 }
 
@@ -44,7 +44,7 @@ describe("file source", () => {
 		const list = await source.getHostnames();
 		expect(list).toEqual(["example.com"]);
 
-		const watching = waitForUpdate(source);
+		const watching = waitForUpdate();
 		appendFileSync(file, "foobar.com\n");
 
 		expect(await watching).toEqual(["example.com", "foobar.com"]);
@@ -75,8 +75,8 @@ describe("array source", () => {
 	it("should trigger update when update() called", async () => {
 		source = ofArray(["foo.com", "bar.com"]);
 
-		const watching = waitForUpdate(source);
-		source.update([]);
+		const watching = waitForUpdate();
+		(source as MemorySource).update([]);
 
 		expect(await watching).toEqual([]);
 		expect(await source.getHostnames()).toEqual([]);

@@ -1,9 +1,6 @@
 import { readFile } from "fs/promises";
 import vm from "vm";
 import { join } from "path";
-import { URL } from "url";
-import { HistoryEntry } from "./history.js";
-import { root } from "./utils.js";
 import { HostnameSource } from "./source";
 import { importJson, root } from "./utils.js";
 
@@ -79,12 +76,6 @@ export async function buildPac(rules: Record<string, string[]>, direct = "DIRECT
 	const file = join(root, "lib/template.js");
 	const template = await readFile(file, "utf8");
 	return template.replaceAll(placeholder, (_, v) => replacements[v]);
-}
-
-interface PacMakerConfig {
-	path: string;
-	direct: string;
-	rules: Record<string, HostnameSource[]>;
 }
 
 export class HostnameListLoader {

@@ -2,15 +2,19 @@
 import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 import { URL } from "url";
-import yargs from "yargs";
-import { hideBin } from "yargs/helpers";
+import yargs, { Argv } from "yargs";
 import { loadPac } from "../lib/generator.js";
 import { getAllBrowserHistories } from "../lib/history.js";
 import { getSettings, root } from "../lib/utils.js";
 
 process.chdir(root);
 
-const { argv } = yargs(hideBin(process.argv));
+interface CliOptions {
+	json?: string;
+	config?: string;
+}
+
+const { argv } = yargs(process.argv.slice(2)) as Argv<CliOptions>;
 const { path } = await getSettings(argv.config);
 
 console.info("Finding what hosts will be proxied by PAC in browser history...\n");

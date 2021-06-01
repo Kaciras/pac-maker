@@ -1,14 +1,21 @@
 import { mkdir, readFile } from "fs/promises";
-import { fileURLToPath, pathToFileURL } from "url";
+import { fileURLToPath, pathToFileURL, URL } from "url";
 import { dirname, resolve } from "path";
+import { HostnameSource } from "./source";
 
 /** Path of pac-maker root directory */
 export const root = dirname(dirname(fileURLToPath(import.meta.url)));
 
-export function getSettings(file: string) {
+export interface PacMakerConfig {
+	path: string;
+	direct: string;
+	rules: Record<string, HostnameSource[]>;
+}
+
+export function getSettings(file?: string) {
 	file ??= resolve(root, "pac.config.js");
-	file = pathToFileURL(file);
-	return import(file).then(m => m.default);
+	const url = pathToFileURL(file);
+	return import(url).then<PacMakerConfig>(m => m.default);
 }
 
 export function ensureDirectory(file: string) {
@@ -22,9 +29,9 @@ export function ensureDirectory(file: string) {
  * https://nodejs.org/api/esm.html#esm_no_json_module_loading
  *
  * @param file file to import
- * @return {Promise<any>} json module
+ * @return imported json module
  */
-export async function importJson(file) {
+export async function importJson(file: string) {
 	const url = new URL(file, import.meta.url);
 	return JSON.parse(await readFile(url, "utf8"));
 }

@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 import { writeFile } from "fs/promises";
-import yargs from "yargs";
-import { hideBin } from "yargs/helpers";
+import yargs, { Argv } from "yargs";
 import { ensureDirectory, getSettings, root } from "../lib/utils.js";
 import { buildPac, HostnameListLoader } from "../lib/generator.js";
 
 process.chdir(root);
 
-const { argv } = yargs(hideBin(process.argv));
+interface CliOptions {
+	watch?: true;
+	config?: string;
+}
+
+const { argv } = yargs(process.argv.slice(2)) as Argv<CliOptions>;
 const { path, direct, sources } = await getSettings(argv.config);
 
 const loader = new HostnameListLoader(sources);
