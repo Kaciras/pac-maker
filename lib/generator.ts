@@ -33,17 +33,17 @@ export function loadPac<T = PacGlobals>(code: string) {
 	return contextObject as T;
 }
 
-interface BuildPacOptions {
-	direct: string;
-	domains: Record<string, string[]>;
-}
+/**
+ * Key is a PAC proxy string, value is a array of HostnameSource.
+ */
+export type HostRules = Record<string, string[]>;
 
 /**
  * Generate a PAC script use the built-in template.
  *
- * @return {Promise<string>} the PAC file content
+ * @return the PAC file content
  */
-export async function buildPac(rules: Record<string, string[]>, direct = "DIRECT") {
+export async function buildPac(rules: HostRules, direct = "DIRECT") {
 	const packageJson = await importJson("../package.json");
 
 	const proxies: string[] = [];
@@ -73,8 +73,7 @@ export async function buildPac(rules: Record<string, string[]>, direct = "DIRECT
 		replacements.TIME = new Date(value).toISOString();
 	}
 
-	const file = join(root, "lib/template.js");
-	const template = await readFile(file, "utf8");
+	const template = await readFile(join(root, "lib/template.js"), "utf8");
 	return template.replaceAll(placeholder, (_, v) => replacements[v]);
 }
 

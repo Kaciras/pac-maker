@@ -1,8 +1,7 @@
-// Add custom matchers to types.
 declare namespace jest {
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	interface Matchers<R, T> {
+	// Implemented in setup-jest.ts
+	interface Matchers<R> {
 		toBeHostname(): R;
 	}
 }

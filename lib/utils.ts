@@ -9,12 +9,12 @@ export const root = dirname(dirname(fileURLToPath(import.meta.url)));
 export interface PacMakerConfig {
 	path: string;
 	direct: string;
-	rules: Record<string, HostnameSource[]>;
+	sources: Record<string, HostnameSource[]>;
 }
 
 export function getSettings(file?: string) {
 	file ??= resolve(root, "pac.config.js");
-	const url = pathToFileURL(file);
+	const url = pathToFileURL(file).toString();
 	return import(url).then<PacMakerConfig>(m => m.default);
 }
 

@@ -2,10 +2,10 @@ export default {
 	setupFilesAfterEnv: [
 		"<rootDir>/__tests__/setup-jest.ts",
 	],
+	preset: "ts-jest/presets/default-esm",
 	globals: {
 		"ts-jest": { useESM: true },
 	},
-	preset: "ts-jest/presets/default-esm",
 	clearMocks: true,
 	coverageDirectory: "coverage",
 	coverageProvider: "v8",

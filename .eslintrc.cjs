@@ -9,7 +9,7 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: "**/__tests__/**/*.js",
+			files: "**/__tests__/*.[jt]s",
 			extends: ["@kaciras/jest"],
 		},
 		{

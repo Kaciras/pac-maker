@@ -10,37 +10,38 @@ export interface HistoryEntry {
 }
 
 async function getFirefoxProfilePath(): Promise<string> {
+	const { platform, env } = process;
 	let directory;
 
-	switch (process.platform) {
+	switch (platform) {
 		case "win32":
-			directory = join(process.env.APPDATA, "Mozilla/Firefox");
+			directory = join(env.APPDATA!, "Mozilla/Firefox");
 			break;
 		case "darwin":
-			directory = join(process.env.HOME, "Library/Application Support/Firefox");
+			directory = join(env.HOME!, "Library/Application Support/Firefox");
 			break;
 		default:
-			throw new Error("Unsupported platform: " + process.platform);
+			throw new Error("Unsupported platform: " + platform);
 	}
 
-	const content = await readFile(join(directory, "profiles.ini"), "utf8");
-	const config = ini.parse(content);
+	const file = join(directory, "profiles.ini");
+	const config = ini.parse(await readFile(file, "utf8"));
 
 	const install = Object.keys(config).find(s => s.startsWith("Install"));
 	if (install) {
 		return config[install].Default;
 	}
-	throw new Error("Can not find install section in profiles.ini.");
+	throw new Error("Can not find [Install*] section in profiles.ini");
 }
 
-async function getFromChromiumBased(profile, afterBy) {
+async function getFromChromiumBased(profile: string, afterBy?: HistoryEntry) {
 	const db = await open({
 		filename: join(profile, "Default/History"),
 		driver: sqlite3.Database,
 		mode: sqlite3.OPEN_READONLY,
 	});
 	const id = afterBy ? afterBy.id : 0;
-	return db.all("SELECT id,url FROM urls WHERE id > ?", id);
+	return db.all<HistoryEntry[]>("SELECT id,url FROM urls WHERE id > ?", id);
 }
 
 /**
@@ -48,9 +49,8 @@ async function getFromChromiumBased(profile, afterBy) {
  *
  * @param profile Profile directory, use current user default if not specified.
  * @param afterBy Only fetch rows after this history entry
- * @return histories
  */
-export async function firefox(profile?: string, afterBy) {
+export async function firefox(profile?: string, afterBy?: HistoryEntry) {
 	if (!profile) {
 		profile = await getFirefoxProfilePath();
 	}
@@ -60,37 +60,38 @@ export async function firefox(profile?: string, afterBy) {
 		mode: sqlite3.OPEN_READONLY,
 	});
 	const id = afterBy ? afterBy.id : 0;
-	return db.all<HistoryEntry>("SELECT id,url FROM moz_places WHERE id > ?", id);
+	return db.all<HistoryEntry[]>("SELECT id,url FROM moz_places WHERE id > ?", id);
 }
 
 /**
  * Get Edge browser history, only support Edge 79+
- *
- * @return {Promise<any[]>} histories
  */
-export async function edge(afterBy) {
+export async function edge(afterBy?: HistoryEntry) {
 	if (process.platform !== "win32") {
 		throw new Error("Unsupported platform: " + process.platform);
 	}
-	const profile = join(process.env.LOCALAPPDATA, "Microsoft/Edge/User Data");
+	const profile = join(process.env.LOCALAPPDATA!, "Microsoft/Edge/User Data");
 	return getFromChromiumBased(profile, afterBy);
 }
 
-export async function chrome(afterBy) {
+export async function chrome(afterBy?: HistoryEntry) {
+	const { platform, env } = process;
 	let profile;
-	switch (process.platform) {
+
+	switch (platform) {
 		case "win32":
-			profile = join(process.env.LOCALAPPDATA, "Google/Chrome/User Data");
-			break;
-		case "darwin":
-			profile = join(process.env.HOME, "Library/Application Support/Google/Chrome");
+			profile = join(env.LOCALAPPDATA!, "Google/Chrome/User Data");
 			break;
 		case "linux":
-			profile = join(process.env.HOME, ".config/google-chrome");
+			profile = join(env.HOME!, ".config/google-chrome");
+			break;
+		case "darwin":
+			profile = join(env.HOME!, "Library/Application Support/Google/Chrome");
 			break;
 		default:
-			throw new Error("Unsupported platform: " + process.platform);
+			throw new Error("Unsupported platform: " + platform);
 	}
+
 	return getFromChromiumBased(profile, afterBy);
 }
 
@@ -98,5 +99,5 @@ export async function getAllBrowserHistories() {
 	const tasks = await Promise.allSettled([firefox(), edge(), chrome()]);
 	return tasks
 		.filter(t => t.status === "fulfilled")
-		.flatMap(t => (t as PromiseFulfilledResult<HistoryEntry>).value);
+		.flatMap(t => (t as PromiseFulfilledResult<HistoryEntry[]>).value);
 }

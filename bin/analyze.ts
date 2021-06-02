@@ -3,8 +3,8 @@ import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 import { URL } from "url";
 import yargs, { Argv } from "yargs";
-import { loadPac } from "../lib/generator.js";
-import { getAllBrowserHistories } from "../lib/history.js";
+import { FinProxyFn, HostRules, loadPac } from "../lib/generator.js";
+import { getAllBrowserHistories, HistoryEntry } from "../lib/history.js";
 import { getSettings, root } from "../lib/utils.js";
 
 process.chdir(root);
@@ -19,9 +19,14 @@ const { path } = await getSettings(argv.config);
 
 console.info("Finding what hosts will be proxied by PAC in browser history...\n");
 
-export function matchFindProxyFn(histories, fn) {
-	const rules = {};
-	const hostnameSet = new Set();
+interface MatchResult {
+	rules: HostRules;
+	hostnameSet: Set<string>;
+}
+
+export function match(histories: HistoryEntry[], fn: FinProxyFn) {
+	const rules: HostRules = {};
+	const hostnameSet = new Set<string>();
 
 	for (const { url } of histories) {
 		if (!/^https?:/.test(url)) {
@@ -36,12 +41,12 @@ export function matchFindProxyFn(histories, fn) {
 		(rules[proxy] ??= []).push(host);
 	}
 
-	return { rules, hostnameSet };
+	return { rules, hostnameSet } as MatchResult;
 }
 
 const { FindProxyForURL } = loadPac(await readFile(path, "utf8"));
 const histories = await getAllBrowserHistories();
-const { rules, hostnameSet } = matchFindProxyFn(histories, FindProxyForURL);
+const { rules, hostnameSet } = match(histories, FindProxyForURL);
 
 console.info(`Inspect ${histories.length} urls, ${hostnameSet.size} distinct hosts.`);
 const table = Object.entries(rules).map(([k, v]) => ({ Proxy: k, "Matched Hosts": v.length }));
