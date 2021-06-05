@@ -14,3 +14,7 @@ htmlcov/
 .coverage
 .coverage.*
 *,cover
+
+*.js.map
+/*/*.js
+!lib/template.js

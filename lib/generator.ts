@@ -73,6 +73,11 @@ export async function buildPac(rules: HostRules, direct = "DIRECT") {
 		replacements.TIME = new Date(value).toISOString();
 	}
 
+	/*
+	 * Since TypeScript don't preserve empty lines, we still use JavaScript for template.
+	 * A PR about this feature:
+	 * https://github.com/microsoft/TypeScript/pull/42303
+	 */
 	const template = await readFile(join(root, "lib/template.js"), "utf8");
 	return template.replaceAll(placeholder, (_, v) => replacements[v]);
 }
