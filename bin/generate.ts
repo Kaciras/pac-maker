@@ -2,7 +2,7 @@
 import { writeFile } from "fs/promises";
 import yargs, { Argv } from "yargs";
 import { ensureDirectory, getSettings, root } from "../lib/utils.js";
-import { buildPac, HostnameListLoader } from "../lib/generator.js";
+import { buildPAC, HostnameListLoader } from "../lib/generator.js";
 
 process.chdir(root);
 
@@ -18,7 +18,7 @@ const loader = new HostnameListLoader(sources);
 await loader.refresh();
 
 async function rebuildPACScript() {
-	const script = await buildPac(loader.getRules(), direct);
+	const script = await buildPAC(loader.getRules(), direct);
 	await ensureDirectory(path);
 	await writeFile(path, script, "utf8");
 	console.info("PAC script updated at " + new Date());

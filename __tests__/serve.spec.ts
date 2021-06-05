@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 import { ExecaChildProcess } from "execa";
 import { getTestSettings, readFixture, runBuiltinCommand } from "./share.js";
 
-const stubPac = readFixture("proxy-1.pac");
+const stubPAC = readFixture("proxy-1.pac");
 
 const config = await getTestSettings();
 
@@ -22,7 +22,7 @@ it("should serve PAC file with HTTP", async () => {
 	const response = await fetch("http://localhost:7568/proxy.pac");
 	const code = await response.text();
 
-	expect(code).toBe(stubPac);
+	expect(code).toBe(stubPAC);
 	expect(response.status).toBe(200);
 	expect(response.headers.get("content-type")).toBe("application/x-ns-proxy-autoconfig");
 });

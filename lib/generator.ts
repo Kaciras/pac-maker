@@ -4,13 +4,13 @@ import { join } from "path";
 import { HostnameSource } from "./source";
 import { importJson, root } from "./utils.js";
 
-export type FinProxyFn = (url: string, host: string) => string;
+export type FindProxy = (url: string, host: string) => string;
 
-export interface PacGlobals {
-	FindProxyForURL: FinProxyFn;
+export interface PACGlobals {
+	FindProxyForURL: FindProxy;
 }
 
-export interface BuiltInPacGlobals extends PacGlobals {
+export interface BuiltinPAC extends PACGlobals {
 	direct: string;
 	proxies: string[];
 	rules: Record<string, number>;
@@ -27,7 +27,7 @@ const placeholder = /__(.+?)__/g;
  * @param code PAC file content.
  * @return an object represent the script exports.
  */
-export function loadPac<T = PacGlobals>(code: string) {
+export function loadPAC<T = PACGlobals>(code: string) {
 	const contextObject = {};
 	vm.runInNewContext(code, contextObject, { timeout: 5000 });
 	return contextObject as T;
@@ -43,7 +43,7 @@ export type HostRules = Record<string, string[]>;
  *
  * @return the PAC file content
  */
-export async function buildPac(rules: HostRules, direct = "DIRECT") {
+export async function buildPAC(rules: HostRules, direct = "DIRECT") {
 	const packageJson = await importJson("../package.json");
 
 	const proxies: string[] = [];

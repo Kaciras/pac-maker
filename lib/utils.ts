@@ -6,7 +6,7 @@ import { HostnameSource } from "./source";
 /** Path of pac-maker root directory */
 export const root = dirname(dirname(fileURLToPath(import.meta.url)));
 
-export interface PacMakerConfig {
+export interface PACMakerConfig {
 	path: string;
 	direct: string;
 	sources: Record<string, HostnameSource[]>;
@@ -15,7 +15,7 @@ export interface PacMakerConfig {
 export function getSettings(file?: string) {
 	file ??= resolve(root, "pac.config.js");
 	const url = pathToFileURL(file).toString();
-	return import(url).then<PacMakerConfig>(m => m.default);
+	return import(url).then<PACMakerConfig>(m => m.default);
 }
 
 export function ensureDirectory(file: string) {

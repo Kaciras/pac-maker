@@ -2,7 +2,7 @@
 import yargs, { Argv } from "yargs";
 import Koa from "koa";
 import cors from "@koa/cors";
-import { buildPac, HostnameListLoader } from "../lib/generator.js";
+import { buildPAC, HostnameListLoader } from "../lib/generator.js";
 import { getSettings, root } from "../lib/utils.js";
 
 interface CliOptions {
@@ -18,7 +18,7 @@ process.chdir(root);
 let script = "";
 
 async function rebuildPACScript() {
-	script = await buildPac(loader.getRules(), direct);
+	script = await buildPAC(loader.getRules(), direct);
 	console.info("PAC file updated at " + new Date());
 }
 

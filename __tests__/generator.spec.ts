@@ -1,15 +1,15 @@
 import { jest } from "@jest/globals";
-import { buildPac, BuiltInPacGlobals, HostnameListLoader, loadPac } from "../lib/generator.js";
+import { buildPAC, BuiltinPAC, HostnameListLoader, loadPAC } from "../lib/generator.js";
 import { ofArray } from "../lib/source.js";
 import { mockTime, readFixture } from "./share.js";
 
 jest.useFakeTimers();
 jest.setSystemTime(mockTime);
 
-const stubPac = readFixture("proxy-1.pac");
+const stubPAC = readFixture("proxy-1.pac");
 
 it("should load PAC script", () => {
-	const { direct, proxies, rules, FindProxyForURL } = loadPac<BuiltInPacGlobals>(stubPac);
+	const { direct, proxies, rules, FindProxyForURL } = loadPAC<BuiltinPAC>(stubPAC);
 
 	expect(proxies).toEqual([
 		"HTTP [::1]:2080",
@@ -28,11 +28,11 @@ it("should load PAC script", () => {
 });
 
 it("should build PAC script", async () => {
-	const code = await buildPac({
+	const code = await buildPAC({
 		"HTTP [::1]:2080": ["foo.bar"],
 		"SOCKS5 localhost:1080": ["example.com"],
 	});
-	expect(code).toBe(stubPac);
+	expect(code).toBe(stubPAC);
 });
 
 describe("HostnameListLoader", () => {

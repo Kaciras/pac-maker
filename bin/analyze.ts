@@ -3,7 +3,7 @@ import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 import { URL } from "url";
 import yargs, { Argv } from "yargs";
-import { FinProxyFn, HostRules, loadPac } from "../lib/generator.js";
+import { FindProxy, HostRules, loadPAC } from "../lib/generator.js";
 import { getAllBrowserHistories, HistoryEntry } from "../lib/history.js";
 import { getSettings, root } from "../lib/utils.js";
 
@@ -24,7 +24,7 @@ interface MatchResult {
 	hostnameSet: Set<string>;
 }
 
-export function match(histories: HistoryEntry[], fn: FinProxyFn) {
+export function match(histories: HistoryEntry[], fn: FindProxy) {
 	const rules: HostRules = {};
 	const hostnameSet = new Set<string>();
 
@@ -44,7 +44,7 @@ export function match(histories: HistoryEntry[], fn: FinProxyFn) {
 	return { rules, hostnameSet } as MatchResult;
 }
 
-const { FindProxyForURL } = loadPac(await readFile(path, "utf8"));
+const { FindProxyForURL } = loadPAC(await readFile(path, "utf8"));
 const histories = await getAllBrowserHistories();
 const { rules, hostnameSet } = match(histories, FindProxyForURL);
 
