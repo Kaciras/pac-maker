@@ -47,14 +47,14 @@ export function alert(message: string) {
 /**
  * Concatenates the four dot-separated bytes into one 4-byte word and converts it to decimal.
  *
- * @param ipchars Any dotted address such as an IP address or mask.
+ * @param ipaddr Any dotted address such as an IP address or mask.
  */
-export function convert_addr(ipchars: string) {
-	const bytes = ipchars.split(".");
-	return (parseInt(bytes[3]) & 0xff)
-		| ((parseInt(bytes[2]) & 0xff) << 8)
-		| ((parseInt(bytes[1]) & 0xff) << 16)
-		| ((parseInt(bytes[0]) & 0xff) << 24);
+export function convert_addr(ipaddr: string) {
+	const bytes = ipaddr.split(".");
+	return (parseInt(bytes[3]) & 0xFF)
+		| ((parseInt(bytes[2]) & 0xFF) << 8)
+		| ((parseInt(bytes[1]) & 0xFF) << 16)
+		| ((parseInt(bytes[0]) & 0xFF) << 24);
 }
 
 /**
@@ -178,6 +178,15 @@ export function weekdayRange(wd1: string, wd2?: string, gmt?: "GMT") {
 	}
 }
 
+function convertToUTC(date: Date) {
+	date.setFullYear(date.getUTCFullYear());
+	date.setMonth(date.getUTCMonth());
+	date.setDate(date.getUTCDate());
+	date.setHours(date.getUTCHours());
+	date.setMinutes(date.getUTCMinutes());
+	date.setSeconds(date.getUTCSeconds());
+}
+
 /**
  * If only a single value is specified (from each category: day, month, year),
  * the function returns a true value only on days that match that specification.
@@ -189,7 +198,7 @@ export function dateRange(...argv: any[]) {
 	if (argc < 1) {
 		return false;
 	}
-	let date = new Date();
+	const date = new Date();
 	const isGMT = (argv[argc - 1] === "GMT");
 
 	if (isGMT) {
@@ -244,14 +253,7 @@ export function dateRange(...argv: any[]) {
 	}
 
 	if (isGMT) {
-		const tmp = date;
-		tmp.setFullYear(date.getUTCFullYear());
-		tmp.setMonth(date.getUTCMonth());
-		tmp.setDate(date.getUTCDate());
-		tmp.setHours(date.getUTCHours());
-		tmp.setMinutes(date.getUTCMinutes());
-		tmp.setSeconds(date.getUTCSeconds());
-		date = tmp;
+		convertToUTC(date);
 	}
 
 	if (date1 <= date2) {
@@ -284,6 +286,7 @@ export function timeRange(...argv: any[]) {
 
 	const date1 = new Date();
 	const date2 = new Date();
+	const middle = argc >> 1;
 
 	if (argc === 1) {
 		return (hour === argv[0]);
@@ -294,8 +297,8 @@ export function timeRange(...argv: any[]) {
 			case 6:
 				date1.setSeconds(argv[2]);
 				date2.setSeconds(argv[5]);
+			// eslint-disable-next-line no-fallthrough
 			case 4:
-				const middle = argc >> 1;
 				date1.setHours(argv[0]);
 				date1.setMinutes(argv[1]);
 				date2.setHours(argv[middle]);
@@ -310,12 +313,7 @@ export function timeRange(...argv: any[]) {
 	}
 
 	if (isGMT) {
-		date.setFullYear(date.getUTCFullYear());
-		date.setMonth(date.getUTCMonth());
-		date.setDate(date.getUTCDate());
-		date.setHours(date.getUTCHours());
-		date.setMinutes(date.getUTCMinutes());
-		date.setSeconds(date.getUTCSeconds());
+		convertToUTC(date);
 	}
 
 	if (date1 <= date2) {

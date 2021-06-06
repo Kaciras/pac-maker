@@ -5,19 +5,26 @@ import * as EnvFunctions from "./includes.js";
 import { HostnameSource } from "./source.js";
 import { importJson, root } from "./utils.js";
 
+/**
+ * Signature of FindProxyForURL.
+ */
 export type FindProxy = (url: string, host: string) => string;
 
+/**
+ * Essential type that PAC should exposed.
+ */
 export interface PACGlobals {
 	FindProxyForURL: FindProxy;
 }
 
+/**
+ * The PAC generated from ./template.js expose those members.
+ */
 export interface BuiltinPAC extends PACGlobals {
 	direct: string;
 	proxies: string[];
 	rules: Record<string, number>;
 }
-
-const placeholder = /__(.+?)__/g;
 
 /**
  * Load a PAC file, return the modified global object.
@@ -25,7 +32,7 @@ const placeholder = /__(.+?)__/g;
  * SECURITY NOTICE:
  * PAC file will be executed as JavaScript, so you should only load the code from trusted source.
  *
- * @param code PAC file content.
+ * @param code the PAC file content.
  * @return an object represent the script exports.
  */
 export function loadPAC<T = PACGlobals>(code: string) {
@@ -38,6 +45,8 @@ export function loadPAC<T = PACGlobals>(code: string) {
  * Key is a PAC proxy string, value is a array of HostnameSource.
  */
 export type HostRules = Record<string, string[]>;
+
+const placeholder = /__(.+?)__/g;
 
 /**
  * Generate a PAC script use the built-in template.

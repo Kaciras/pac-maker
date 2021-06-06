@@ -42,12 +42,15 @@ describe("loadPAC", () => {
 	});
 });
 
-it("should build PAC script", async () => {
-	const code = await buildPAC({
-		"HTTP [::1]:2080": ["foo.bar"],
-		"SOCKS5 localhost:1080": ["example.com"],
+describe("buildPAC", () => {
+
+	it("should return PAC script", async () => {
+		const code = await buildPAC({
+			"HTTP [::1]:2080": ["foo.bar"],
+			"SOCKS5 localhost:1080": ["example.com"],
+		});
+		expect(code).toBe(stubPAC);
 	});
-	expect(code).toBe(stubPAC);
 });
 
 describe("HostnameListLoader", () => {

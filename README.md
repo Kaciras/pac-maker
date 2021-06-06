@@ -8,7 +8,7 @@ Just use pre-generated PAC file: [proxy.pac](https://raw.githubusercontent.com/K
 
 ## Commands
 
-pac-maker loads config from file in working directory use the `--config=<path>`, default is `pac.config.js`.
+pac-maker loads config file from working directory, default is `pac.config.js`, it can be specified by `--config=<path>`.
 
 config file should export a configuration object:
 
