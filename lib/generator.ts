@@ -1,7 +1,8 @@
 import { readFile } from "fs/promises";
 import vm from "vm";
 import { join } from "path";
-import { HostnameSource } from "./source";
+import * as EnvFunctions from "./includes.js";
+import { HostnameSource } from "./source.js";
 import { importJson, root } from "./utils.js";
 
 export type FindProxy = (url: string, host: string) => string;
@@ -28,9 +29,9 @@ const placeholder = /__(.+?)__/g;
  * @return an object represent the script exports.
  */
 export function loadPAC<T = PACGlobals>(code: string) {
-	const contextObject = {};
-	vm.runInNewContext(code, contextObject, { timeout: 5000 });
-	return contextObject as T;
+	const context = Object.create(EnvFunctions);
+	vm.runInNewContext(code, context, { timeout: 5000 });
+	return Object.assign({}, context) as T;
 }
 
 /**

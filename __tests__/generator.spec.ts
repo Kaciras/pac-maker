@@ -8,23 +8,38 @@ jest.setSystemTime(mockTime);
 
 const stubPAC = readFixture("proxy-1.pac");
 
-it("should load PAC script", () => {
-	const { direct, proxies, rules, FindProxyForURL } = loadPAC<BuiltinPAC>(stubPAC);
+describe("loadPAC", () => {
+	const functionsStub = readFixture("functions.pac");
 
-	expect(proxies).toEqual([
-		"HTTP [::1]:2080",
-		"SOCKS5 localhost:1080",
-	]);
-	expect(rules).toEqual({
-		"foo.bar": 0,
-		"example.com": 1,
+	it("should execute script", () => {
+		const { direct, proxies, rules, FindProxyForURL } = loadPAC<BuiltinPAC>(stubPAC);
+
+		expect(proxies).toEqual([
+			"HTTP [::1]:2080",
+			"SOCKS5 localhost:1080",
+		]);
+		expect(rules).toEqual({
+			"foo.bar": 0,
+			"example.com": 1,
+		});
+		expect(direct).toBe("DIRECT");
+
+		expect(FindProxyForURL("", "")).toBe("DIRECT");
+		expect(FindProxyForURL("", "com")).toBe("DIRECT");
+		expect(FindProxyForURL("", "example.com")).toBe("SOCKS5 localhost:1080");
+		expect(FindProxyForURL("", "www.example.com")).toBe("SOCKS5 localhost:1080");
 	});
-	expect(direct).toBe("DIRECT");
 
-	expect(FindProxyForURL("", "")).toBe("DIRECT");
-	expect(FindProxyForURL("", "com")).toBe("DIRECT");
-	expect(FindProxyForURL("", "example.com")).toBe("SOCKS5 localhost:1080");
-	expect(FindProxyForURL("", "www.example.com")).toBe("SOCKS5 localhost:1080");
+	it("should not expose predefined functions", () => {
+		const pac = loadPAC<any>(functionsStub);
+		expect(pac.dnsDomainLevels).toBeUndefined();
+	});
+
+	it("should apply predefined functions", () => {
+		const { FindProxyForURL } = loadPAC(functionsStub);
+		expect(FindProxyForURL("", "foo.bar")).toBe(1);
+		expect(FindProxyForURL("", "foo.bar.baz")).toBe(2);
+	});
 });
 
 it("should build PAC script", async () => {
