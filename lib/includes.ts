@@ -2,6 +2,9 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * The original code is copied from:
+ * https://searchfox.org/mozilla-central/source/netwerk/base/ProxyAutoConfig.cpp
  */
 import { isIPv4 } from "net";
 
@@ -31,8 +34,8 @@ export function dnsDomainLevels(host: string) {
  *
  * @param host hostname to resolve.
  */
-export function dnsResolve(host: string) {
-	return "TODO";
+export function dnsResolve(host: string): string {
+	throw new Error("NodeJS is not support synchronous dns lookup");
 }
 
 /**
@@ -123,9 +126,9 @@ export function localHostOrDomainIs(host: string, hostdom: string) {
  * @param shexp is a shell expression to compare against.
  */
 export function shExpMatch(str: string, shexp: string) {
-	shexp = shexp.replace(/\\./g, "\\\\.");
-	shexp = shexp.replace(/\\*/g, ".*");
-	shexp = shexp.replace(/\\?/g, ".");
+	shexp = shexp.replace(/\./g, "\\.");
+	shexp = shexp.replace(/\*/g, ".*");
+	shexp = shexp.replace(/\?/g, ".");
 	return new RegExp("^" + shexp + "$").test(str);
 }
 
