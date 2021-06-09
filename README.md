@@ -6,7 +6,14 @@ Proxy Auto Configuration (PAC) file generator & maintenance tool.
 
 Just use pre-generated PAC file: [proxy.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/proxy.pac)
 
-## Commands
+## Install
+
+```shell
+git clone https://github.com/Kaciras/pac-maker.git
+pnpm install
+```
+
+## Configuration
 
 pac-maker loads config file from working directory, default is `pac.config.js`, it can be specified by `--config=<path>`.
 
@@ -32,6 +39,8 @@ export default {
 	},
 };
 ```
+
+## Commands
 
 Generate a PAC file:
 

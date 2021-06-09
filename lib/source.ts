@@ -9,11 +9,20 @@ export type ChangeHandler = (newValues: string[]) => void;
 
 export interface HostnameSource {
 
-	getHostnames(): Promise<string[]>;
-
+	/**
+	 * Watch for changes on the source.
+	 */
 	watch(handler: ChangeHandler): void;
 
+	/**
+	 * Stop watching and clear all handlers.
+	 */
 	stopWatching(): void;
+
+	/**
+	 * Get hostname list from source.
+	 */
+	getHostnames(): Promise<string[]>;
 }
 
 const GFW_LIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
@@ -155,16 +164,17 @@ export class MemorySource implements HostnameSource {
 }
 
 /**
- * Fetch hostnames from https://github.com/gfwlist/gfwlist
+ * Fetch hostnames from gfwlist project.
  *
  * @param period check update interval in seconds
+ * @see https://github.com/gfwlist/gfwlist
  */
 export function gfwlist(period?: number) {
 	return new GFWListSource(period);
 }
 
 /**
- * Read hostnames from rule file.
+ * Read hostnames from a rule file.
  *
  * @param path the file path
  */
