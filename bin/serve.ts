@@ -6,6 +6,7 @@ import { buildPAC, HostnameListLoader } from "../lib/generator.js";
 import { getSettings, root } from "../lib/utils.js";
 
 interface CliOptions {
+	host?: string;
 	port?: number;
 	config?: string;
 }
@@ -26,7 +27,7 @@ const loader = new HostnameListLoader(sources);
 await loader.refresh();
 await rebuildPACScript();
 
-const { port = 7568 } = argv;
+const { host, port = 7568 } = argv;
 const app = new Koa();
 app.on("error", err => console.error(err));
 app.use(cors());
@@ -34,6 +35,6 @@ app.use(ctx => {
 	ctx.type = "application/x-ns-proxy-autoconfig";
 	ctx.body = script;
 });
-app.listen(port, "localhost", () => {
+app.listen(port, host, () => {
 	console.info(`server started, http://localhost:${port}/proxy.pac`);
 });

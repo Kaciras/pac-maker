@@ -52,8 +52,10 @@ node bin/analyze.js [--config=<path>] [--json=<path>]
 Serve PAC file with http, and update when source have changes:
 
 ```shell
-node bin/serve.js [--config=<file>] [--port=<port>]
+node bin/serve.js [--config=<file>] [--host=<host>] [--port=<port>]
 ```
+
+* `--host` By default, the server will accept connections from all addresses, It is possible to listen to just one selected interface using the `host` parameter.
 
 * `--port` The port number that http server to listened on, default is `7568`.
 
