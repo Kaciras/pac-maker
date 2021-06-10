@@ -1,23 +1,13 @@
 #!/usr/bin/env node
 import yargs, { Argv } from "yargs";
-import { getSettings, PACMakerConfig, root } from "../lib/utils.js";
-import analyze from "../lib/command/analyze.js";
-import generate from "../lib/command/generate.js";
-import serve from "../lib/command/serve.js";
+import { getSettings, root } from "../lib/utils.js";
+import { commands } from "../lib/index.js";
 
 process.chdir(root);
 
 interface BaseOptions {
 	config?: string;
 }
-
-type CommandHandler = (argv: any, config: PACMakerConfig) => Promise<void>;
-
-const commands: Record<string, CommandHandler> = {
-	analyze,
-	serve,
-	generate,
-};
 
 const { argv } = yargs(process.argv.slice(2)) as Argv<BaseOptions>;
 const [name] = argv._;
