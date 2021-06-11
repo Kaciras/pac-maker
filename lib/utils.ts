@@ -3,9 +3,14 @@ import { fileURLToPath, pathToFileURL, URL } from "url";
 import { dirname, resolve } from "path";
 import { HostnameSource } from "./source";
 
-/** Path of pac-maker root directory */
+/**
+ * Path of pac-maker root directory.
+ */
 export const root = dirname(dirname(fileURLToPath(import.meta.url)));
 
+/**
+ * The configuration object used by commands.
+ */
 export interface PACMakerConfig {
 	path: string;
 	direct: string;

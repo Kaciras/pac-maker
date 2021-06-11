@@ -10,7 +10,9 @@ interface CliOptions {
 }
 
 export default async function (argv: CliOptions, config: PACMakerConfig) {
+	const { host, port = 7568 } = argv;
 	const { direct, sources } = config;
+
 	let script = "";
 
 	async function rebuildPACScript() {
@@ -22,7 +24,6 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 	await loader.refresh();
 	await rebuildPACScript();
 
-	const { host, port = 7568 } = argv;
 	const app = new Koa();
 	app.on("error", err => console.error(err));
 	app.use(cors());

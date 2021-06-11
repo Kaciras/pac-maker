@@ -6,6 +6,7 @@
 		"lib": [
 			"ESNext"
 		],
+		"removeComments": true,
 		"sourceMap": true,
 		"strict": true,
 		"skipLibCheck": true,
