@@ -2,7 +2,7 @@ import { setTimeout } from "timers/promises";
 import { rmSync } from "fs";
 import fetch from "node-fetch";
 import { ExecaChildProcess } from "execa";
-import { getTestSettings, readFixture, runBuiltinCommand } from "./share.js";
+import { getTestSettings, readFixture, runBuiltinCommand } from "./share";
 
 const stubPAC = readFixture("proxy-1.pac");
 

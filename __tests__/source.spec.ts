@@ -1,7 +1,7 @@
 import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
-import { builtinList, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source.js";
-import { testDir, useTempDirectory } from "./share.js";
+import { builtinList, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source";
+import { testDir, useTempDirectory } from "./share";
 
 // Used to stop watch progress to ensure program exit.
 let source: HostnameSource;

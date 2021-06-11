@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
-import { buildPAC, BuiltinPAC, HostnameListLoader, loadPAC } from "../lib/generator.js";
-import { ofArray } from "../lib/source.js";
-import { mockTime, readFixture } from "./share.js";
+import { buildPAC, BuiltinPAC, HostnameListLoader, loadPAC } from "../lib/generator";
+import { ofArray } from "../lib/source";
+import { mockTime, readFixture } from "./share";
 
 jest.useFakeTimers();
 jest.setSystemTime(mockTime);

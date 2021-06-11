@@ -1,7 +1,7 @@
 import { setTimeout } from "timers/promises";
 import { readFileSync } from "fs";
 import { ExecaChildProcess } from "execa";
-import { getTestSettings, readFixture, runBuiltinCommand, testDir, useTempDirectory } from "./share.js";
+import { getTestSettings, readFixture, runBuiltinCommand, testDir, useTempDirectory } from "./share";
 
 const stubPAC1 = readFixture("proxy-1.pac");
 const stubPAC2 = readFixture("proxy-2.pac");
