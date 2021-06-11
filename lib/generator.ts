@@ -38,7 +38,7 @@ export interface BuiltinPAC extends PACGlobals {
 export function loadPAC<T = PACGlobals>(code: string) {
 	const context = Object.create(EnvFunctions);
 	vm.runInNewContext(code, context, { timeout: 5000 });
-	return Object.assign({}, context) as T;
+	return Object.assign(Object.create(null), context) as T;
 }
 
 /**
