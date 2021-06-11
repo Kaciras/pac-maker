@@ -45,6 +45,11 @@ export class ProcessMessageSource extends MemorySource {
 	}
 }
 
+/**
+ * Get the absolute path of the fixture file.
+ *
+ * @param filename file name
+ */
 export function fixturePath(filename: string) {
 	return join(root, "__tests__/fixtures", filename);
 }
@@ -73,7 +78,8 @@ export function getTestSettings() {
  * @return the process object
  */
 export function runBuiltinCommand(name: string, ...args: string[]) {
-	return execa.node(`bin/${name}.js`, [
+	return execa.node("bin/pac-maker.js", [
+		name,
 		...args,
 		`--config=${configPath}`,
 	], {
