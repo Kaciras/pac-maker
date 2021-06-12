@@ -10,10 +10,12 @@ node_modules/
 
 # Coverage reports
 htmlcov/
-.coverage
+coverage/
 .coverage.*
 *,cover
 
+# Generated files
+/lib/**/*.js
+/bin/*.js
 *.js.map
-/*/*.js
 !lib/template.js

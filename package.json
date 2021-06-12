@@ -8,19 +8,28 @@
 		"type": "git",
 		"url": "git+https://github.com/Kaciras/pac-maker.git"
 	},
+	"keywords": [
+		"pac",
+		"gfw",
+		"proxy"
+	],
 	"engines": {
 		"node": ">=16"
 	},
 	"type": "module",
+	"files": [
+		"lib",
+		"bin",
+		"list"
+	],
+	"exports": {
+		".": "./lib/index.js"
+	},
 	"scripts": {
 		"lint": "eslint --fix .",
 		"test": "jest",
 		"compile": "tsc"
 	},
-	"keywords": [
-		"pac",
-		"gfw"
-	],
 	"dependencies": {
 		"@koa/cors": "^3.1.0",
 		"ini": "^2.0.0",
