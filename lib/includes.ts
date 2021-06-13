@@ -7,6 +7,8 @@
  * https://searchfox.org/mozilla-central/source/netwerk/base/ProxyAutoConfig.cpp
  */
 import { isIPv4 } from "net";
+import dns from "dns";
+import { deasync } from "@kaciras/deasync";
 
 /**
  * Returns true if and only if the domain of hostname matches.
@@ -28,14 +30,21 @@ export function dnsDomainLevels(host: string) {
 	return host.split(".").length - 1;
 }
 
+let dnsResolveSync: (host: string) => string;
+
 /**
  * Resolves the given DNS hostname into an IP address,
  * and returns it in the dot-separated format as a string.
  *
  * @param host hostname to resolve.
  */
-export function dnsResolve(host: string): string {
-	throw new Error("NodeJS is not support synchronous dns lookup");
+export function dnsResolve(host: string) {
+	if (!dnsResolveSync) {
+		dnsResolveSync = deasync<void, string>(dns.resolve);
+		console.warn("Warning: since Node doesn't provide a synchronous DNS API, pac-maker " +
+			"converts dns.resolve into sync by polling event loop, this may cause bad performance.");
+	}
+	return dnsResolveSync(host);
 }
 
 /**
