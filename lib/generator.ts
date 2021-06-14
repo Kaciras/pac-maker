@@ -27,7 +27,7 @@ export interface BuiltinPAC extends PACGlobals {
 }
 
 /**
- * Load a PAC file, return the modified global object.
+ * Load a PAC file, return an object includes all global variables defined in the PAC.
  *
  * SECURITY NOTICE:
  * PAC file will be executed as JavaScript, so you should only load the code from trusted source.

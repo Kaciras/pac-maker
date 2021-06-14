@@ -4,16 +4,24 @@ import { dirname, resolve } from "path";
 import { HostnameSource } from "./source";
 
 /**
- * Path of pac-maker root directory.
+ * Path of the pac-maker root directory.
  */
 export const root = dirname(dirname(fileURLToPath(import.meta.url)));
 
-/**
- * The configuration object used by commands.
- */
 export interface PACMakerConfig {
+
+	/** Location of the generated PAC file */
 	path: string;
+
+	/** Fallback when no rule matching in source */
 	direct: string;
+
+	/**
+	 * Proxy source map, the key is a proxy sorting (e.g. SOCKS5 127.0.0.1:1080),
+	 * value is an array of HostnameSource.
+	 *
+	 * pac-maker will get hostnames from all sources in array and map it to the corresponding key.
+	 */
 	sources: Record<string, HostnameSource[]>;
 }
 
