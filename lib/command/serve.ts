@@ -1,7 +1,7 @@
 import Koa from "koa";
 import cors from "@koa/cors";
 import { buildPAC, HostnameListLoader } from "../generator.js";
-import { PACMakerConfig } from "../utils.js";
+import { PACMakerConfig } from "../config.js";
 
 interface CliOptions {
 	host?: string;

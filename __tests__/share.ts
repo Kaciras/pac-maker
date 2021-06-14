@@ -2,8 +2,9 @@ import { tmpdir } from "os";
 import { join } from "path";
 import { mkdirSync, readFileSync, rmSync } from "fs";
 import execa from "execa";
-import { getSettings, root } from "../lib/utils.js";
+import { root } from "../lib/utils.js";
 import { ChangeHandler, MemorySource } from "../lib/source.js";
+import { getOptions } from "../lib/config.js";
 
 export const mockTime = new Date(2021, 5, 17, 0, 0, 0, 0);
 
@@ -67,7 +68,7 @@ const configPath = "__tests__/fixtures/test.config.js";
  * Load settings from fixtures/test.config.js
  */
 export function getTestSettings() {
-	return getSettings(configPath);
+	return getOptions(configPath);
 }
 
 /**

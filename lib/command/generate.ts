@@ -1,6 +1,7 @@
 import { writeFile } from "fs/promises";
-import { ensureDirectory, PACMakerConfig } from "../utils.js";
+import { PACMakerConfig } from "../config.js";
 import { buildPAC, HostnameListLoader } from "../generator.js";
+import { ensureDirectory } from "../utils.js";
 
 interface CliOptions {
 	watch?: true;

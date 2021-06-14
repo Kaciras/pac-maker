@@ -3,7 +3,7 @@ import { resolve } from "path";
 import { URL } from "url";
 import { FindProxy, HostRules, loadPAC } from "../generator.js";
 import { getAllBrowserHistories, HistoryEntry } from "../history.js";
-import { PACMakerConfig } from "../utils.js";
+import { PACMakerConfig } from "../config.js";
 
 interface MatchResult {
 	rules: HostRules;
