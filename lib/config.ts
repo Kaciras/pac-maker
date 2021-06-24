@@ -4,10 +4,10 @@ import { builtinList, gfwlist, HostnameSource } from "./index.js";
 export interface PACMakerConfig {
 
 	/** Location of the generated PAC file */
-	path?: string;
+	path: string;
 
 	/** Fallback when no rule matching in source */
-	direct?: string;
+	direct: string;
 
 	/**
 	 * Proxy source map, the key is a proxy sorting (e.g. SOCKS5 127.0.0.1:1080),
@@ -15,7 +15,7 @@ export interface PACMakerConfig {
 	 *
 	 * pac-maker will get hostnames from all sources in array and map it to the corresponding key.
 	 */
-	sources?: Record<string, HostnameSource[]>;
+	sources: Record<string, HostnameSource[]>;
 }
 
 const defaultConfig: PACMakerConfig = {
