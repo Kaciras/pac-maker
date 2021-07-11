@@ -1,8 +1,8 @@
 /*
- * Proxy Auto-Configuration file made by pac-maker v1.0.0
+ * Proxy Auto-Configuration file made by pac-maker v1.1.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2021-05-18T05:09:58.415Z
+ * Generated at: 2021-07-11T03:14:42.367Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -740,6 +740,7 @@ globalThis.rules = {
 	"certificate-transparency.org": 0,
 	"chrome.com": 0,
 	"chromecast.com": 0,
+	"chromeenterprise.google": 0,
 	"chromeexperiments.com": 0,
 	"chromercise.com": 0,
 	"chromestatus.com": 0,
@@ -889,6 +890,7 @@ globalThis.rules = {
 	"api-verify.recaptcha.net": 0,
 	"redhotlabs.com": 0,
 	"registry.google": 0,
+	"research.google": 0,
 	"safety.google": 0,
 	"savethedate.foo": 0,
 	"schema.org": 0,
@@ -902,6 +904,7 @@ globalThis.rules = {
 	"tfhub.dev": 0,
 	"thinkwithgoogle.com": 0,
 	"tiltbrush.com": 0,
+	"tv.google": 0,
 	"urchin.com": 0,
 	"waveprotocol.org": 0,
 	"waymo.com": 0,
@@ -1395,6 +1398,7 @@ globalThis.rules = {
 	"azerimix.com": 0,
 	"b-ok.cc": 0,
 	"forum.baby-kingdom.com": 0,
+	"babylonbee.com": 0,
 	"babynet.com.hk": 0,
 	"backchina.com": 0,
 	"backpackers.com.tw": 0,
@@ -2539,6 +2543,7 @@ globalThis.rules = {
 	"gazotube.com": 0,
 	"gcc.org.hk": 0,
 	"gclooney.com": 0,
+	"gclubs.com": 0,
 	"gcmasia.com": 0,
 	"gcpnews.com": 0,
 	"gdbt.net": 0,
@@ -2568,6 +2573,7 @@ globalThis.rules = {
 	"getmalus.com": 0,
 	"getsocialscope.com": 0,
 	"getsync.com": 0,
+	"gettr.com": 0,
 	"gfbv.de": 0,
 	"gfgold.com.hk": 0,
 	"gfsale.com": 0,
@@ -2587,7 +2593,6 @@ globalThis.rules = {
 	"softwaredownload.gitbooks.io": 0,
 	"github.blog": 0,
 	"github.com": 0,
-	"gist.github.com": 0,
 	"github.io": 0,
 	"githubusercontent.com": 0,
 	"githubassets.com": 0,
@@ -3034,7 +3039,9 @@ globalThis.rules = {
 	"incloak.com": 0,
 	"incredibox.fr": 0,
 	"independent.co.uk": 0,
+	"indiablooms.com": 0,
 	"indiandefensenews.in": 0,
+	"indianarrative.com": 0,
 	"timesofindia.indiatimes.com": 0,
 	"indiemerch.com": 0,
 	"info-graf.fr": 0,
@@ -3485,6 +3492,7 @@ globalThis.rules = {
 	"mefeedia.com": 0,
 	"jihadintel.meforum.org": 0,
 	"mega.co.nz": 0,
+	"mega.io": 0,
 	"mega.nz": 0,
 	"megaproxy.com": 0,
 	"megarotic.com": 0,
@@ -3757,6 +3765,7 @@ globalThis.rules = {
 	"newyorktimes.com": 0,
 	"nexon.com": 0,
 	"next11.co.jp": 0,
+	"nextdigital.com.hk": 0,
 	"nextmag.com.tw": 0,
 	"nextmedia.com": 0,
 	"nexton-net.jp": 0,
@@ -4249,6 +4258,7 @@ globalThis.rules = {
 	"rarbgprx.org": 0,
 	"raremovie.cc": 0,
 	"raremovie.net": 0,
+	"rationalwiki.org": 0,
 	"rawgit.com": 0,
 	"rawgithub.com": 0,
 	"razyboard.com": 0,
@@ -4992,7 +5002,9 @@ globalThis.rules = {
 	"toptip.ca": 0,
 	"tora.to": 0,
 	"torcn.com": 0,
+	"torlock.com": 0,
 	"torproject.org": 0,
+	"torrentkitty.tv": 0,
 	"torrentprivacy.com": 0,
 	"torrentproject.se": 0,
 	"torrenty.org": 0,
@@ -5220,6 +5232,7 @@ globalThis.rules = {
 	"unknownspace.org": 0,
 	"unodedos.com": 0,
 	"unpo.org": 0,
+	"unstable.icu": 0,
 	"untraceable.us": 0,
 	"uocn.org": 0,
 	"tor.updatestar.com": 0,
@@ -5792,6 +5805,7 @@ globalThis.rules = {
 	"zzcartoon.com": 0,
 	"nextjs.org": 0,
 	"aka.ms": 0,
+	"jsfiddle.net": 0,
 	"www.tianshie.com": 0
 };
 
