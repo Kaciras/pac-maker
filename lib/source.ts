@@ -174,7 +174,12 @@ export function gfwlist(period?: number) {
 }
 
 /**
- * Read hostnames from a rule file.
+ * Read hostnames from a text file.
+ *
+ * The hostname file format:
+ * 1) One hostname per line.
+ * 2) Any line starts with an hash mark (#) is considered a comment.
+ * 3) White spaces and empty lines are ignored.
  *
  * @param path the file path
  */
@@ -183,7 +188,8 @@ export function hostnameFile(path: string) {
 }
 
 /**
- * Read hostnames from built-in rule file.
+ * Read hostnames from built-in text file.
+ * These files are in the /list folder.
  *
  * @param name filename without extension
  */

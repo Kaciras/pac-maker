@@ -28,7 +28,7 @@ export interface BuiltinPAC extends PACGlobals {
  * SECURITY NOTICE:
  * PAC file will be executed as JavaScript, so you should only load the code from trusted source.
  *
- * @param code the PAC file content.
+ * @param code the PAC script content.
  * @return an object represent the script exports.
  */
 export function loadPAC<T = PACGlobals>(code: string) {

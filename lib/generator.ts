@@ -4,7 +4,7 @@ import { HostnameSource } from "./source.js";
 import { importJson, root } from "./utils.js";
 
 /**
- * Key is a PAC proxy string, value is a array of HostnameSource.
+ * Key is a PAC proxy string, value is an array of hostnames.
  */
 export type HostRules = Record<string, string[]>;
 
@@ -13,7 +13,9 @@ const placeholder = /__(.+?)__/g;
 /**
  * Generate a PAC script use the built-in template.
  *
- * @return the PAC file content
+ * @param rules Proxy route rules.
+ * @param direct The value should be returned from FindProxyForURL if no rule matching.
+ * @return the PAC script content
  */
 export async function buildPAC(rules: HostRules, direct = "DIRECT") {
 	const packageJson = await importJson("../package.json");
@@ -77,6 +79,10 @@ export class HostnameListLoader {
 		}
 	}
 
+	/**
+	 * Force reload hostnames from all sources, this method muse be called before
+	 * others in HostnameListLoader.
+	 */
 	async refresh() {
 		this.lists = await Promise.all(this.sources.map(s => s.getHostnames()));
 	}

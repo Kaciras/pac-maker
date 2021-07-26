@@ -5,6 +5,9 @@
  *
  * The original code is copied from:
  * https://searchfox.org/mozilla-central/source/netwerk/base/ProxyAutoConfig.cpp
+ *
+ * Full documentation:
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
  */
 import { isIPv4 } from "net";
 import dns from "dns";
@@ -42,7 +45,7 @@ export function dnsResolve(host: string) {
 	if (!dnsResolveSync) {
 		dnsResolveSync = deasync<void, string>(dns.resolve);
 		console.warn("Warning: since Node doesn't provide a synchronous DNS API, pac-maker " +
-			"converts dns.resolve into sync by polling event loop, this may cause bad performance.");
+			"converts dns.resolve into sync by polling the event loop, this may cause bad performance.");
 	}
 	return dnsResolveSync(host);
 }
