@@ -6,6 +6,7 @@ import serve from "./command/serve.js";
 export * from "./history.js";
 export * from "./source.js";
 export * from "./generator.js";
+export * from "./loader.js";
 
 export { PACMakerConfig };
 

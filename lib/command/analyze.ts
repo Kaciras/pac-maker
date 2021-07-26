@@ -1,7 +1,8 @@
 import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 import { URL } from "url";
-import { FindProxy, HostRules, loadPAC } from "../generator.js";
+import { HostRules } from "../generator.js";
+import { FindProxy, loadPAC } from "../loader.js";
 import { getAllBrowserHistories, HistoryEntry } from "../history.js";
 import { PACMakerConfig } from "../config.js";
 
