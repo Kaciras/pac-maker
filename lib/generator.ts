@@ -88,7 +88,7 @@ export async function buildPAC(rules: HostRules, direct = "DIRECT") {
 	 * A PR about this feature:
 	 * https://github.com/microsoft/TypeScript/pull/42303
 	 */
-	const template = await readFile(join(root, "lib/template.js"), "utf8");
+	const template = await readFile(join(root, "template/default.js"), "utf8");
 	return template.replaceAll(placeholder, (_, v) => replacements[v]);
 }
 

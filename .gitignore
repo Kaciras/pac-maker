@@ -15,7 +15,7 @@ coverage/
 *,cover
 
 # Generated files
+*.js.map
 /lib/**/*.js
 /bin/*.js
-*.js.map
-!lib/template.js
+/__tests__/*.js

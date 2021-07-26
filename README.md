@@ -84,7 +84,7 @@ This package is pure ESM, It cannot be `require()`'d from CommonJS.
 
 ### `buildPAC`
 
-Create a PAC script from rules, use the built-in template `lib/template.js`. 
+Create a PAC script from rules, use the built-in template `template/default.js`. 
 
 The function takes two parameters, first is a rules object which key is a [proxy string](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file#return_value_format), and value is a hostname array. the second parameter will be returned from `FindProxyForURL` if no hostname matched, default is `DIRECT`.
 

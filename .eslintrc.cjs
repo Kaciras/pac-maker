@@ -13,7 +13,7 @@ module.exports = {
 			extends: ["@kaciras/jest"],
 		},
 		{
-			files: "./lib/template.js",
+			files: "./template/*.js",
 			rules: {
 				"no-undef": "off",
 				"no-unused-vars": "off",

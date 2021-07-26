@@ -20,7 +20,8 @@
 	"files": [
 		"lib",
 		"bin",
-		"list"
+		"list",
+		"template"
 	],
 	"exports": {
 		".": "./lib/index.js"
