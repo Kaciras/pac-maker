@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import yargs, { Argv } from "yargs";
-import { getOptions } from "../lib/config.js";
+import { loadConfig } from "../lib/config.js";
 import { commands } from "../lib/index.js";
 
 interface BaseOptions {
@@ -9,7 +9,10 @@ interface BaseOptions {
 
 const { argv } = yargs(process.argv.slice(2)) as Argv<BaseOptions>;
 const [name] = argv._;
-const config = await getOptions(argv.config);
+
+const configFile = argv.config ?? "pac.config.js";
+const required = !!argv.config;
+const config = await loadConfig(configFile, required);
 
 const commandFn = commands[name];
 if (commandFn) {

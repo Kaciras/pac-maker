@@ -26,4 +26,3 @@ it("should serve PAC file with HTTP", async () => {
 	expect(response.status).toBe(200);
 	expect(response.headers.get("content-type")).toBe("application/x-ns-proxy-autoconfig");
 });
-

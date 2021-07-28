@@ -30,16 +30,16 @@ const defaultConfig: PACMakerConfig = {
 	},
 };
 
-export async function getOptions(file = "pac.config.js") {
-	let user = {};
+export async function loadConfig(file: string, required = true) {
+	let userConfig = {};
 
 	try {
 		const url = pathToFileURL(file).toString();
-		user = (await import(url)).default;
+		userConfig = (await import(url)).default;
 	} catch (e) {
-		if (e.code !== "ERR_MODULE_NOT_FOUND") {
+		if (required || e.code !== "ERR_MODULE_NOT_FOUND") {
 			throw e;
 		}
 	}
-	return { ...defaultConfig, ...user } as PACMakerConfig;
+	return { ...defaultConfig, ...userConfig } as PACMakerConfig;
 }
