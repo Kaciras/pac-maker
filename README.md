@@ -65,7 +65,7 @@ node bin/pac-maker.js analyze [--config=<path>] [--json=<path>]
 
 * `--json` Save matched rules to this file, default is `matches.json`.
 
-Serve PAC file with http, and update when source have changes:
+Serve the PAC file with http, and update when source have changes:
 
 ```shell
 node bin/pac-maker.js serve [--config=<file>] [--host=<host>] [--port=<port>]
@@ -132,3 +132,5 @@ To run unit tests, you should enable experimental vm modules.
 set NODE_OPTIONS=--experimental-vm-modules
 pnpm test
 ```
+
+Some tests may fail with the error `Test environment has been torn down`, that is a bug in Jest.
