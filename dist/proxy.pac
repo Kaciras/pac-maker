@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.1.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2021-08-12T12:41:21.186Z
+ * Generated at: 2021-09-15T03:45:59.766Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -206,6 +206,7 @@ globalThis.rules = {
 	"login.target.com": 0,
 	"rcam.target.com": 0,
 	"technews.tw": 0,
+	"terabox.com": 0,
 	"thinkgeek.com": 0,
 	"thebodyshop-usa.com": 0,
 	"tma.co.jp": 0,
@@ -1364,6 +1365,7 @@ globalThis.rules = {
 	"japanfirst.asianfreeforum.com": 0,
 	"asiansexdiary.com": 0,
 	"asianwomensfilm.de": 0,
+	"asiaone.com": 0,
 	"asiatgp.com": 0,
 	"asiatoday.us": 0,
 	"askstudent.com": 0,
@@ -2792,6 +2794,7 @@ globalThis.rules = {
 	"hexieshe.com": 0,
 	"hexieshe.xyz": 0,
 	"hexxeh.net": 0,
+	"heyuedi.com": 0,
 	"app.heywire.com": 0,
 	"heyzo.com": 0,
 	"hgseav.com": 0,
@@ -4100,6 +4103,7 @@ globalThis.rules = {
 	"polymerhk.com": 0,
 	"popo.tw": 0,
 	"popvote.hk": 0,
+	"popxi.click": 0,
 	"popyard.com": 0,
 	"popyard.org": 0,
 	"porn.com": 0,
@@ -5817,9 +5821,8 @@ globalThis.rules = {
 	"zynaima.com": 0,
 	"zyzc9.com": 0,
 	"zzcartoon.com": 0,
-	"nextjs.org": 0,
+	"vercel.com": 0,
 	"aka.ms": 0,
-	"jsfiddle.net": 0,
 	"www.tianshie.com": 0
 };
 
