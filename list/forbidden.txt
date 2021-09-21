@@ -1,3 +1,3 @@
-# 主动屏蔽大陆的站点
+# These websites ban Chinese IP
 
 www.tianshie.com

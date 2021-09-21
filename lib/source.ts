@@ -37,7 +37,7 @@ class GFWListSource implements HostnameSource {
 
 	constructor(period = 21600) {
 		if (period <= 0) {
-			throw new Error("Period must be greater than 1 second");
+			throw new Error("Period cannot be zero or negative");
 		}
 		this.listeners = [];
 		this.lastModified = new Date(0);

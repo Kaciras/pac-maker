@@ -8,7 +8,7 @@ Just use pre-generated PAC file: [proxy.pac](https://raw.githubusercontent.com/K
 
 ## Install
 
-pac-maker requires NodeJS >= 16, older version is not tested.
+pac-maker requires NodeJS >= 16, older versions are not tested.
 
 ```shell
 npm install pac-maker
@@ -47,7 +47,7 @@ There are some sources provided by pac-maker:
 
 * `ofArray` Convert an array to source, e.g. `ofArray(["foo.com", "bar.com"])`.
 
-## Commands
+## CLI commands
 
 Generate a PAC file:
 
@@ -108,9 +108,9 @@ Load and execute PAC script, return an object includes all global variables defi
 import { readFileSync } from "fs";
 import { loadPAC } from "pac-maker";
 
-const { FindProxyForURL } = loadPAC(readFileSync("proxy.pac", "utf8"));
+const pac = loadPAC(readFileSync("proxy.pac", "utf8"));
 
-console.log(FindProxyForURL("", "example.com"));
+console.log(pac.FindProxyForURL("", "example.com"));
 ```
 
 ### `commands`
@@ -126,11 +126,11 @@ commands.serve({ host: "localhost", port: 12345 }, config);
 
 ## Run tests
 
-To run unit tests, you should enable experimental vm modules.
+To run unit tests, you need enable experimental vm modules.
 
 ```shell
 set NODE_OPTIONS=--experimental-vm-modules
 pnpm test
 ```
 
-Some tests may fail with the error `Test environment has been torn down`, that is a bug in Jest.
+Some tests may fail with the error `Test environment has been torn down`, [that is a bug in Jest](https://github.com/facebook/jest/issues/11438).

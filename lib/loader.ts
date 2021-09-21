@@ -14,7 +14,7 @@ export interface PACGlobals {
 }
 
 /**
- * The PAC generated from ../template/default.js expose those members.
+ * The PAC generated from ../template/default.js exposes those members.
  */
 export interface BuiltinPAC extends PACGlobals {
 	direct: string;
@@ -26,7 +26,7 @@ export interface BuiltinPAC extends PACGlobals {
  * Load a PAC file, return an object includes all global variables defined in the PAC.
  *
  * SECURITY NOTICE:
- * PAC file will be executed as JavaScript, so you should only load the code from trusted source.
+ * PAC file will be executed as JavaScript, you should only load the code from trusted source.
  *
  * @param code the PAC script content.
  * @return an object represent the script exports.

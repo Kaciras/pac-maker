@@ -56,6 +56,9 @@ export async function buildPAC(rules: HostRules, direct = "DIRECT") {
 	return template.replaceAll(placeholder, (_, v) => replacements[v]);
 }
 
+/**
+ * This class aggregate hostname sources.
+ */
 export class HostnameListLoader {
 
 	private readonly sources: HostnameSource[];
@@ -94,7 +97,7 @@ export class HostnameListLoader {
 			throw new Error("Please call refresh() first");
 		}
 
-		const rules: Record<string, string[]> = {};
+		const rules: HostRules = {};
 		for (let i = 0; i < lists.length; i++) {
 			const p = proxies[i];
 			(rules[p] ??= []).push(...lists[i]);
