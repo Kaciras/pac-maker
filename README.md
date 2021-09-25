@@ -133,4 +133,4 @@ set NODE_OPTIONS=--experimental-vm-modules
 pnpm test
 ```
 
-Some tests may fail with the error `Test environment has been torn down`, [that is a bug in Jest](https://github.com/facebook/jest/issues/11438).
+**NOTE:** Some tests may fail with the error `Provided module is not an instance of Module`, [that is a bug in v8](https://github.com/facebook/jest/issues/11438).

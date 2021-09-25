@@ -7,6 +7,10 @@ export default {
 		"ts-jest": { useESM: true },
 	},
 	clearMocks: true,
+	collectCoverageFrom: [
+		"bin/*.ts",
+		"lib/**/*.ts",
+	],
 	coverageDirectory: "coverage",
 	coverageProvider: "v8",
 	testMatch: [
