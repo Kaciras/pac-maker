@@ -2,6 +2,13 @@
 
 [Proxy Auto Configuration (PAC)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file) file generator & maintenance tool.
 
+Features:
+
+* Generate PAC files from various hostname sources.
+* Load a PAC file and use it in node.
+* Serve the PAC with http and watch for source change.
+* Show what hosts in browser history will be proxied by the PAC.
+
 # Usage
 
 Just use pre-generated PAC file: [proxy.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/proxy.pac)
@@ -22,7 +29,7 @@ pac-maker loads config file from working directory, default is `pac.config.js`, 
 config file should export a configuration object:
 
 ```javascript
-import { builtinList, gfwlist } from "pac-maker";
+import { builtinList, gfwlist, ofArray } from "pac-maker";
 
 export default {
 	path: "dist/proxy.pac",
@@ -32,12 +39,13 @@ export default {
 			gfwlist(),
 			builtinList("default"),
 			builtinList("forbidden"),
-		],
+            ofArray(["google.com"]),
+        ],
 	},
 };
 ```
 
-There are some sources provided by pac-maker:
+There are some built-in sources in pac-maker:
 
 * `gfwlist` Fetch hostnames from [gfwlist](https://github.com/gfwlist/gfwlist).
 
@@ -45,7 +53,7 @@ There are some sources provided by pac-maker:
 
 * `builtinList` Read hostnames from a file in the [list](https://github.com/Kaciras/pac-maker/tree/master/list) directory.
 
-* `ofArray` Convert an array to source, e.g. `ofArray(["foo.com", "bar.com"])`.
+* `ofArray` Just use an array of hostnames 
 
 ## CLI commands
 
@@ -57,7 +65,7 @@ node bin/pac-maker.js generate [--config=<path>] [--watch]
 
 * `--watch` After the initial build, pac-maker will continue to watch for updates in any of the sources.
 
-Find what hosts will be proxied by PAC in browser history, support Chrome, Firefox, and Edge:
+Find what hosts will be proxied by the PAC in browser history, support Chrome, Firefox, and Edge:
 
 ```shell
 node bin/pac-maker.js analyze [--config=<path>] [--json=<path>]
