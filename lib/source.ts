@@ -29,7 +29,7 @@ const GFW_LIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/g
 
 class GFWListSource implements HostnameSource {
 
-	private listeners: ChangeHandler[] = []
+	private listeners: ChangeHandler[] = [];
 
 	private period: number;
 	private lastModified = new Date(0);

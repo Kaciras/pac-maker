@@ -1,6 +1,7 @@
 # pac-maker
 
-[Proxy Auto Configuration (PAC)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file) file generator & maintenance tool.
+[Proxy Auto Configuration (PAC)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file)
+file generator & maintenance tool.
 
 Features:
 
@@ -39,8 +40,8 @@ export default {
 			gfwlist(),
 			builtinList("default"),
 			builtinList("forbidden"),
-            ofArray(["google.com"]),
-        ],
+			ofArray(["google.com"]),
+		],
 	},
 };
 ```
@@ -49,11 +50,13 @@ There are some built-in sources in pac-maker:
 
 * `gfwlist` Fetch hostnames from [gfwlist](https://github.com/gfwlist/gfwlist).
 
-* `hostnameFile` Read hostnames from a file, for hostname file example, see the [list](https://github.com/Kaciras/pac-maker/tree/master/list) directory.
+* `hostnameFile` Read hostnames from a file, for hostname file example, see
+  the [list](https://github.com/Kaciras/pac-maker/tree/master/list) directory.
 
-* `builtinList` Read hostnames from a file in the [list](https://github.com/Kaciras/pac-maker/tree/master/list) directory.
+* `builtinList` Read hostnames from a file in the [list](https://github.com/Kaciras/pac-maker/tree/master/list)
+  directory.
 
-* `ofArray` Just use an array of hostnames 
+* `ofArray` Just use an array of hostnames
 
 ## CLI commands
 
@@ -92,9 +95,12 @@ This package is pure ESM, It cannot be `require()`'d from CommonJS.
 
 ### `buildPAC`
 
-Create a PAC script from rules, use the built-in template `template/default.js`. 
+Create a PAC script from rules, use the built-in template `template/default.js`.
 
-The function takes two parameters, first is a rules object which key is a [proxy string](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file#return_value_format), and value is a hostname array. the second parameter will be returned from `FindProxyForURL` if no hostname matched, default is `DIRECT`.
+The function takes two parameters, first is a rules object which key is
+a [proxy string](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file#return_value_format)
+, and value is a hostname array. the second parameter will be returned from `FindProxyForURL` if no hostname matched,
+default is `DIRECT`.
 
 ```javascript
 import { writeFileSync } from "fs";
@@ -141,4 +147,5 @@ set NODE_OPTIONS=--experimental-vm-modules
 pnpm test
 ```
 
-**NOTE:** Some tests may fail with the error `Provided module is not an instance of Module`, [that is a bug in v8](https://github.com/facebook/jest/issues/11438).
+**NOTE:** Some tests may fail with the error `Provided module is not an instance of Module`
+, [that is a bug in v8](https://github.com/facebook/jest/issues/11438).
