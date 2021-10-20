@@ -17,6 +17,8 @@ jobs:
 
       - run: pnpm install
 
+      - run: pnpm compile
+
       - run: pnpm run test
         env:
           NODE_OPTIONS: --experimental-vm-modules
