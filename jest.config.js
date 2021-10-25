@@ -2,10 +2,10 @@ export default {
 	setupFilesAfterEnv: [
 		"<rootDir>/__tests__/setup-jest.ts",
 	],
-	preset: "ts-jest/presets/default-esm",
-	globals: {
-		"ts-jest": { useESM: true },
+	transform: {
+		"^.+\\.ts$": "@swc/jest",
 	},
+	extensionsToTreatAsEsm: [".ts"],
 	clearMocks: true,
 	collectCoverageFrom: [
 		"bin/*.ts",
