@@ -1,12 +1,12 @@
 import { tmpdir } from "os";
 import { join } from "path";
 import { mkdirSync, readFileSync, rmSync } from "fs";
-import execa from "execa";
+import { node } from "execa";
 import { root } from "../lib/utils.js";
 import { ChangeHandler, MemorySource } from "../lib/source.js";
 import { loadConfig } from "../lib/config.js";
 
-export const mockTime = new Date(2021, 5, 17, 0, 0, 0, 0);
+export const mockTime = Date.UTC(2021, 5, 17);
 
 /**
  * The temporary directory to save test working data.
@@ -79,12 +79,12 @@ export function getTestSettings() {
  * @return the process object
  */
 export function runBuiltinCommand(name: string, ...args: string[]) {
-	return execa.node("bin/pac-maker.js", [
+	return node("bin/pac-maker.js", [
 		name,
 		...args,
 		`--config=${configPath}`,
 	], {
 		cwd: root,
-		env: { MOCK_TIME: mockTime.getTime().toString() },
+		env: { MOCK_TIME: mockTime },
 	});
 }

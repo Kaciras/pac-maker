@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.1.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2021-06-16T16:00:00.000Z
+ * Generated at: 2021-06-17T00:00:00.000Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
