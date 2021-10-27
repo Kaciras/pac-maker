@@ -85,6 +85,6 @@ export function runBuiltinCommand(name: string, ...args: string[]) {
 		`--config=${configPath}`,
 	], {
 		cwd: root,
-		env: { MOCK_TIME: mockTime },
+		env: { MOCK_TIME: mockTime.toString() },
 	});
 }
