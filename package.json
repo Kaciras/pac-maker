@@ -46,7 +46,7 @@
 		"@kaciras/eslint-config-core": "^2.1.0",
 		"@kaciras/eslint-config-jest": "^2.1.0",
 		"@kaciras/eslint-config-typescript": "^2.1.0",
-		"@swc/core": "^1.2.103",
+		"@swc/core": "^1.2.106",
 		"@swc/jest": "^0.2.5",
 		"@types/ini": "^1.3.31",
 		"@types/jest": "^27.0.2",
