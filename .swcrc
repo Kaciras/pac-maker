@@ -1,8 +1,5 @@
 {
-	"sourceMaps": true,
-	"module": {
-		"type": "es6"
-	},
+	"sourceMaps": "inline",
 	"jsc": {
 		"parser": {
 			"syntax": "typescript"
