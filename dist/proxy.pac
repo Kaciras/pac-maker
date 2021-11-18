@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.1.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2021-10-25T03:49:10.518Z
+ * Generated at: 2021-11-18T04:55:06.015Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -462,6 +462,7 @@ globalThis.rules = {
 	"livecoin.net": 0,
 	"localbitcoins.com": 0,
 	"mercatox.com": 0,
+	"oanda.com": 0,
 	"oex.com": 0,
 	"okex.com": 0,
 	"otcbtc.com": 0,
@@ -1040,6 +1041,7 @@ globalThis.rules = {
 	"data.flurry.com": 0,
 	"page.bid.yahoo.com": 0,
 	"tw.bid.yahoo.com": 0,
+	"auctions.yahoo.co.jp": 0,
 	"blogs.yahoo.co.jp": 0,
 	"search.yahoo.co.jp": 0,
 	"buy.yahoo.com.tw": 0,
@@ -4871,6 +4873,7 @@ globalThis.rules = {
 	"thehousenews.com": 0,
 	"thehun.net": 0,
 	"theinitium.com": 0,
+	"themoviedb.org": 0,
 	"thenewslens.com": 0,
 	"thepiratebay.org": 0,
 	"theporndude.com": 0,
@@ -4886,6 +4889,7 @@ globalThis.rules = {
 	"thetibetpost.com": 0,
 	"thetinhat.com": 0,
 	"thetrotskymovie.com": 0,
+	"thetvdb.com": 0,
 	"thevivekspot.com": 0,
 	"thewgo.org": 0,
 	"theync.com": 0,
@@ -5768,6 +5772,7 @@ globalThis.rules = {
 	"yyii.org": 0,
 	"yyjlymb.xyz": 0,
 	"yzzk.com": 0,
+	"z-lib.org": 0,
 	"zacebook.com": 0,
 	"zalmos.com": 0,
 	"zannel.com": 0,
@@ -5840,6 +5845,7 @@ globalThis.rules = {
 	"zzcartoon.com": 0,
 	"vercel.com": 0,
 	"aka.ms": 0,
+	"2dfan.com": 0,
 	"www.tianshie.com": 0
 };
 
