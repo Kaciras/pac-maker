@@ -1,7 +1,7 @@
 import { tmpdir } from "os";
 import { join } from "path";
 import { mkdirSync, readFileSync, rmSync } from "fs";
-import { node } from "execa";
+import { execaNode } from "execa";
 import { root } from "../lib/utils.js";
 import { ChangeHandler, MemorySource } from "../lib/source.js";
 import { loadConfig } from "../lib/config.js";
@@ -79,7 +79,7 @@ export function getTestSettings() {
  * @return the process object
  */
 export function runBuiltinCommand(name: string, ...args: string[]) {
-	return node("bin/pac-maker.js", [
+	return execaNode("bin/pac-maker.js", [
 		name,
 		...args,
 		`--config=${configPath}`,
