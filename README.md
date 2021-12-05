@@ -1,5 +1,9 @@
 # pac-maker
 
+[![npm package](https://img.shields.io/npm/v/pac-maker.svg)](https://npmjs.com/package/pac-maker)
+![node-current](https://img.shields.io/node/v/pac-maker)
+[![Test](https://github.com/Kaciras/pac-maker/actions/workflows/test.yml/badge.svg)](https://github.com/Kaciras/pac-maker/actions/workflows/test.yml)
+
 [Proxy Auto Configuration (PAC)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file)
 file generator & maintenance tool.
 
