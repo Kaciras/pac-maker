@@ -2,13 +2,13 @@
  * Proxy Auto-Configuration file made by pac-maker v1.1.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2021-11-18T04:55:06.015Z
+ * Generated at: 2021-12-07T10:49:10.008Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
  */
 
-globalThis.direct = "DIRECT";
+globalThis.fallback = "DIRECT";
 
 globalThis.proxies = [
 	"SOCKS5 localhost:2080"
@@ -1854,6 +1854,7 @@ globalThis.rules = {
 	"clipfish.de": 0,
 	"cloakpoint.com": 0,
 	"app.cloudcone.com": 0,
+	"cloudflare-ipfs.com": 0,
 	"club1069.com": 0,
 	"clubhouseapi.com": 0,
 	"cmi.org.tw": 0,
@@ -2598,6 +2599,7 @@ globalThis.rules = {
 	"gfsale.com": 0,
 	"gfw.org.ua": 0,
 	"gfw.press": 0,
+	"gfw.report": 0,
 	"ggssl.com": 0,
 	"ghostpath.com": 0,
 	"ghut.org": 0,
@@ -4188,6 +4190,7 @@ globalThis.rules = {
 	"privatepaste.com": 0,
 	"privatetunnel.com": 0,
 	"privatevpn.com": 0,
+	"privoxy.org": 0,
 	"procopytips.com": 0,
 	"project-syndicate.org": 0,
 	"provideocoalition.com": 0,
@@ -5861,5 +5864,5 @@ function FindProxyForURL(url, host) {
 		host = host.slice(pos + 1);
 	}
 
-	return globalThis.direct;
+	return globalThis.fallback;
 }
