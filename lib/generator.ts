@@ -31,7 +31,7 @@ export async function buildPAC(rules: HostRules, direct = "DIRECT") {
 
 	const replacements: Record<any, string> = {
 		VERSION: packageJson.version,
-		DIRECT: JSON.stringify(direct),
+		FALLBACK: JSON.stringify(direct),
 		PROXIES: JSON.stringify(proxies, null, "\t"),
 		RULES: JSON.stringify(hostMap, null, "\t"),
 		TIME: new Date().toISOString(),

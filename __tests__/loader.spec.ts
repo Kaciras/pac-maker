@@ -7,7 +7,7 @@ describe("loadPAC", () => {
 	const functionsStub = readFixture("functions.pac");
 
 	it("should execute script", () => {
-		const { direct, proxies, rules, FindProxyForURL } = loadPAC<BuiltinPAC>(stubPAC);
+		const { fallback, proxies, rules, FindProxyForURL } = loadPAC<BuiltinPAC>(stubPAC);
 
 		expect(proxies).toEqual([
 			"HTTP [::1]:2080",
@@ -17,7 +17,7 @@ describe("loadPAC", () => {
 			"foo.bar": 0,
 			"example.com": 1,
 		});
-		expect(direct).toBe("DIRECT");
+		expect(fallback).toBe("DIRECT");
 
 		expect(FindProxyForURL("", "")).toBe("DIRECT");
 		expect(FindProxyForURL("", "com")).toBe("DIRECT");

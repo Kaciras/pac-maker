@@ -14,11 +14,25 @@ export interface PACGlobals {
 }
 
 /**
- * The PAC generated from ../template/default.js exposes those members.
+ * The PAC generated with internal template(template/default.js) exposes those members.
  */
 export interface BuiltinPAC extends PACGlobals {
-	direct: string;
+
+	/**
+	 * If no rule matched, this value will be returned from FindProxyForURL().
+	 *
+	 * "default" is better for name, but it's a JavaScript keyword.
+	 */
+	fallback: string;
+
+	/**
+	 * proxy string array.
+	 */
 	proxies: string[];
+
+	/**
+	 * key is a domain, value is an index of the `proxies` array.
+	 */
 	rules: Record<string, number>;
 }
 

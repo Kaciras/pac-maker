@@ -8,7 +8,7 @@
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
  */
 
-globalThis.direct = "DIRECT";
+globalThis.fallback = "DIRECT";
 
 globalThis.proxies = [
 	"HTTP [::1]:2080",
@@ -32,5 +32,5 @@ function FindProxyForURL(url, host) {
 		host = host.slice(pos + 1);
 	}
 
-	return globalThis.direct;
+	return globalThis.fallback;
 }

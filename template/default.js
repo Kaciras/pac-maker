@@ -8,7 +8,7 @@
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
  */
 
-globalThis.direct = __DIRECT__;
+globalThis.fallback = __FALLBACK__;
 
 globalThis.proxies = __PROXIES__;
 
@@ -26,5 +26,5 @@ function FindProxyForURL(url, host) {
 		host = host.slice(pos + 1);
 	}
 
-	return globalThis.direct;
+	return globalThis.fallback;
 }
