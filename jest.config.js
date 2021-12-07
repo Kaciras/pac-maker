@@ -3,7 +3,7 @@ export default {
 		"<rootDir>/__tests__/setup-jest.ts",
 	],
 	transform: {
-		"^.+\\.ts$": "@swc/jest",
+		"^.+\\.ts$": ["@swc/jest"],
 	},
 	extensionsToTreatAsEsm: [".ts"],
 	clearMocks: true,
