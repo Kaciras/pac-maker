@@ -17,6 +17,14 @@ describe("buildPAC", () => {
 		});
 		expect(code).toBe(stubPAC);
 	});
+
+	it("should throw error on rule conflict", () => {
+		const rules = {
+			"HTTP [::1]:2080": ["foo.com"],
+			"DIRECT": ["foo.com"],
+		};
+		return expect(buildPAC(rules)).rejects.toThrow();
+	});
 });
 
 describe("HostnameListLoader", () => {

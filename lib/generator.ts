@@ -24,9 +24,15 @@ export async function buildPAC(rules: HostRules, direct = "DIRECT") {
 	const hostMap: Record<string, number> = {};
 
 	for (const [k, v] of Object.entries(rules)) {
-		const i = proxies.length;
+		const index = proxies.length;
 		proxies.push(k);
-		v.forEach(domain => hostMap[domain] = i);
+
+		for (const hostname of v) {
+			if (hostname in hostMap) {
+				throw new Error(hostname + " already exists");
+			}
+			hostMap[hostname] = index;
+		}
 	}
 
 	const replacements: Record<any, string> = {
