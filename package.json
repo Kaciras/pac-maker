@@ -1,6 +1,6 @@
 {
 	"name": "pac-maker",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "PAC generator & maintenance tool",
 	"author": "Kaciras <Kaciras@protonmail.com>",
 	"license": "MIT",
