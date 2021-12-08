@@ -7,7 +7,7 @@ import * as EnvFunctions from "./includes.js";
 export type FindProxy = (url: string, host: string) => string;
 
 /**
- * Essential type that PAC should exposed.
+ * Essential type that PAC should expose.
  */
 export interface PACGlobals {
 	FindProxyForURL: FindProxy;
@@ -31,7 +31,7 @@ export interface BuiltinPAC extends PACGlobals {
 	proxies: string[];
 
 	/**
-	 * key is a domain, value is an index of the `proxies` array.
+	 * key is a hostname, value is an index of the `proxies` array.
 	 */
 	rules: Record<string, number>;
 }
