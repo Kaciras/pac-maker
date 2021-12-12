@@ -25,6 +25,13 @@ describe("buildPAC", () => {
 		};
 		return expect(buildPAC(rules)).rejects.toThrow();
 	});
+
+	it("should allow hostname with same proxy", () => {
+		const rules = {
+			"HTTP [::1]:2080": ["foo.com", "foo.com"],
+		};
+		return expect(buildPAC(rules)).resolves.not.toThrow();
+	});
 });
 
 describe("HostnameListLoader", () => {

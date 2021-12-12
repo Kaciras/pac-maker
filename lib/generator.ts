@@ -14,30 +14,32 @@ const placeholder = /__(.+?)__/g;
  * Generate a PAC script use the built-in template.
  *
  * @param rules Proxy route rules.
- * @param direct The value should be returned from FindProxyForURL if no rule matching.
+ * @param fallback The value should be returned from FindProxyForURL if no rule matching.
  * @return the PAC script content
  */
-export async function buildPAC(rules: HostRules, direct = "DIRECT") {
+export async function buildPAC(rules: HostRules, fallback = "DIRECT") {
 	const packageJson = await importJson("../package.json");
 
 	const proxies: string[] = [];
 	const hostMap: Record<string, number> = {};
 
 	for (const [k, v] of Object.entries(rules)) {
-		const index = proxies.length;
+		const i = proxies.length;
 		proxies.push(k);
 
 		for (const hostname of v) {
-			if (hostname in hostMap) {
+			const j = hostMap[hostname];
+			if (j === undefined) {
+				hostMap[hostname] = i;
+			} else if (j !== i) {
 				throw new Error(hostname + " already exists");
 			}
-			hostMap[hostname] = index;
 		}
 	}
 
 	const replacements: Record<any, string> = {
 		VERSION: packageJson.version,
-		FALLBACK: JSON.stringify(direct),
+		FALLBACK: JSON.stringify(fallback),
 		PROXIES: JSON.stringify(proxies, null, "\t"),
 		RULES: JSON.stringify(hostMap, null, "\t"),
 		TIME: new Date().toISOString(),
