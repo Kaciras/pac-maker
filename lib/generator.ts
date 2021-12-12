@@ -37,7 +37,7 @@ export async function buildPAC(rules: HostRules, fallback = "DIRECT") {
 		}
 	}
 
-	const replacements: Record<any, string> = {
+	const replacements: Record<string, string> = {
 		VERSION: packageJson.version,
 		FALLBACK: JSON.stringify(fallback),
 		PROXIES: JSON.stringify(proxies, null, "\t"),
@@ -91,8 +91,8 @@ export class HostnameListLoader {
 	}
 
 	/**
-	 * Force reload hostnames from all sources, this method muse be called before
-	 * others in HostnameListLoader.
+	 * Force reload hostnames from all sources, this method must be called
+	 * before others in HostnameListLoader.
 	 */
 	async refresh() {
 		this.lists = await Promise.all(this.sources.map(s => s.getHostnames()));
