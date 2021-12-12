@@ -14,7 +14,7 @@ export default {
 	coverageDirectory: "coverage",
 	coverageProvider: "v8",
 	testMatch: [
-		"**/__tests__/*.spec.ts",
+		"<rootDir>/__tests__/**/*.spec.ts",
 	],
 	moduleFileExtensions: ["ts", "js", "json", "node"],
 };

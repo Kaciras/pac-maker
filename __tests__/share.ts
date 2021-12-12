@@ -78,7 +78,7 @@ export function getTestSettings() {
  * @param args additional arguments
  * @return the process object
  */
-export function runBuiltinCommand(name: string, ...args: string[]) {
+export function runCommand(name: string, ...args: string[]) {
 	return execaNode("bin/pac-maker.js", [
 		name,
 		...args,

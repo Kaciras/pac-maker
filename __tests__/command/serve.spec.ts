@@ -2,7 +2,7 @@ import { setTimeout } from "timers/promises";
 import { rmSync } from "fs";
 import fetch from "node-fetch";
 import { ExecaChildProcess } from "execa";
-import { getTestSettings, readFixture, runBuiltinCommand } from "./share";
+import { getTestSettings, readFixture, runCommand } from "../share";
 
 const stubPAC = readFixture("proxy-1.pac");
 
@@ -16,7 +16,7 @@ afterEach(() => {
 });
 
 it("should serve PAC file with HTTP", async () => {
-	process = runBuiltinCommand("serve");
+	process = runCommand("serve");
 	await setTimeout(1000);
 
 	const response = await fetch("http://localhost:7568/proxy.pac");
