@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-01-20T12:32:48.696Z
+ * Generated at: 2022-02-06T04:30:23.833Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -178,6 +178,7 @@ globalThis.rules = {
 	"pandora.tv": 0,
 	"parkansky.com": 0,
 	"phmsociety.org": 0,
+	"podcast.co": 0,
 	"pure18.com": 0,
 	"pytorch.org": 0,
 	"qq.co.za": 0,
@@ -324,7 +325,7 @@ globalThis.rules = {
 	"mohu.ml": 0,
 	"motiyun.com": 0,
 	"msa-it.org": 0,
-	"dictionary.goo.ne.jp": 0,
+	"goo.ne.jp": 0,
 	"go.nesnode.com": 0,
 	"international-news.newsmagazine.asia": 0,
 	"nikkei.com": 0,
@@ -2010,10 +2011,9 @@ globalThis.rules = {
 	"dalianmeng.org": 0,
 	"daliulian.org": 0,
 	"danke4china.net": 0,
-	"danwei.org": 0,
 	"daolan.net": 0,
-	"daozhongxing.org": 0,
 	"darktoy.net": 0,
+	"darrenliuwei.com": 0,
 	"dastrassi.org": 0,
 	"david-kilgour.com": 0,
 	"daxa.cn": 0,
@@ -3642,6 +3642,7 @@ globalThis.rules = {
 	"mondex.org": 0,
 	"money-link.com.tw": 0,
 	"www.monlamit.org": 0,
+	"moon.fm": 0,
 	"moonbbs.com": 0,
 	"moptt.tw": 0,
 	"monitorchina.org": 0,
@@ -4656,6 +4657,7 @@ globalThis.rules = {
 	"sonidodelaesperanza.org": 0,
 	"sopcast.com": 0,
 	"sopcast.org": 0,
+	"nakedsecurity.sophos.com": 0,
 	"sorazone.net": 0,
 	"sos.org": 0,
 	"bbs.sou-tong.org": 0,
@@ -5873,6 +5875,7 @@ globalThis.rules = {
 	"vercel.com": 0,
 	"aka.ms": 0,
 	"2dfan.com": 0,
+	"www.acggalgame.com": 0,
 	"www.tianshie.com": 0
 };
 
