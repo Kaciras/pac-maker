@@ -20,7 +20,7 @@ export function ensureDirectory(file: string) {
 /**
  * Import a JSON file as module from project root directory.
  *
- * Currently JSON module is experimental:
+ * Currently, JSON module is experimental:
  * https://nodejs.org/api/esm.html#esm_no_json_module_loading
  *
  * @param file file to import

@@ -16,7 +16,7 @@ Features:
 
 # Usage
 
-Just use pre-generated PAC file: [proxy.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/proxy.pac)
+Just use pre-generated PAC file [proxy.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/proxy.pac) to bypass GFW.
 
 ## Install
 
