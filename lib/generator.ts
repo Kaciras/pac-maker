@@ -1,7 +1,8 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
+import packageJson from "../package.json" assert { type: "json" };
+import { root } from "./utils.js";
 import { HostnameSource } from "./source.js";
-import { importJson, root } from "./utils.js";
 
 /**
  * Key is a PAC proxy string, value is an array of hostnames.
@@ -18,8 +19,6 @@ const placeholder = /__(.+?)__/g;
  * @return the PAC script content
  */
 export async function buildPAC(rules: HostRules, fallback = "DIRECT") {
-	const packageJson = await importJson("../package.json");
-
 	const proxies: string[] = [];
 	const hostMap: Record<string, number> = {};
 

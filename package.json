@@ -14,7 +14,7 @@
 		"proxy"
 	],
 	"engines": {
-		"node": ">=16"
+		"node": ">=17.5"
 	},
 	"type": "module",
 	"files": [

@@ -9,6 +9,7 @@
 		"removeComments": true,
 		"sourceMap": true,
 		"strict": true,
+		"resolveJsonModule": true,
 		"useUnknownInCatchVariables": false,
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true
