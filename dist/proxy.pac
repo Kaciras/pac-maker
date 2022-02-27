@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-02-06T04:30:23.833Z
+ * Generated at: 2022-02-27T08:14:03.286Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1169,6 +1169,7 @@ globalThis.rules = {
 	"6parknews.com": 0,
 	"7capture.com": 0,
 	"7cow.com": 0,
+	"7-zip.org": 0,
 	"8-d.com": 0,
 	"85cc.net": 0,
 	"85cc.us": 0,
@@ -5093,6 +5094,7 @@ globalThis.rules = {
 	"trulyergonomic.com": 0,
 	"truth101.co.tv": 0,
 	"truthontour.org": 0,
+	"truthsocial.com": 0,
 	"truveo.com": 0,
 	"tsctv.net": 0,
 	"tsemtulku.com": 0,
