@@ -30,6 +30,7 @@ const defaultConfig: PACMakerConfig = {
 			gfwlist(),
 			builtinList("default"),
 			builtinList("forbidden"),
+			builtinList("unicom"),
 		],
 	},
 };

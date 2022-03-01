@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-02-27T08:14:03.286Z
+ * Generated at: 2022-03-01T09:06:09.928Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -5878,7 +5878,8 @@ globalThis.rules = {
 	"aka.ms": 0,
 	"2dfan.com": 0,
 	"www.acggalgame.com": 0,
-	"www.tianshie.com": 0
+	"www.tianshie.com": 0,
+	"hostloc.com": 0
 };
 
 function FindProxyForURL(url, host) {
