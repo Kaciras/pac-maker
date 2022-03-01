@@ -34,6 +34,7 @@
 	"dependencies": {
 		"@kaciras/deasync": "^1.0.2",
 		"@koa/cors": "^3.1.0",
+		"chalk": "^5.0.0",
 		"ini": "^2.0.0",
 		"koa": "^2.13.4",
 		"node-fetch": "^3.2.0",
