@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "fs";
+import { readFile, writeFile } from "fs/promises";
 import chalk from "chalk";
 import { PACMakerConfig } from "../config.js";
 import { buildPAC, HostnameListLoader, HostRules } from "../generator.js";
@@ -12,8 +12,8 @@ interface CliOptions {
 	config?: string;
 }
 
-function diff(file: string, newRules: HostRules) {
-	const { rules } = loadPAC<BuiltinPAC>(readFileSync(file, "utf8"));
+async function diff(file: string, newRules: HostRules) {
+	const { rules } = loadPAC<BuiltinPAC>(await readFile(file, "utf8"));
 	const hosts = Object.values(newRules).flat();
 
 	let intersection = 0;
@@ -40,14 +40,14 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 
 		let detail = "";
 		try {
-			const { added, removed } = diff(path, rules);
+			const { added, removed } = await diff(path, rules);
 			detail += greenBright(` ${added}+`);
 			detail += redBright(`, ${removed}-.`);
 		} catch (e) {
 			// Old file is not exists or cannot parse
 		}
 
-		writeFileSync(path, script, "utf8");
+		await writeFile(path, script, "utf8");
 		console.log(`[${new Date()}] PAC updated.${detail}`);
 	}
 

@@ -43,9 +43,14 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 	const { FindProxyForURL } = loadPAC(await readFile(path, "utf8"));
 	const histories = await getAllBrowserHistories();
 	const { rules, hostnameSet } = match(histories, FindProxyForURL);
+	const hostSize = hostnameSet.size;
 
-	console.info(`Inspect ${histories.length} urls, ${hostnameSet.size} distinct hosts.`);
-	const table = Object.entries(rules).map(([k, v]) => ({ Proxy: k, "Matched Hosts": v.length }));
+	console.info(`Inspect ${histories.length} urls, ${hostSize} distinct hosts.`);
+	const table = Object.entries(rules).map(([k, v]) => ({
+		"Proxy": k,
+		"Matched Hosts": v.length,
+		"Percentage": `${(v.length / hostSize * 100).toFixed(2)}%`,
+	}));
 	console.table(table);
 
 	const { json = "matches.json" } = argv;
