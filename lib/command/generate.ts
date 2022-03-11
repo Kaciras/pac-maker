@@ -14,7 +14,7 @@ interface CliOptions {
 
 async function diff(file: string, newRules: HostRules) {
 	const { rules } = loadPAC<BuiltinPAC>(await readFile(file, "utf8"));
-	const hosts = Object.values(newRules).flat();
+	const hosts = new Set(Object.values(newRules).flat());
 
 	let intersection = 0;
 	for (const host of hosts) {
@@ -22,7 +22,7 @@ async function diff(file: string, newRules: HostRules) {
 	}
 
 	return {
-		added: hosts.length - intersection,
+		added: hosts.size - intersection,
 		removed: Object.keys(rules).length - intersection,
 	};
 }
