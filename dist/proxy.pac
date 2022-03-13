@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-03-01T09:06:09.928Z
+ * Generated at: 2022-03-13T08:12:39.610Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -36,6 +36,7 @@ globalThis.rules = {
 	"booktopia.com.au": 0,
 	"boysmaster.com": 0,
 	"bynet.co.il": 0,
+	"byrut.org": 0,
 	"carfax.com": 0,
 	"casinobellini.com": 0,
 	"centauro.com.br": 0,
@@ -95,6 +96,7 @@ globalThis.rules = {
 	"wego.here.com": 0,
 	"gamer-cds.cdn.hinet.net": 0,
 	"gamer2-cds.cdn.hinet.net": 0,
+	"hmoegirl.com": 0,
 	"hmvdigital.ca": 0,
 	"hmvdigital.com": 0,
 	"homedepot.com": 0,
@@ -470,6 +472,7 @@ globalThis.rules = {
 	"oanda.com": 0,
 	"oex.com": 0,
 	"okex.com": 0,
+	"okx.com": 0,
 	"otcbtc.com": 0,
 	"paxful.com": 0,
 	"poolin.com": 0,
@@ -669,6 +672,7 @@ globalThis.rules = {
 	"yourtrap.com": 0,
 	"zyns.com": 0,
 	"zzux.com": 0,
+	"pages.dev": 0,
 	"d1b183sg0nvnuh.cloudfront.net": 0,
 	"d1c37gjwa26taa.cloudfront.net": 0,
 	"d3c33hcgiwev3.cloudfront.net": 0,
@@ -1600,6 +1604,7 @@ globalThis.rules = {
 	"breakwall.net": 0,
 	"briian.com": 0,
 	"briefdream.com": 0,
+	"brill.com": 0,
 	"brizzly.com": 0,
 	"brkmd.com": 0,
 	"broadbook.com": 0,
@@ -3160,6 +3165,7 @@ globalThis.rules = {
 	"ixquick.com": 0,
 	"ixxx.com": 0,
 	"iyouport.com": 0,
+	"iyouport.org": 0,
 	"izaobao.us": 0,
 	"gmozomg.izihost.org": 0,
 	"izles.net": 0,
@@ -4400,6 +4406,7 @@ globalThis.rules = {
 	"rushbee.com": 0,
 	"rusvpn.com": 0,
 	"ruten.com.tw": 0,
+	"rutracker.net": 0,
 	"rutube.ru": 0,
 	"ruyiseek.com": 0,
 	"rxhj.net": 0,
@@ -5876,6 +5883,7 @@ globalThis.rules = {
 	"zzcartoon.com": 0,
 	"vercel.com": 0,
 	"aka.ms": 0,
+	"www.spring-plus.net": 0,
 	"2dfan.com": 0,
 	"www.acggalgame.com": 0,
 	"www.tianshie.com": 0,
