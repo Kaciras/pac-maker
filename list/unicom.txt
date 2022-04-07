@@ -1,3 +1,4 @@
 # Blocked by China Unicom
 
 hostloc.com
+js.sentry-cdn.com

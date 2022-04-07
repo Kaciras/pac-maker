@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-03-13T08:12:39.610Z
+ * Generated at: 2022-04-07T01:56:21.284Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -3171,6 +3171,7 @@ globalThis.rules = {
 	"izles.net": 0,
 	"izlesem.org": 0,
 	"j.mp": 0,
+	"jable.tv": 0,
 	"blog.jackjia.com": 0,
 	"jamaat.org": 0,
 	"jamestown.org": 0,
@@ -3407,6 +3408,7 @@ globalThis.rules = {
 	"linglingfa.com": 0,
 	"lingvodics.com": 0,
 	"link-o-rama.com": 0,
+	"linkedin.com": 0,
 	"linkideo.com": 0,
 	"api.linksalpha.com": 0,
 	"apidocs.linksalpha.com": 0,
@@ -3638,6 +3640,7 @@ globalThis.rules = {
 	"mobileways.de": 0,
 	"mobypicture.com": 0,
 	"moby.to": 0,
+	"mod.io": 0,
 	"modernchinastudies.org": 0,
 	"moeerolibrary.com": 0,
 	"wiki.moegirl.org": 0,
@@ -5887,7 +5890,8 @@ globalThis.rules = {
 	"2dfan.com": 0,
 	"www.acggalgame.com": 0,
 	"www.tianshie.com": 0,
-	"hostloc.com": 0
+	"hostloc.com": 0,
+	"js.sentry-cdn.com": 0
 };
 
 function FindProxyForURL(url, host) {
