@@ -2,7 +2,6 @@ import { basename, join } from "path";
 import fs, { FSWatcher } from "fs";
 import { readFile } from "fs/promises";
 import { URL } from "url";
-import fetch from "node-fetch";
 import { root } from "./utils.js";
 
 export type ChangeHandler = (newValues: string[]) => void;

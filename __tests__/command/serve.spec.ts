@@ -1,6 +1,5 @@
 import { setTimeout } from "timers/promises";
 import { rmSync } from "fs";
-import fetch from "node-fetch";
 import { ExecaChildProcess } from "execa";
 import { getTestSettings, readFixture, runCommand } from "../share";
 
