@@ -92,7 +92,7 @@ describe("HostnameListLoader", () => {
 		});
 
 		await loader.refresh();
-		noChange.getHostnames = jest.fn();
+		noChange.getHostnames = jest.fn<() => Promise<string[]>>();
 		loader.watch(() => {});
 		source.update(["example.com"]);
 
