@@ -7,7 +7,7 @@ interface BaseOptions {
 	config?: string;
 }
 
-const { argv } = yargs(process.argv.slice(2)) as Argv<BaseOptions>;
+const argv = (yargs(process.argv.slice(2)) as Argv<BaseOptions>).parseSync();
 const [name] = argv._;
 
 const configFile = argv.config ?? "pac.config.js";
