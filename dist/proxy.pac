@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-04-07T01:56:21.284Z
+ * Generated at: 2022-05-02T08:13:29.887Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -473,6 +473,7 @@ globalThis.rules = {
 	"oex.com": 0,
 	"okex.com": 0,
 	"okx.com": 0,
+	"opensea.io": 0,
 	"otcbtc.com": 0,
 	"paxful.com": 0,
 	"poolin.com": 0,
@@ -5886,12 +5887,14 @@ globalThis.rules = {
 	"zzcartoon.com": 0,
 	"vercel.com": 0,
 	"aka.ms": 0,
+	"zh.ifixit.com": 0,
 	"www.spring-plus.net": 0,
 	"2dfan.com": 0,
 	"www.acggalgame.com": 0,
 	"www.tianshie.com": 0,
 	"hostloc.com": 0,
-	"js.sentry-cdn.com": 0
+	"js.sentry-cdn.com": 0,
+	"spring.io": 0
 };
 
 function FindProxyForURL(url, host) {

@@ -2,6 +2,7 @@
 
 vercel.com
 aka.ms
+zh.ifixit.com
 
 www.spring-plus.net
 2dfan.com
