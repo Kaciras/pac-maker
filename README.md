@@ -20,7 +20,7 @@ Just use pre-generated PAC file [proxy.pac](https://raw.githubusercontent.com/Ka
 
 ## Install
 
-pac-maker requires NodeJS >= 16, older versions are not tested.
+pac-maker requires NodeJS >= 18.
 
 ```shell
 npm install pac-maker
