@@ -2,6 +2,7 @@ import { basename, join } from "path";
 import fs, { FSWatcher } from "fs";
 import { readFile } from "fs/promises";
 import { URL } from "url";
+import { Dispatcher, fetch } from "undici";
 import { root } from "./utils.js";
 
 export type ChangeHandler = (newValues: string[]) => void;
@@ -24,28 +25,50 @@ export interface HostnameSource {
 	getHostnames(): Promise<string[]>;
 }
 
+interface GFWListSourceOptions {
+
+	/**
+	 * Check update interval in seconds.
+	 *
+	 * @default 21600
+	 */
+	period?: number;
+
+	/**
+	 * The undici dispatcher to use when fetching the GFW list.
+	 */
+	dispatcher?: Dispatcher;
+}
+
 const GFW_LIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
 
 class GFWListSource implements HostnameSource {
 
-	private listeners: ChangeHandler[] = [];
+	private readonly period: number;
+	private readonly dispatcher?: Dispatcher;
 
-	private period: number;
+	private listeners: ChangeHandler[] = [];
 	private lastModified = new Date(0);
 	private timer?: NodeJS.Timer;
 
-	constructor(period = 21600) {
+	constructor(options: GFWListSourceOptions) {
+		const { period = 21600 } = options;
 		if (period <= 0) {
 			throw new Error("Period cannot be zero or negative");
 		}
+		this.period = period * 1000;
+		this.dispatcher = options.dispatcher;
+
 		this.listeners = [];
 		this.lastModified = new Date(0);
-		this.period = period * 1000;
 	}
 
 	async getHostnames() {
-		const response = await fetch(GFW_LIST_URL);
-		const content = Buffer.from(await response.text(), "base64").toString();
+		const { dispatcher } = this;
+
+		const response = await fetch(GFW_LIST_URL, { dispatcher });
+		const text = await response.text();
+		const content = Buffer.from(text, "base64").toString();
 
 		const result = [];
 
@@ -165,11 +188,10 @@ export class MemorySource implements HostnameSource {
 /**
  * Fetch hostnames from gfwlist project.
  *
- * @param period check update interval in seconds
  * @see https://github.com/gfwlist/gfwlist
  */
-export function gfwlist(period?: number) {
-	return new GFWListSource(period);
+export function gfwlist(options: GFWListSourceOptions = {}) {
+	return new GFWListSource(options);
 }
 
 /**
