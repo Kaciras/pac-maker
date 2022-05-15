@@ -7,6 +7,7 @@ build/
 .vs/
 .vscode
 node_modules/
+debug.[jt]s
 
 # Coverage reports
 htmlcov/

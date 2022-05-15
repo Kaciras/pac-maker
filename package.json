@@ -37,8 +37,10 @@
 		"chalk": "^5.0.1",
 		"ini": "^3.0.0",
 		"koa": "^2.13.4",
+		"socks": "^2.6.2",
 		"sqlite": "^4.1.1",
 		"sqlite3": "^5.0.8",
+		"undici": "^5.2.0",
 		"yargs": "^17.5.0"
 	},
 	"devDependencies": {

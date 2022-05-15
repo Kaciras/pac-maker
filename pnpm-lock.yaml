@@ -19,9 +19,11 @@ specifiers:
   ini: ^3.0.0
   jest: ^28.1.0
   koa: ^2.13.4
+  socks: ^2.6.2
   sqlite: ^4.1.1
   sqlite3: ^5.0.8
   typescript: ^4.6.4
+  undici: ^5.2.0
   yargs: ^17.5.0
 
 dependencies:
@@ -30,8 +32,10 @@ dependencies:
   chalk: 5.0.1
   ini: 3.0.0
   koa: 2.13.4
+  socks: 2.6.2
   sqlite: 4.1.1
   sqlite3: 5.0.8
+  undici: 5.2.0
   yargs: 17.5.0
 
 devDependencies:
@@ -2493,7 +2497,6 @@ packages:
   /ip/1.1.5:
     resolution: {integrity: sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=}
     dev: false
-    optional: true
 
   /is-arrayish/0.2.1:
     resolution: {integrity: sha1-d8mYQFJ6qOyxqLppe4BkWnqSap0=}
@@ -3820,7 +3823,6 @@ packages:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
     dev: false
-    optional: true
 
   /socks-proxy-agent/6.2.0:
     resolution: {integrity: sha512-wWqJhjb32Q6GsrUqzuFkukxb/zzide5quXYcMVpIjxalDBBYy2nqKCFQ/9+Ie4dvOYSQdOk3hUlZSdzZOd3zMQ==}
@@ -3841,7 +3843,6 @@ packages:
       ip: 1.1.5
       smart-buffer: 4.2.0
     dev: false
-    optional: true
 
   /source-map-support/0.5.13:
     resolution: {integrity: sha512-SHSKFHadjVA5oR4PPqhtAVdcBWwRYVd6g6cAXnIbRiIwc2EhPrTuKUBdSLvlEKyIP3GCf89fltvcZiP9MMFA1w==}
@@ -4119,6 +4120,11 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
+
+  /undici/5.2.0:
+    resolution: {integrity: sha512-XY6+NS3WH9b3TKOHeNz2CjR+qrVz/k4fO9g3etPpLozRvULoQmZ1+dk9JbIz40ehn27xzFk4jYVU2MU3Nle62A==}
+    engines: {node: '>=12.18'}
+    dev: false
 
   /unique-filename/1.1.1:
     resolution: {integrity: sha512-Vmp0jIp2ln35UTXuryvjzkjGdRyf9b2lTXuSYUiPmzRcl3FDtYqAwOnTJkAngD9SWhnoJzDbTKwaOrZ+STtxNQ==}
