@@ -35,7 +35,7 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 
 	async function rebuildPACScript() {
 		const rules = loader.getRules();
-		const script = await buildPAC(rules, direct);
+		const script = buildPAC(rules, direct);
 		await ensureDirectory(path);
 
 		let detail = "";

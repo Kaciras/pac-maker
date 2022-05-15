@@ -10,8 +10,8 @@ const stubPAC = readFixture("proxy-1.pac");
 
 describe("buildPAC", () => {
 
-	it("should return PAC script", async () => {
-		const code = await buildPAC({
+	it("should return PAC script", () => {
+		const code = buildPAC({
 			"HTTP [::1]:2080": ["foo.bar"],
 			"SOCKS5 localhost:1080": ["example.com"],
 		});
@@ -23,14 +23,14 @@ describe("buildPAC", () => {
 			"HTTP [::1]:2080": ["foo.com"],
 			"DIRECT": ["foo.com"],
 		};
-		return expect(buildPAC(rules)).rejects.toThrow();
+		expect(() => buildPAC(rules)).toThrow();
 	});
 
 	it("should allow hostname with same proxy", () => {
 		const rules = {
 			"HTTP [::1]:2080": ["foo.com", "foo.com"],
 		};
-		return expect(buildPAC(rules)).resolves.not.toThrow();
+		expect(() => buildPAC(rules)).not.toThrow();
 	});
 });
 

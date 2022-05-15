@@ -1,4 +1,4 @@
-import { readFile } from "fs/promises";
+import { readFileSync } from "fs";
 import { join } from "path";
 import packageJson from "../package.json" assert { type: "json" };
 import { root } from "./utils.js";
@@ -18,7 +18,7 @@ const placeholder = /__(.+?)__/g;
  * @param fallback The value should be returned from FindProxyForURL if no rule matching.
  * @return the PAC script content
  */
-export async function buildPAC(rules: HostRules, fallback = "DIRECT") {
+export function buildPAC(rules: HostRules, fallback = "DIRECT") {
 	const proxies: string[] = [];
 	const hostMap: Record<string, number> = {};
 
@@ -59,7 +59,7 @@ export async function buildPAC(rules: HostRules, fallback = "DIRECT") {
 	 * A PR about this feature:
 	 * https://github.com/microsoft/TypeScript/pull/42303
 	 */
-	const template = await readFile(join(root, "template/default.js"), "utf8");
+	const template = readFileSync(join(root, "template/default.js"), "utf8");
 	return template.replaceAll(placeholder, (_, v) => replacements[v]);
 }
 

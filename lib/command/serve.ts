@@ -16,7 +16,7 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 	let script = "";
 
 	async function rebuildPACScript() {
-		script = await buildPAC(loader.getRules(), direct);
+		script = buildPAC(loader.getRules(), direct);
 		console.info("PAC file updated at " + new Date());
 	}
 
