@@ -20,7 +20,7 @@ Just use pre-generated PAC file [proxy.pac](https://raw.githubusercontent.com/Ka
 
 ## Install
 
-pac-maker requires NodeJS >= 18.
+pac-maker requires NodeJS >= 16.
 
 ```shell
 npm install pac-maker
@@ -129,6 +129,25 @@ import { loadPAC } from "pac-maker";
 const pac = loadPAC(readFileSync("proxy.pac", "utf8"));
 
 console.log(pac.FindProxyForURL("", "example.com"));
+```
+
+### `parseProxies`
+
+Parse the return value of `FindProxyForURL()`.
+
+```javascript
+import { parseProxies } from "pac-maker";
+
+console.log(parseProxies("HTTP localhost:80; DIRECT"));
+```
+
+output:
+
+```
+[
+  { protocol: "HTTP", host: "localhost:80", port: 80, hostname: "localhost" },
+  { protocol: "DIRECT", host: "", port: NaN, hostname: "" }
+]
 ```
 
 ### `commands`

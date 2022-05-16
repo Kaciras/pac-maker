@@ -50,3 +50,35 @@ export function loadPAC<T = PACGlobals>(code: string) {
 	vm.runInNewContext(code, context, { timeout: 5000 });
 	return Object.assign(Object.create(null), context) as T;
 }
+
+export interface ParsedProxy {
+	protocol: string;
+	host: string;
+	port: number;
+	hostname: string;
+}
+
+const re = /^(\w+)(?:\s+(([\w.]+|\[[\d:]+]):(\d+)))?$/;
+
+/**
+ * Parse the return value of `FindProxyForURL()`.
+ *
+ * @param value the proxy string
+ * @return parsed proxy description array
+ */
+export function parseProxies(value: string) {
+	return value.split(/\s*;\s*/g).filter(Boolean).map(block => {
+		const match = re.exec(block.trim());
+		if (!match) {
+			throw new Error(`"${block}" is not a valid proxy`);
+		}
+
+		const [, protocol, host = "", hostname = "", p] = match;
+		if (!host && protocol !== "DIRECT") {
+			throw new Error(`"${block}" is not a valid proxy`);
+		}
+
+		const port = p ? parseInt(p) : NaN;
+		return { protocol, host, hostname, port } as ParsedProxy;
+	});
+}
