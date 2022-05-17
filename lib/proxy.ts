@@ -64,6 +64,10 @@ function createDispatcher(proxy: ParsedProxy): Dispatcher {
 	}
 }
 
+interface PACDispatchHandlers extends DispatchHandlers {
+	dispatchNext(): boolean;
+}
+
 export class PACDispatcher extends Dispatcher {
 
 	private readonly findProxy: FindProxy;
@@ -87,18 +91,38 @@ export class PACDispatcher extends Dispatcher {
 	}
 
 	dispatch(options: DispatchOptions, handler: DispatchHandlers) {
+		const { cache, findProxy } = this;
 		const { path, origin } = options;
 
-		const p = this.findProxy(path, origin!.toString());
-		const [proxy] = parseProxies(p);
+		const p = findProxy(path, origin!.toString());
+		const proxies = parseProxies(p)[Symbol.iterator]();
+		const errors: Error[] = [];
 
-		const key = `${proxy.protocol} ${proxy.host}`;
-		let dispatcher = this.cache.get(key);
-		if (!dispatcher) {
-			dispatcher = createDispatcher(proxy);
-			this.cache.set(key, dispatcher);
-		}
+		const extension: PACDispatchHandlers = {
+			onError(err: Error) {
+				errors.push(err);
+				this.dispatchNext();
+			},
+			dispatchNext() {
+				const iterNext = proxies.next();
+				if (iterNext.done) {
+					super.onError?.(new AggregateError(errors, "All proxies are failed"));
+					return false;
+				}
+				const proxy = iterNext.value;
 
-		return dispatcher.dispatch(options, handler);
+				const key = `${proxy.protocol} ${proxy.host}`;
+				let dispatcher = cache.get(key);
+				if (!dispatcher) {
+					dispatcher = createDispatcher(proxy);
+					cache.set(key, dispatcher);
+				}
+
+				return dispatcher.dispatch(options, this);
+			},
+		};
+
+		const base = Object.create(handler);
+		return Object.assign(base, extension).dispatchNext();
 	}
 }
