@@ -1,5 +1,5 @@
 import { pathToFileURL } from "url";
-import { builtinList, gfwlist, HostnameSource } from "./index.js";
+import { builtinList, HostnameSource } from "./index.js";
 
 export interface PACMakerConfig {
 
@@ -17,7 +17,7 @@ export interface PACMakerConfig {
 	 * Proxy source map, the key is a proxy sorting, value is an array of HostnameSource.
 	 * pac-maker will get hostnames from all sources in array and map it to the corresponding key.
 	 *
-	 * Default read hostnames from gfwlist and all built-in lists, map them to "SOCKS5 localhost:2080".
+	 * Default read hostnames built-in lists, map them to "SOCKS5 localhost:2080".
 	 */
 	sources: Record<string, HostnameSource[]>;
 }
@@ -27,7 +27,6 @@ const defaultConfig: PACMakerConfig = {
 	direct: "DIRECT",
 	sources: {
 		"SOCKS5 localhost:2080": [
-			gfwlist(),
 			builtinList("default"),
 			builtinList("forbidden"),
 			builtinList("unicom"),
