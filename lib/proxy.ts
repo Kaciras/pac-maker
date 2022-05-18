@@ -64,26 +64,81 @@ function createDispatcher(proxy: ParsedProxy): Dispatcher {
 	}
 }
 
+interface CacheEntry {
+	value: Dispatcher;
+	timer: NodeJS.Timeout;
+}
+
+class SimpleTTLCache {
+
+	private readonly map = new Map<string, CacheEntry>();
+	private readonly ttl: number;
+
+	constructor(ttl: number) {
+		this.ttl = ttl;
+	}
+
+	private refreshTimeout(key: string, e: CacheEntry) {
+		clearTimeout(e.timer);
+		const cb = () => {
+			this.map.delete(key);
+			return e.value.close();
+		};
+		e.timer = setTimeout(cb, this.ttl).unref();
+	}
+
+	get(key: string) {
+		const e = this.map.get(key);
+		if (!e) return null;
+		this.refreshTimeout(key, e);
+		return e.value;
+	}
+
+	set(key: string, value: Dispatcher) {
+		const e = { value } as CacheEntry;
+		this.map.set(key, e);
+		this.refreshTimeout(key, e);
+	}
+
+	clear() {
+		for (const e of this.map.values()) {
+			clearTimeout(e.timer);
+		}
+		this.map.clear();
+	}
+
+	* values() {
+		for (const e of this.map.values()) yield e.value;
+	}
+}
+
 interface PACDispatchHandlers extends DispatchHandlers {
 	dispatchNext(): boolean;
+}
+
+export interface PACDispatcherOptions {
+	ttl?: number;
 }
 
 export class PACDispatcher extends Dispatcher {
 
 	private readonly findProxy: FindProxy;
-	private readonly cache = new Map<string, Dispatcher>();
+	private readonly cache: SimpleTTLCache;
 
-	constructor(pac: string) {
+	constructor(pac: string, options: PACDispatcherOptions = {}) {
 		super();
 		this.findProxy = loadPAC(pac).FindProxyForURL;
+		this.cache = new SimpleTTLCache(options.ttl ?? 30_000);
 	}
 
 	async close() {
 		await Promise.all(this.mapAll(v => v.close()));
+		this.cache.clear();
 	}
 
 	async destroy() {
 		await Promise.all(this.mapAll(v => v.destroy()));
+		this.cache.clear();
 	}
 
 	private mapAll<T>(fn: (dispatcher: Dispatcher) => T) {
@@ -104,17 +159,16 @@ export class PACDispatcher extends Dispatcher {
 				this.dispatchNext();
 			},
 			dispatchNext() {
-				const iterNext = proxies.next();
-				if (iterNext.done) {
+				const { done, value } = proxies.next();
+				if (done) {
 					super.onError?.(new AggregateError(errors, "All proxies are failed"));
 					return false;
 				}
-				const proxy = iterNext.value;
 
-				const key = `${proxy.protocol} ${proxy.host}`;
+				const key = `${value.protocol} ${value.host}`;
 				let dispatcher = cache.get(key);
 				if (!dispatcher) {
-					dispatcher = createDispatcher(proxy);
+					dispatcher = createDispatcher(value);
 					cache.set(key, dispatcher);
 				}
 
