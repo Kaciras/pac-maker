@@ -13,6 +13,7 @@ function socksConnector(
 	socksHost: string,
 	socksPort: number,
 	version: 4 | 5,
+	tlsOptions?: any,
 ) {
 	return async (options: Options, callback: Callback) => {
 		const { protocol, hostname, port } = options;
@@ -32,6 +33,7 @@ function socksConnector(
 		let connectEvent = "connect";
 		if (protocol === "https:") {
 			socket = tls.connect({
+				...tlsOptions,
 				socket,
 				servername: hostname,
 			});
@@ -44,21 +46,27 @@ function socksConnector(
 	};
 }
 
-function createDispatcher(proxy: ParsedProxy): Dispatcher {
+function createAgent(proxy: ParsedProxy, options: Agent.Options) {
 	const { protocol, host, hostname, port } = proxy;
 	switch (protocol) {
 		case "DIRECT":
-			return new Agent();
+			return new Agent(options);
 		case "SOCKS":
 		case "SOCKS5":
-			return new Agent({ connect: socksConnector(hostname, port, 5) });
+			return new Agent({
+				...options,
+				connect: socksConnector(hostname, port, 5, options.connect),
+			});
 		case "SOCKS4":
-			return new Agent({ connect: socksConnector(hostname, port, 4) });
+			return new Agent({
+				...options,
+				connect: socksConnector(hostname, port, 4, options.connect),
+			});
 		case "HTTP":
 		case "PROXY":
-			return new ProxyAgent(`http://${host}`);
+			return new ProxyAgent({ ...options, uri: `http://${host}` });
 		case "HTTPS":
-			return new ProxyAgent(`https://${host}`);
+			return new ProxyAgent({ ...options, uri: `https://${host}` });
 		default:
 			throw new Error(`Unknown proxy protocol: ${protocol}`);
 	}
@@ -89,7 +97,9 @@ class SimpleTTLCache {
 
 	get(key: string) {
 		const e = this.map.get(key);
-		if (!e) return null;
+		if (!e) {
+			return null;
+		}
 		this.refreshTimeout(key, e);
 		return e.value;
 	}
@@ -116,19 +126,23 @@ interface PACDispatchHandlers extends DispatchHandlers {
 	dispatchNext(): boolean;
 }
 
-export interface PACDispatcherOptions {
+export interface PACDispatcherOptions extends Agent.Options {
 	ttl?: number;
 }
 
 export class PACDispatcher extends Dispatcher {
 
+	private readonly agentOptions: PACDispatcherOptions;
 	private readonly findProxy: FindProxy;
 	private readonly cache: SimpleTTLCache;
 
 	constructor(pac: string, options: PACDispatcherOptions = {}) {
 		super();
+		const { ttl = 30_000, ...agentOptions } = options;
+
+		this.agentOptions = agentOptions;
+		this.cache = new SimpleTTLCache(ttl);
 		this.findProxy = loadPAC(pac).FindProxyForURL;
-		this.cache = new SimpleTTLCache(options.ttl ?? 30_000);
 	}
 
 	async close() {
@@ -146,7 +160,7 @@ export class PACDispatcher extends Dispatcher {
 	}
 
 	dispatch(options: DispatchOptions, handler: DispatchHandlers) {
-		const { cache, findProxy } = this;
+		const { agentOptions, cache, findProxy } = this;
 		const { path, origin } = options;
 
 		const p = findProxy(path, origin!.toString());
@@ -168,7 +182,7 @@ export class PACDispatcher extends Dispatcher {
 				const key = `${value.protocol} ${value.host}`;
 				let dispatcher = cache.get(key);
 				if (!dispatcher) {
-					dispatcher = createDispatcher(value);
+					dispatcher = createAgent(value, agentOptions);
 					cache.set(key, dispatcher);
 				}
 
