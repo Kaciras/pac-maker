@@ -1,6 +1,6 @@
 import tls from "tls";
 import { Agent, Dispatcher, ProxyAgent } from "undici";
-import { SocksClient } from "socks";
+import { SocksClient, SocksClientOptions } from "socks";
 import { DispatchHandlers, DispatchOptions } from "undici/types/dispatcher";
 import { Callback, Options } from "undici/types/connector";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
@@ -17,7 +17,7 @@ function socksConnector(
 ) {
 	return async (options: Options, callback: Callback) => {
 		const { protocol, hostname, port } = options;
-		let { socket } = await SocksClient.createConnection({
+		const socksOptions: SocksClientOptions = {
 			proxy: {
 				host: socksHost,
 				port: socksPort,
@@ -28,7 +28,15 @@ function socksConnector(
 				host: hostname,
 				port: resolvePort(protocol, port as any),
 			},
-		});
+		};
+		const connection = await SocksClient
+			.createConnection(socksOptions)
+			.catch(e => callback(e, null));
+
+		if (!connection) {
+			return;
+		}
+		let { socket } = connection;
 
 		let connectEvent = "connect";
 		if (protocol === "https:") {
@@ -175,7 +183,7 @@ export class PACDispatcher extends Dispatcher {
 			dispatchNext() {
 				const { done, value } = proxies.next();
 				if (done) {
-					super.onError?.(new AggregateError(errors, "All proxies are failed"));
+					handler.onError?.call(this, new AggregateError(errors, "All proxies are failed"));
 					return false;
 				}
 
