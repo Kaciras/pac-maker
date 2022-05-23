@@ -1,7 +1,9 @@
 import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { MockAgent } from "undici";
 import { builtinList, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source";
-import { testDir, useTempDirectory } from "./share";
+import { readFixture, testDir, useTempDirectory } from "./share";
+import { afterEach } from "@jest/globals";
 
 // Used to stop watch progress to ensure program exit.
 let source: HostnameSource;
@@ -12,18 +14,23 @@ function waitForUpdate() {
 	return new Promise(resolve => source.watch(resolve));
 }
 
-/**
- * This test may fail with bad network. we still waiting for Jest to support mock ES modules.
- */
 describe("gfwlist", () => {
+	const dispatcher = new MockAgent();
+
+	dispatcher.get("https://raw.githubusercontent.com")
+		.intercept({ path: "/gfwlist/gfwlist/master/gfwlist.txt" })
+		.reply(200, readFixture("gfwlist.txt"));
+
+	afterEach(() => dispatcher.close());
 
 	it("should parse rules", async () => {
-		const list = await gfwlist().getHostnames();
+		const source = gfwlist({ dispatcher });
+		const hostnames = await source.getHostnames();
 
-		for (const item of list) {
+		for (const item of hostnames) {
 			expect(item).toBeHostname();
 		}
-		expect(list.length).toBeGreaterThan(5700);
+		expect(hostnames.length).toBeGreaterThan(7000);
 	});
 });
 
