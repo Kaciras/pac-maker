@@ -1,6 +1,6 @@
 import tls from "tls";
 import { Agent, Dispatcher, ProxyAgent } from "undici";
-import { SocksClient, SocksClientOptions } from "socks";
+import { SocksClient } from "socks";
 import { DispatchHandlers, DispatchOptions } from "undici/types/dispatcher";
 import { Callback, Options } from "undici/types/connector";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
@@ -17,7 +17,7 @@ function socksConnector(
 ) {
 	return async (options: Options, callback: Callback) => {
 		const { protocol, hostname, port } = options;
-		const socksOptions: SocksClientOptions = {
+		const connection = await SocksClient.createConnection({
 			proxy: {
 				host: socksHost,
 				port: socksPort,
@@ -28,13 +28,10 @@ function socksConnector(
 				host: hostname,
 				port: resolvePort(protocol, port as any),
 			},
-		};
-		const connection = await SocksClient
-			.createConnection(socksOptions)
-			.catch(e => callback(e, null));
+		}).catch(error => { callback(error, null); });
 
 		if (!connection) {
-			return;
+			return; // Error occurred.
 		}
 		let { socket } = connection;
 
@@ -49,8 +46,8 @@ function socksConnector(
 		}
 
 		return socket
-			.on(connectEvent, () => callback(null, socket))
-			.on("error", callback);
+			.on("error", callback)
+			.on(connectEvent, () => callback(null, socket));
 	};
 }
 
@@ -80,30 +77,39 @@ function createAgent(proxy: ParsedProxy, options: Agent.Options) {
 	}
 }
 
-interface CacheEntry {
-	value: Dispatcher;
+type Dispose<T> = (value: T) => unknown;
+
+interface CacheEntry<T> {
+	value: T;
 	timer: NodeJS.Timeout;
 }
 
-class SimpleTTLCache {
+export default class SimpleTTLCache<K, T> {
 
-	private readonly map = new Map<string, CacheEntry>();
+	private readonly map = new Map<K, CacheEntry<T>>();
+
 	private readonly ttl: number;
+	private readonly dispose: Dispose<T>;
 
-	constructor(ttl: number) {
+	constructor(ttl: number, dispose?: Dispose<T>) {
 		this.ttl = ttl;
+		this.dispose = dispose ?? (() => {});
 	}
 
-	private refreshTimeout(key: string, e: CacheEntry) {
+	private refreshTimeout(key: K, e: CacheEntry<T>) {
 		clearTimeout(e.timer);
 		const cb = () => {
 			this.map.delete(key);
-			return e.value.close();
+			this.dispose(e.value);
 		};
 		e.timer = setTimeout(cb, this.ttl).unref();
 	}
 
-	get(key: string) {
+	get size() {
+		return this.map.size;
+	}
+
+	get(key: K) {
 		const e = this.map.get(key);
 		if (!e) {
 			return null;
@@ -112,15 +118,22 @@ class SimpleTTLCache {
 		return e.value;
 	}
 
-	set(key: string, value: Dispatcher) {
-		const e = { value } as CacheEntry;
-		this.map.set(key, e);
+	set(key: K, value: T) {
+		let e = this.map.get(key);
+		if (e) {
+			this.dispose(e.value);
+			e.value = value;
+		} else {
+			e = { value } as CacheEntry<T>;
+			this.map.set(key, e);
+		}
 		this.refreshTimeout(key, e);
 	}
 
-	clear() {
+	clear(dispose?: Dispose<T>) {
 		for (const e of this.map.values()) {
 			clearTimeout(e.timer);
+			(dispose ?? this.dispose)(e.value);
 		}
 		this.map.clear();
 	}
@@ -142,29 +155,30 @@ export class PACDispatcher extends Dispatcher {
 
 	private readonly agentOptions: PACDispatcherOptions;
 	private readonly findProxy: FindProxy;
-	private readonly cache: SimpleTTLCache;
+	private readonly cache: SimpleTTLCache<string, Dispatcher>;
 
 	constructor(pac: string, options: PACDispatcherOptions = {}) {
 		super();
 		const { ttl = 30_000, ...agentOptions } = options;
 
 		this.agentOptions = agentOptions;
-		this.cache = new SimpleTTLCache(ttl);
 		this.findProxy = loadPAC(pac).FindProxyForURL;
+		this.cache = new SimpleTTLCache(ttl, v => v.close());
 	}
 
 	async close() {
-		await Promise.all(this.mapAll(v => v.close()));
-		this.cache.clear();
+		await Promise.all(this.clear(v => v.close()));
 	}
 
 	async destroy() {
-		await Promise.all(this.mapAll(v => v.destroy()));
-		this.cache.clear();
+		await Promise.all(this.clear(v => v.destroy()));
 	}
 
-	private mapAll<T>(fn: (dispatcher: Dispatcher) => T) {
-		return Array.from(this.cache.values()).map(fn);
+	private clear(dispose: Dispose<Dispatcher>) {
+		const { cache } = this;
+		const agents = Array.from(cache.values());
+		cache.clear(() => {});
+		return agents.map(dispose);
 	}
 
 	dispatch(options: DispatchOptions, handler: DispatchHandlers) {
@@ -183,7 +197,7 @@ export class PACDispatcher extends Dispatcher {
 			dispatchNext() {
 				const { done, value } = proxies.next();
 				if (done) {
-					handler.onError?.call(this, new AggregateError(errors, "All proxies are failed"));
+					handler.onError?.(new AggregateError(errors, "All proxies are failed"));
 					return false;
 				}
 
@@ -198,7 +212,6 @@ export class PACDispatcher extends Dispatcher {
 			},
 		};
 
-		const base = Object.create(handler);
-		return Object.assign(base, extension).dispatchNext();
+		return Object.assign(Object.create(handler), extension).dispatchNext();
 	}
 }
