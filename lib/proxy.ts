@@ -3,6 +3,7 @@ import { Agent, Dispatcher, ProxyAgent } from "undici";
 import { SocksClient } from "socks";
 import { DispatchHandlers, DispatchOptions } from "undici/types/dispatcher";
 import { Callback, Options } from "undici/types/connector";
+import TTLCache from "@kaciras/utilities/TTLCache";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
 
 function resolvePort(protocol: string, port: string) {
@@ -77,72 +78,6 @@ function createAgent(proxy: ParsedProxy, options: Agent.Options) {
 	}
 }
 
-type Dispose<T> = (value: T) => unknown;
-
-interface CacheEntry<T> {
-	value: T;
-	timer: NodeJS.Timeout;
-}
-
-export default class SimpleTTLCache<K, T> {
-
-	private readonly map = new Map<K, CacheEntry<T>>();
-
-	private readonly ttl: number;
-	private readonly dispose: Dispose<T>;
-
-	constructor(ttl: number, dispose?: Dispose<T>) {
-		this.ttl = ttl;
-		this.dispose = dispose ?? (() => {});
-	}
-
-	private refreshTimeout(key: K, e: CacheEntry<T>) {
-		clearTimeout(e.timer);
-		const cb = () => {
-			this.map.delete(key);
-			this.dispose(e.value);
-		};
-		e.timer = setTimeout(cb, this.ttl).unref();
-	}
-
-	get size() {
-		return this.map.size;
-	}
-
-	get(key: K) {
-		const e = this.map.get(key);
-		if (!e) {
-			return null;
-		}
-		this.refreshTimeout(key, e);
-		return e.value;
-	}
-
-	set(key: K, value: T) {
-		let e = this.map.get(key);
-		if (e) {
-			this.dispose(e.value);
-			e.value = value;
-		} else {
-			e = { value } as CacheEntry<T>;
-			this.map.set(key, e);
-		}
-		this.refreshTimeout(key, e);
-	}
-
-	clear(dispose?: Dispose<T>) {
-		for (const e of this.map.values()) {
-			clearTimeout(e.timer);
-			(dispose ?? this.dispose)(e.value);
-		}
-		this.map.clear();
-	}
-
-	* values() {
-		for (const e of this.map.values()) yield e.value;
-	}
-}
-
 interface PACDispatchHandlers extends DispatchHandlers {
 	dispatchNext(): boolean;
 }
@@ -155,15 +90,15 @@ export class PACDispatcher extends Dispatcher {
 
 	private readonly agentOptions: PACDispatcherOptions;
 	private readonly findProxy: FindProxy;
-	private readonly cache: SimpleTTLCache<string, Dispatcher>;
+	private readonly cache: TTLCache<string, Dispatcher>;
 
 	constructor(pac: string, options: PACDispatcherOptions = {}) {
 		super();
-		const { ttl = 30_000, ...agentOptions } = options;
+		const { ttl = 300_000, ...agentOptions } = options;
 
 		this.agentOptions = agentOptions;
 		this.findProxy = loadPAC(pac).FindProxyForURL;
-		this.cache = new SimpleTTLCache(ttl, v => v.close());
+		this.cache = new TTLCache({ ttl, dispose: v => v.close() });
 	}
 
 	async close() {
@@ -174,7 +109,7 @@ export class PACDispatcher extends Dispatcher {
 		await Promise.all(this.clear(v => v.destroy()));
 	}
 
-	private clear(dispose: Dispose<Dispatcher>) {
+	private clear(dispose: (d: Dispatcher) => void) {
 		const { cache } = this;
 		const agents = Array.from(cache.values());
 		cache.clear(() => {});

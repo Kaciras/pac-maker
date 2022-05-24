@@ -6,6 +6,7 @@ specifiers:
   '@kaciras/eslint-config-core': ^2.4.0
   '@kaciras/eslint-config-jest': ^2.4.0
   '@kaciras/eslint-config-typescript': ^2.4.0
+  '@kaciras/utilities': ^0.2.0
   '@koa/cors': ^3.3.0
   '@swc/core': ^1.2.189
   '@swc/jest': ^0.2.21
@@ -30,6 +31,7 @@ specifiers:
 
 dependencies:
   '@kaciras/deasync': 1.0.2
+  '@kaciras/utilities': 0.2.0
   '@koa/cors': 3.3.0
   chalk: 5.0.1
   ini: 3.0.0
@@ -849,6 +851,10 @@ packages:
   /@kaciras/eslint-plugin/1.0.0:
     resolution: {integrity: sha512-xQDSD4gvQHQGKzYHf+pZgM77vqVvkjOZgcxfhAh/MT5zMaS+Pl5bipyMgJ7xJdx+c/g5qZW78x+Npxtl5NK6Mw==}
     dev: true
+
+  /@kaciras/utilities/0.2.0:
+    resolution: {integrity: sha512-egAb3thdnwmdV5FbFI+/7QFNJS9+OeTHAO9NLi/tDrHr2JrCg/sFl/ZxQRWCtDE+QG6/WL0J5B7rKlMQ2U7t5g==}
+    dev: false
 
   /@koa/cors/3.3.0:
     resolution: {integrity: sha512-lzlkqLlL5Ond8jb6JLnVVDmD2OPym0r5kvZlMgAWiS9xle+Q5ulw1T358oW+RVguxUkANquZQz82i/STIRmsqQ==}
