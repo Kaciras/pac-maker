@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v1.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-05-02T08:13:29.887Z
+ * Generated at: 2022-05-24T14:26:46.842Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -797,6 +797,7 @@ globalThis.rules = {
 	"godoc.org": 0,
 	"golang.org": 0,
 	"goo.gl": 0,
+	"goo.gle": 0,
 	"google.ae": 0,
 	"google.as": 0,
 	"google.am": 0,
@@ -3233,11 +3234,13 @@ globalThis.rules = {
 	"jobso.tv": 0,
 	"sunwinism.joinbbs.net": 0,
 	"joinclubhouse.com": 0,
+	"jornaldacidadeonline.com.br": 0,
 	"journalchretien.net": 0,
 	"journalofdemocracy.org": 0,
 	"joymiihub.com": 0,
 	"joyourself.com": 0,
 	"jpopforum.net": 0,
+	"jsdelivr.net": 0,
 	"fiddle.jshell.net": 0,
 	"jubushoushen.com": 0,
 	"juhuaren.com": 0,
@@ -3547,7 +3550,8 @@ globalThis.rules = {
 	"megarotic.com": 0,
 	"megavideo.com": 0,
 	"megurineluka.com": 0,
-	"meirixiaochao.com": 0,
+	"meizhong.blog": 0,
+	"meizhong.report": 0,
 	"meltoday.com": 0,
 	"memehk.com": 0,
 	"memorybbs.com": 0,
@@ -3565,7 +3569,7 @@ globalThis.rules = {
 	"metacafe.com": 0,
 	"metafilter.com": 0,
 	"meteorshowersonline.com": 0,
-	"www.metro.taipei": 0,
+	"metro.taipei": 0,
 	"metrohk.com.hk": 0,
 	"metrolife.ca": 0,
 	"metroradio.com.hk": 0,
@@ -3783,6 +3787,7 @@ globalThis.rules = {
 	"bolin.netfirms.com": 0,
 	"netflav.com": 0,
 	"netme.cc": 0,
+	"netsarang.com": 0,
 	"netsneak.com": 0,
 	"network54.com": 0,
 	"networkedblogs.com": 0,
@@ -3946,6 +3951,7 @@ globalThis.rules = {
 	"on.cc": 0,
 	"onedrive.live.com": 0,
 	"onion.city": 0,
+	"onion.ly": 0,
 	"onlinecha.com": 0,
 	"onlineyoutube.com": 0,
 	"onlygayvideo.com": 0,
@@ -3972,6 +3978,7 @@ globalThis.rules = {
 	"organharvestinvestigation.net": 0,
 	"orgasm.com": 0,
 	"orgfree.com": 0,
+	"oricon.co.jp": 0,
 	"orient-doll.com": 0,
 	"orientaldaily.com.my": 0,
 	"orn.jp": 0,
@@ -3987,6 +3994,7 @@ globalThis.rules = {
 	"oursweb.net": 0,
 	"ourtv.hk": 0,
 	"xinqimeng.over-blog.com": 0,
+	"overcast.fm": 0,
 	"overdaily.org": 0,
 	"overplay.net": 0,
 	"share.ovi.com": 0,
@@ -4661,6 +4669,7 @@ globalThis.rules = {
 	"sohfrance.org": 0,
 	"chinese.soifind.com": 0,
 	"sokamonline.com": 0,
+	"solana.com": 0,
 	"solidaritetibet.org": 0,
 	"solidfiles.com": 0,
 	"somee.com": 0,
@@ -4903,6 +4912,7 @@ globalThis.rules = {
 	"thedalailamamovie.com": 0,
 	"thediplomat.com": 0,
 	"thedw.us": 0,
+	"theepochtimes.com": 0,
 	"thefrontier.hk": 0,
 	"theguardian.com": 0,
 	"thegay.com": 0,
@@ -5334,6 +5344,7 @@ globalThis.rules = {
 	"usacn.com": 0,
 	"usaip.eu": 0,
 	"dalailama.usc.edu": 0,
+	"uscnpm.org": 0,
 	"usma.edu": 0,
 	"usocctn.com": 0,
 	"ustibetcommittee.org": 0,
@@ -5609,6 +5620,7 @@ globalThis.rules = {
 	"workatruna.com": 0,
 	"workerdemo.org.hk": 0,
 	"workerempowerment.org": 0,
+	"workers.dev": 0,
 	"workersthebig.net": 0,
 	"worldcat.org": 0,
 	"worldjournal.com": 0,
@@ -5890,11 +5902,12 @@ globalThis.rules = {
 	"zh.ifixit.com": 0,
 	"www.spring-plus.net": 0,
 	"2dfan.com": 0,
-	"www.acggalgame.com": 0,
-	"www.tianshie.com": 0,
+	"www.xinjiangpolicefiles.org": 0,
 	"hostloc.com": 0,
 	"js.sentry-cdn.com": 0,
-	"spring.io": 0
+	"spring.io": 0,
+	"sentry.io": 0,
+	"www.tianshie.com": 0
 };
 
 function FindProxyForURL(url, host) {

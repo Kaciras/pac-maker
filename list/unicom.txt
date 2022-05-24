@@ -3,3 +3,4 @@
 hostloc.com
 js.sentry-cdn.com
 spring.io
+sentry.io
