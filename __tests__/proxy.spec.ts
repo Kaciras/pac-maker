@@ -1,6 +1,6 @@
 import { Socket } from "net";
 import { afterEach, beforeEach, jest } from "@jest/globals";
-import { getLocal } from "mockttp";
+import { getLocal, Mockttp } from "mockttp";
 import { fetch } from "undici";
 
 const createConnection = jest.fn<any>();
@@ -11,10 +11,6 @@ jest.mock("socks", () => ({
 
 // Dynamic import is required for mocking ES Module.
 const { PACDispatcher } = await import("../lib");
-
-function pac(returnVal: string) {
-	return `function FindProxyForURL() { return "${returnVal}"; }`;
-}
 
 const httpServer = getLocal();
 beforeEach(() => httpServer.start());
@@ -28,6 +24,18 @@ const secureServer = getLocal({
 });
 beforeEach(() => secureServer.start());
 afterEach(() => secureServer.stop());
+
+function pac(returnVal: string) {
+	return `function FindProxyForURL() { return "${returnVal}"; }`;
+}
+
+function setupSocksTarget(dist: Mockttp) {
+	createConnection.mockImplementation(() => {
+		const socket = new Socket();
+		socket.connect(dist.port);
+		return Promise.resolve({ socket });
+	});
+}
 
 it("should make fetch fail with invalid proxy", () => {
 	const dispatcher = new PACDispatcher(pac("INVALID [::1]:1080"));
@@ -80,13 +88,8 @@ it("should work for https proxy", async () => {
 });
 
 it("should connect target through socks", async () => {
-	createConnection.mockImplementation(() => {
-		const socket = new Socket();
-		socket.connect(httpServer.port);
-		return Promise.resolve({ socket });
-	});
-
-	const dispatcher = new PACDispatcher(pac(`SOCKS [::1]:${httpServer.port}`));
+	setupSocksTarget(httpServer);
+	const dispatcher = new PACDispatcher(pac("SOCKS [::1]:1080"));
 	await httpServer
 		.forGet("/foobar")
 		.thenReply(200, "__RESPONSE_DATA__");
@@ -97,31 +100,27 @@ it("should connect target through socks", async () => {
 
 	const [options] = createConnection.mock.calls[0];
 	expect(options).toStrictEqual({
-		proxy: { host: "[::1]", port: httpServer.port, type: 5 },
+		proxy: { host: "[::1]", port: 1080, type: 5 },
 		command: "connect",
 		destination: { host: "example.com", port: 80 },
 	});
 });
 
 it("should support TLS over socks", async () => {
-	createConnection.mockImplementation(() => {
-		const socket = new Socket();
-		socket.connect(secureServer.port);
-		return Promise.resolve({ socket });
-	});
+	setupSocksTarget(secureServer);
 	const dispatcher = new PACDispatcher(
-		pac(`HTTPS [::1]:${secureServer.port}`),
+		pac("SOCKS [::1]:1080"),
 		{ connect: { rejectUnauthorized: false } },
 	);
 	await secureServer
 		.forGet("/foobar")
 		.thenReply(200, "__RESPONSE_DATA__");
 
-	const res = await fetch("http://example.com/foobar", { dispatcher });
+	const res = await fetch("https://example.com/foobar", { dispatcher });
 	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
 });
 
-it("should try next if the proxy not work", async () => {
+it("should try the next if a proxy not work", async () => {
 	createConnection.mockRejectedValue(new Error());
 	const dispatcher = new PACDispatcher(pac(
 		`SOCKS [::1]:1; HTTP [::1]:${httpServer.port}`,
@@ -150,11 +149,7 @@ it("should throw error if all proxies failed", async () => {
 });
 
 it("should cache agents", async () => {
-	createConnection.mockImplementation(() => {
-		const socket = new Socket();
-		socket.connect(httpServer.port);
-		return Promise.resolve({ socket });
-	});
+	setupSocksTarget(httpServer);
 	const dispatcher = new PACDispatcher(pac(
 		"SOCKS [::1]:1; SOCKS [::1]:2",
 	));
