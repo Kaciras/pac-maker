@@ -29,6 +29,17 @@ const secureServer = getLocal({
 beforeEach(() => secureServer.start());
 afterEach(() => secureServer.stop());
 
+it("should make fetch fail with invalid proxy", () => {
+	const dispatcher = new PACDispatcher(pac("INVALID [::1]:1080"));
+	return expect(fetch("http://foo.bar", { dispatcher })).rejects.toThrow();
+});
+
+it("should make fetch fail with invalid proxy 2", () => {
+	createConnection.mockRejectedValue(new Error());
+	const dispatcher = new PACDispatcher(pac("SOCKS [::1]:1; INVALID [::1]:1080"));
+	return expect(fetch("http://foo.bar", { dispatcher })).rejects.toThrow();
+});
+
 it("should dispatch request directly", async () => {
 	const dispatcher = new PACDispatcher(pac("DIRECT"));
 	await httpServer

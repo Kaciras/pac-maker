@@ -125,9 +125,13 @@ export class PACDispatcher extends Dispatcher {
 		const errors: Error[] = [];
 
 		const extension: PACDispatchHandlers = {
-			onError(err: Error) {
-				errors.push(err);
-				this.dispatchNext();
+			onError(error: Error) {
+				errors.push(error);
+				try {
+					this.dispatchNext();
+				} catch (e) {
+					handler.onError?.(e);
+				}
 			},
 			dispatchNext() {
 				const { done, value } = proxies.next();
