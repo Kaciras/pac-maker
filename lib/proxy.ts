@@ -92,12 +92,16 @@ export class PACDispatcher extends Dispatcher {
 	private readonly findProxy: FindProxy;
 	private readonly cache: LRUCache<string, Dispatcher>;
 
-	constructor(pac: string, options: PACDispatcherOptions = {}) {
+	constructor(pac: string | FindProxy, options: PACDispatcherOptions = {}) {
 		super();
 		const { ttl = 300_000, ...agentOptions } = options;
 
+		if (typeof pac === "string") {
+			pac = loadPAC(pac).FindProxyForURL;
+		}
+
 		this.agentOptions = agentOptions;
-		this.findProxy = loadPAC(pac).FindProxyForURL;
+		this.findProxy = pac;
 		this.cache = new LRUCache({ ttl, dispose: v => v.close() });
 	}
 
