@@ -1,10 +1,12 @@
-import { PACMakerConfig } from "./config";
+import type { PACMakerConfig } from "./config";
+
 import analyze from "./command/analyze.js";
 import generate from "./command/generate.js";
 import serve from "./command/serve.js";
 
 export * from "./source.js";
 export * from "./generator.js";
+export * from "./proxy.js";
 export * from "./loader.js";
 
 export { PACMakerConfig };

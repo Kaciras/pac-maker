@@ -9,14 +9,17 @@ file generator & maintenance tool.
 
 Features:
 
-* Generate PAC files from various hostname sources.
-* Load a PAC file and use it in node.
+* [Generate PAC files from various hostname sources](#Generate PAC files).
+* Load a PAC file and use it in Node.
+* Proxy `fetch` with PAC.
 * Serve the PAC with http and watch for source change.
-* Show what hosts in browser history will be proxied by the PAC.
+* Show what hosts in your browser history will be proxied by the PAC.
 
 # Usage
 
-Just use pre-generated PAC file [proxy.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/proxy.pac) to bypass GFW.
+## proxy.pac
+
+The pre-generated PAC file [proxy.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/proxy.pac) can be used to bypass GFW.
 
 ## Install
 
@@ -26,7 +29,7 @@ pac-maker requires NodeJS >= 16.
 npm install pac-maker
 ```
 
-## Configuration
+## Generate PAC files
 
 pac-maker loads config file from working directory, default is `pac.config.js`, it can be specified by `--config=<path>`
 .
@@ -64,11 +67,15 @@ There are some built-in sources in pac-maker:
 
 ## CLI commands
 
+### `generate`
+
 Generate a PAC file:
 
 ```shell
 node bin/pac-maker.js generate [--config=<path>] [--watch]
 ```
+
+### `analyze`
 
 * `--watch` After the initial build, pac-maker will continue to watch for updates in any of the sources.
 
@@ -79,6 +86,8 @@ node bin/pac-maker.js analyze [--config=<path>] [--json=<path>]
 ```
 
 * `--json` Save matched rules to this file, default is `matches.json`.
+
+### `serve`
 
 Serve the PAC file with http, and update when source have changes:
 
@@ -96,6 +105,25 @@ node bin/pac-maker.js serve [--config=<file>] [--host=<host>] [--port=<port>]
 pac-maker exports some useful functions that allows you to play with PAC inside your own JavaScript program.
 
 This package is pure ESM, It cannot be `require()`'d from CommonJS.
+
+### `PACDispatcher`
+
+The [undici](https://github.com/nodejs/undici) dispatcher that dispatch requests based on rule described by the PAC. It is designed to be used with the built-in `fetch` function.
+
+To proxy the requests with the `http` module, we recommend to use [node-pac-proxy-agent](https://github.com/TooTallNate/node-pac-proxy-agent).
+
+```javascript
+import { readFileSync } from "fs";
+import { PACDispatcher } from "pac-maker";
+
+// Only needed if your Node < 18.1.0
+// import { fetch } from "undici";
+
+const pac = readFileSync("proxy.pac", "utf8");
+const dispatcher = new PACDispatcher(pac);
+
+const response = await fetch("https://example.com", { dispatcher });
+```
 
 ### `buildPAC`
 
@@ -161,14 +189,11 @@ import config from "./pac.config.js";
 commands.serve({ host: "localhost", port: 12345 }, config);
 ```
 
-## Run tests
+## Run Tests
 
-To run unit tests, you need enable experimental vm modules.
+To run unit tests, you need to enable experimental vm modules.
 
 ```shell
-set NODE_OPTIONS=--experimental-vm-modules
+NODE_OPTIONS=--experimental-vm-modules
 pnpm test
 ```
-
-**NOTE:** Some tests may fail with the error `Provided module is not an instance of Module`
-, [that is a bug in v8](https://github.com/facebook/jest/issues/11438).

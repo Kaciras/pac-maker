@@ -52,7 +52,10 @@ function socksConnector(
 	};
 }
 
-function createAgent(proxy: ParsedProxy, options: Agent.Options) {
+/**
+ * Create an undici `Agent` that dispatch requests to the proxy server.
+ */
+function createAgent(proxy: ParsedProxy, options: Agent.Options = {}) {
 	const { protocol, host, hostname, port } = proxy;
 	switch (protocol) {
 		case "DIRECT":
@@ -68,8 +71,8 @@ function createAgent(proxy: ParsedProxy, options: Agent.Options) {
 				...options,
 				connect: socksConnector(hostname, port, 4, options.connect),
 			});
-		case "HTTP":
 		case "PROXY":
+		case "HTTP":
 			return new ProxyAgent({ ...options, uri: `http://${host}` });
 		case "HTTPS":
 			return new ProxyAgent({ ...options, uri: `https://${host}` });
@@ -83,18 +86,34 @@ interface PACDispatchHandlers extends DispatchHandlers {
 }
 
 export interface PACDispatcherOptions extends Agent.Options {
-	ttl?: number;
+
+	/**
+	 * Specifies a timeout in milliseconds that the dispatcher should keep
+	 * the proxy agent object.
+	 *
+	 * @default 300_000
+	 */
+	agentTTL?: number;
 }
 
+/**
+ * The undici dispatcher that dispatch requests based on rule described by the PAC.
+ */
 export class PACDispatcher extends Dispatcher {
 
 	private readonly agentOptions: PACDispatcherOptions;
 	private readonly findProxy: FindProxy;
 	private readonly cache: LRUCache<string, Dispatcher>;
 
+	/**
+	 * Create a new PACDispatcher instance.
+	 *
+	 * @param pac The PAC script code or the FindProxyForURL function.
+	 * @param options Agent options
+	 */
 	constructor(pac: string | FindProxy, options: PACDispatcherOptions = {}) {
 		super();
-		const { ttl = 300_000, ...agentOptions } = options;
+		const { agentTTL = 300_000, ...agentOptions } = options;
 
 		if (typeof pac === "string") {
 			pac = loadPAC(pac).FindProxyForURL;
@@ -102,7 +121,7 @@ export class PACDispatcher extends Dispatcher {
 
 		this.agentOptions = agentOptions;
 		this.findProxy = pac;
-		this.cache = new LRUCache({ ttl, dispose: v => v.close() });
+		this.cache = new LRUCache({ ttl: agentTTL, dispose: v => v.close() });
 	}
 
 	async close() {
@@ -113,7 +132,7 @@ export class PACDispatcher extends Dispatcher {
 		await Promise.all(this.clear(v => v.destroy()));
 	}
 
-	private clear(dispose: (d: Dispatcher) => void) {
+	private clear(dispose: (d: Dispatcher) => Promise<void>) {
 		const { cache } = this;
 		const agents = Array.from(cache.values());
 		cache.clear(() => {});
