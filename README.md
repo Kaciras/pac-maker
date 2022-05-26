@@ -9,7 +9,7 @@ file generator & maintenance tool.
 
 Features:
 
-* [Generate PAC files from various hostname sources](#Generate PAC files).
+* [Generate PAC files from various hostname sources](#generate-pac-files).
 * Load a PAC file and use it in Node.
 * Proxy `fetch` with PAC.
 * Serve the PAC with http and watch for source change.
