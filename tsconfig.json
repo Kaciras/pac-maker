@@ -2,11 +2,8 @@
 	"compilerOptions": {
 		"target": "ESNext",
 		"module": "ESNext",
-		"moduleResolution": "node",
-		"lib": [
-			"ESNext",
-			"DOM", // `fetch` is not in @types/node
-		],
+		"moduleResolution": "Node",
+		"lib": ["ESNext"],
 		"removeComments": true,
 		"sourceMap": true,
 		"strict": true,
