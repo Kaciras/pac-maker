@@ -3,7 +3,7 @@ import { Agent, Dispatcher, ProxyAgent } from "undici";
 import { SocksClient } from "socks";
 import { DispatchHandlers, DispatchOptions } from "undici/types/dispatcher";
 import { Callback, Options } from "undici/types/connector";
-import TTLCache from "@kaciras/utilities/TTLCache";
+import { LRUCache } from "@kaciras/utilities";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
 
 function resolvePort(protocol: string, port: string) {
@@ -90,7 +90,7 @@ export class PACDispatcher extends Dispatcher {
 
 	private readonly agentOptions: PACDispatcherOptions;
 	private readonly findProxy: FindProxy;
-	private readonly cache: TTLCache<string, Dispatcher>;
+	private readonly cache: LRUCache<string, Dispatcher>;
 
 	constructor(pac: string, options: PACDispatcherOptions = {}) {
 		super();
@@ -98,7 +98,7 @@ export class PACDispatcher extends Dispatcher {
 
 		this.agentOptions = agentOptions;
 		this.findProxy = loadPAC(pac).FindProxyForURL;
-		this.cache = new TTLCache({ ttl, dispose: v => v.close() });
+		this.cache = new LRUCache({ ttl, dispose: v => v.close() });
 	}
 
 	async close() {

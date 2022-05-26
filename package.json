@@ -33,7 +33,7 @@
 	},
 	"dependencies": {
 		"@kaciras/deasync": "^1.0.2",
-		"@kaciras/utilities": "^0.2.0",
+		"@kaciras/utilities": "^0.3.0",
 		"@koa/cors": "^3.3.0",
 		"chalk": "^5.0.1",
 		"ini": "^3.0.0",
