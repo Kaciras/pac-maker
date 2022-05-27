@@ -10,12 +10,12 @@ export interface HistoryEntry {
 	url: string;
 }
 
-export interface BrowserEngine {
+export interface BrowserData {
 
 	getHistories(): Promise<HistoryEntry[]>;
 }
 
-export class Chromium implements BrowserEngine {
+export class Chromium implements BrowserData {
 
 	private readonly directory: string;
 
@@ -25,6 +25,10 @@ export class Chromium implements BrowserEngine {
 		if (!statSync(directory).isDirectory()) {
 			throw new Error(`${directory} is not a directory`);
 		}
+	}
+
+	toString() {
+		return `Chromium - ${this.directory}`;
 	}
 
 	async getHistories(afterBy?: HistoryEntry) {
@@ -38,7 +42,7 @@ export class Chromium implements BrowserEngine {
 	}
 }
 
-export class Firefox implements BrowserEngine {
+export class Firefox implements BrowserData {
 
 	private readonly directory: string;
 
@@ -48,6 +52,10 @@ export class Firefox implements BrowserEngine {
 		if (!statSync(directory).isDirectory()) {
 			throw new Error(`${directory} is not a directory`);
 		}
+	}
+
+	toString() {
+		return `Firefox - ${this.directory}`;
 	}
 
 	async getHistories(afterBy?: HistoryEntry) {
@@ -108,16 +116,15 @@ export function chrome() {
 	}
 }
 
-export async function getAllBrowserHistories() {
-	const browsers = [firefox, edge, chrome];
-	const tasks = [];
-
-	for (const getBrowser of browsers) {
-		try {
-			tasks.push(getBrowser().getHistories());
-		} catch {
-			// Not found or not supported.
-		}
+function silence<T>(fn: () => T) {
+	try {
+		return fn();
+	} catch {
+		return undefined;
 	}
-	return (await Promise.all(tasks)).flat();
+}
+
+export function findBrowserData() {
+	const browsers: Array<() => BrowserData> = [firefox, edge, chrome];
+	return browsers.map(silence).filter(Boolean) as BrowserData[];
 }
