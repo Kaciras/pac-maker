@@ -1,45 +1,38 @@
 import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 import { URL } from "url";
-import { HostRules } from "../generator.js";
-import { FindProxy, loadPAC } from "../loader.js";
-import { findBrowserData, HistoryEntry } from "../browser.js";
+import { HostnameListLoader, HostRules } from "../generator.js";
+import { loadPAC } from "../loader.js";
+import { findBrowserData } from "../browser.js";
 import { PACMakerConfig } from "../config.js";
-
-interface MatchResult {
-	rules: HostRules;
-	hostnameSet: Set<string>;
-}
-
-function getHostnamesFromBrowser() {
-
-}
-
-export function match(histories: HistoryEntry[], fn: FindProxy) {
-	const rules: HostRules = {};
-	const hostnameSet = new Set<string>();
-
-	for (const { url } of histories) {
-		if (!/^https?:/.test(url)) {
-			continue;
-		}
-		const host = new URL(url).hostname;
-		if (hostnameSet.has(host)) {
-			continue;
-		}
-
-
-		hostnameSet.add(host);
-		const proxy = fn(url, host);
-		(rules[proxy] ??= []).push(host);
-	}
-
-	return { rules, hostnameSet } as MatchResult;
-}
 
 interface CliOptions {
 	json?: string;
 	config?: string;
+}
+
+interface PACAnalyzeResult {
+	used: string[];
+	routes: HostRules;
+}
+
+async function getMatchedHosts(list: Set<string>, config: PACMakerConfig) {
+	const loader = new HostnameListLoader(config.sources);
+	await loader.refresh();
+	const rules = loader.getRules();
+
+	const segments = new Set<string>();
+	for (let host of list) {
+		let pos = 0;
+		while (pos >= 0) {
+			pos = host.indexOf(".");
+			segments.add(host);
+			host = host.slice(pos + 1);
+		}
+	}
+
+	const hostOfRules = Object.values(rules).flat();
+	return new Set(hostOfRules.filter(h => segments.has(h)));
 }
 
 export default async function (argv: CliOptions, config: PACMakerConfig) {
@@ -49,28 +42,48 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 	const browsers = findBrowserData();
 	if (browsers.length) {
 		console.info(`Read histories from ${browsers.length} browsers:`);
+		for (const browser of browsers) {
+			console.log(browser.toString());
+		}
 	} else {
 		return console.info("No browser found in your computer.");
 	}
 
-	for (const browser of browsers) {
-		console.log(browser.toString());
+	const list = await Promise.all(browsers.map(b => b.getHistories()));
+	const hostSet = new Set<string>();
+
+	for (const entries of list) {
+		for (const { url } of entries) {
+			if (!/^https?:/.test(url)) {
+				continue;
+			}
+			const host = new URL(url).hostname;
+			hostSet.add(host);
+		}
 	}
-	const histories = (await Promise.all(browsers.map(b => b.getHistories()))).flat();
 
 	const { FindProxyForURL } = loadPAC(await readFile(path, "utf8"));
-	const { rules, hostnameSet } = match(histories, FindProxyForURL);
-	const hostSize = hostnameSet.size;
+	const routes: HostRules = {};
+	for (const host of hostSet) {
+		(routes[FindProxyForURL("", host)] ??= []).push(host);
+	}
 
-	console.info(`\nInspect ${histories.length} urls, ${hostSize} distinct hosts.`);
-	const table = Object.entries(rules).map(([k, v]) => ({
+	console.info(`\nInspect ${hostSet.size} distinct hosts.`);
+	const table = Object.entries(routes).map(([k, v]) => ({
 		"Proxy": k,
 		"Matched Hosts": v.length,
-		"Percentage": `${(v.length / hostSize * 100).toFixed(2)}%`,
+		"Percentage": `${(v.length / hostSet.size * 100).toFixed(2)}%`,
 	}));
 	console.table(table);
 
+	const used = await getMatchedHosts(hostSet, config);
+	console.log(`${used.size} hostnames are used`);
+
+	const result: PACAnalyzeResult = {
+		routes,
+		used: Array.from(used),
+	};
 	const { json = "matches.json" } = argv;
-	await writeFile(json, JSON.stringify(rules, null, "\t"));
-	console.info(`\nRules are saved to ${resolve(json)}`);
+	await writeFile(json, JSON.stringify(result, null, "\t"));
+	console.info(`\nResult is saved to ${resolve(json)}`);
 }
