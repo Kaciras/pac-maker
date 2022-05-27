@@ -1,4 +1,4 @@
-import type { PACMakerConfig } from "./config";
+import type { PACMakerConfig } from "./config.js";
 
 import analyze from "./command/analyze.js";
 import generate from "./command/generate.js";
