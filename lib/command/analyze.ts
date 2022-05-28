@@ -1,6 +1,5 @@
 import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
-import { URL } from "url";
 import { HostnameListLoader, HostRules } from "../generator.js";
 import { loadPAC } from "../loader.js";
 import { BrowserData, findBrowserData } from "../browser.js";

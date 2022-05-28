@@ -1,7 +1,6 @@
 import { basename, join } from "path";
 import fs, { FSWatcher } from "fs";
 import { readFile } from "fs/promises";
-import { URL } from "url";
 import { Dispatcher, fetch } from "undici";
 import { root } from "./utils.js";
 
