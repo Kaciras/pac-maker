@@ -10,16 +10,17 @@ file generator & maintenance tool.
 Features:
 
 * [Generate PAC files from various hostname sources](#generate-pac-files).
-* Load a PAC file and use it in Node.
-* Proxy `fetch` with PAC.
-* Serve the PAC with http and watch for source change.
-* Show what hosts in your browser history will be proxied by the PAC.
+* [Load a PAC file and use it to proxy requests](#PACDispatcher).
+* [Serve the PAC with http and watch for source change](#serve).
+* [Show what hosts in your browser history will be proxied by the PAC](#analyze).
 
 # Usage
 
 ## proxy.pac
 
 The pre-generated PAC file [proxy.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/proxy.pac) can be used to bypass GFW.
+
+By default, it dispatches requests of blocked hosts to `SOCKS5 localhost:2080`, you can change the value to your proxy server address.
 
 ## Install
 
@@ -75,9 +76,9 @@ Generate a PAC file:
 node bin/pac-maker.js generate [--config=<path>] [--watch]
 ```
 
-### `analyze`
-
 * `--watch` After the initial build, pac-maker will continue to watch for updates in any of the sources.
+
+### `analyze`
 
 Find what hosts will be proxied by the PAC in browser history, support Chrome, Firefox, and Edge:
 
@@ -108,9 +109,9 @@ This package is pure ESM, It cannot be `require()`'d from CommonJS.
 
 ### `PACDispatcher`
 
-The [undici](https://github.com/nodejs/undici) dispatcher that dispatch requests based on rule described by the PAC. It is designed to be used with the built-in `fetch` function.
+The [undici](https://github.com/nodejs/undici) dispatcher that dispatch requests based on rule described by the PAC. 
 
-To proxy the requests with the `http` module, we recommend to use [node-pac-proxy-agent](https://github.com/TooTallNate/node-pac-proxy-agent).
+It is designed to be used with the built-in `fetch` function. To proxy the requests with the `http` module, we recommend to use [node-pac-proxy-agent](https://github.com/TooTallNate/node-pac-proxy-agent).
 
 ```javascript
 import { readFileSync } from "fs";
@@ -148,7 +149,7 @@ writeFileSync("proxy.pac", buildPAC(rules));
 
 ### `loadPAC`
 
-Load and execute PAC script, return an object includes all global variables defined in the PAC.
+Load and execute a PAC script, return an object includes all global variables defined in the PAC.
 
 ```javascript
 import { readFileSync } from "fs";
