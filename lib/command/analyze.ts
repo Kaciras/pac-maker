@@ -2,7 +2,7 @@ import { readFile, writeFile } from "fs/promises";
 import { resolve } from "path";
 import { HostnameListLoader, HostRules } from "../generator.js";
 import { loadPAC } from "../loader.js";
-import { BrowserData, findBrowserData } from "../browser.js";
+import { BrowserData, findAllBrowsers } from "../browser.js";
 import { PACMakerConfig } from "../config.js";
 
 interface CliOptions {
@@ -55,7 +55,7 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 	const { path } = config;
 	console.info("Finding what hosts will be proxied by PAC in browser history...\n");
 
-	const browsers = findBrowserData();
+	const browsers = findAllBrowsers();
 	if (browsers.length) {
 		console.info(`Read histories from ${browsers.length} browsers:`);
 		for (const browser of browsers) {

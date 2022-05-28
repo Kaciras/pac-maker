@@ -17,7 +17,7 @@ export interface BrowserData {
 
 export class Chromium implements BrowserData {
 
-	private readonly directory: string;
+	readonly directory: string;
 
 	constructor(directory: string) {
 		this.directory = directory;
@@ -44,7 +44,7 @@ export class Chromium implements BrowserData {
 
 export class Firefox implements BrowserData {
 
-	private readonly directory: string;
+	readonly directory: string;
 
 	constructor(directory: string) {
 		this.directory = directory;
@@ -69,7 +69,10 @@ export class Firefox implements BrowserData {
 	}
 }
 
-export function firefox() {
+/**
+ * Find Firefox profile of current user in your computer.
+ */
+export function findFirefox() {
 	let userDir;
 
 	switch (platform) {
@@ -94,16 +97,20 @@ export function firefox() {
 }
 
 /**
- * Get Edge browser history, only support Edge 79+
+ * Find Edge data of current user in your computer.
+ * Only support Edge 79+
  */
-export function edge() {
+export function findEdge() {
 	if (process.platform !== "win32") {
 		throw new Error("Unsupported platform: " + process.platform);
 	}
 	return new Chromium(join(env.LOCALAPPDATA!, "Microsoft/Edge/User Data"));
 }
 
-export function chrome() {
+/**
+ * Find Chrome data of current user in your computer.
+ */
+export function findChrome() {
 	switch (platform) {
 		case "win32":
 			return new Chromium(join(env.LOCALAPPDATA!, "Google/Chrome/User Data"));
@@ -124,7 +131,7 @@ function silence<T>(fn: () => T) {
 	}
 }
 
-export function findBrowserData() {
-	const browsers: Array<() => BrowserData> = [firefox, edge, chrome];
+export function findAllBrowsers() {
+	const browsers: Array<() => BrowserData> = [findFirefox, findEdge, findChrome];
 	return browsers.map(silence).filter(Boolean) as BrowserData[];
 }
