@@ -3,7 +3,7 @@ import { resolve } from "path";
 import { URL } from "url";
 import { HostnameListLoader, HostRules } from "../generator.js";
 import { loadPAC } from "../loader.js";
-import { findBrowserData } from "../browser.js";
+import { BrowserData, findBrowserData } from "../browser.js";
 import { PACMakerConfig } from "../config.js";
 
 interface CliOptions {
@@ -12,17 +12,30 @@ interface CliOptions {
 }
 
 interface PACAnalyzeResult {
+
+	/**
+	 * Hostnames from `config.sources` that you visited with browsers.
+	 */
 	used: string[];
+
+	/**
+	 * Generate PAC rules from browser history and existing PAC file,
+	 * by run the `FindProxyForURL` function with visited urls.
+	 */
 	routes: HostRules;
 }
 
-async function getMatchedHosts(list: Set<string>, config: PACMakerConfig) {
-	const loader = new HostnameListLoader(config.sources);
-	await loader.refresh();
-	const rules = loader.getRules();
+async function getVisitedHosts(browsers: BrowserData[]) {
+	return (await Promise.all(browsers.map(b => b.getHistories())))
+		.flatMap(e => e.map(h => h.url))
+		.filter(url => /^https?:/.test(url))
+		.map(url => new URL(url).hostname)
+		.reduce((set, host) => set.add(host), new Set<string>());
+}
 
+async function getMatchedHosts(visited: Set<string>, hosts: string[]) {
 	const segments = new Set<string>();
-	for (let host of list) {
+	for (let host of visited) {
 		let pos = 0;
 		while (pos >= 0) {
 			pos = host.indexOf(".");
@@ -30,9 +43,13 @@ async function getMatchedHosts(list: Set<string>, config: PACMakerConfig) {
 			host = host.slice(pos + 1);
 		}
 	}
+	return new Set(hosts.filter(h => segments.has(h)));
+}
 
-	const hostOfRules = Object.values(rules).flat();
-	return new Set(hostOfRules.filter(h => segments.has(h)));
+function percentage(numerator: any, denominator: any) {
+	const dividend = numerator.size ?? numerator.length;
+	const divisor = denominator.size ?? denominator.length;
+	return (dividend / divisor * 100).toFixed(2) + "%";
 }
 
 export default async function (argv: CliOptions, config: PACMakerConfig) {
@@ -49,18 +66,7 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 		return console.info("No browser found in your computer.");
 	}
 
-	const list = await Promise.all(browsers.map(b => b.getHistories()));
-	const hostSet = new Set<string>();
-
-	for (const entries of list) {
-		for (const { url } of entries) {
-			if (!/^https?:/.test(url)) {
-				continue;
-			}
-			const host = new URL(url).hostname;
-			hostSet.add(host);
-		}
-	}
+	const hostSet = await getVisitedHosts(browsers);
 
 	const { FindProxyForURL } = loadPAC(await readFile(path, "utf8"));
 	const routes: HostRules = {};
@@ -69,15 +75,19 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 	}
 
 	console.info(`\nInspect ${hostSet.size} distinct hosts.`);
-	const table = Object.entries(routes).map(([k, v]) => ({
-		"Proxy": k,
-		"Matched Hosts": v.length,
-		"Percentage": `${(v.length / hostSet.size * 100).toFixed(2)}%`,
-	}));
-	console.table(table);
+	console.table(Object.entries(routes).map(([proxy, matches]) => ({
+		"Proxy": proxy,
+		"Matched Hosts": matches.length,
+		"Percentage": percentage(matches, hostSet),
+	})));
 
-	const used = await getMatchedHosts(hostSet, config);
-	console.log(`${used.size} hostnames are used`);
+	const loader = new HostnameListLoader(config.sources);
+	await loader.refresh();
+	const hostOfRules = Object.values(loader.getRules()).flat();
+
+	console.info("\nFinding visited hostnames of rules...");
+	const used = await getMatchedHosts(hostSet, hostOfRules);
+	console.info(`${used.size}(${percentage(used, hostOfRules)}) hostnames are used.`);
 
 	const result: PACAnalyzeResult = {
 		routes,
