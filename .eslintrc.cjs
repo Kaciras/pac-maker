@@ -7,6 +7,9 @@ module.exports = {
 	env: {
 		node: true,
 	},
+	rules: {
+		"@kaciras/import-group-sort": "warn",
+	},
 	overrides: [
 		{
 			files: "./__tests__/**/*.[jt]s",
