@@ -1,8 +1,8 @@
 /*
- * Proxy Auto-Configuration file made by pac-maker v1.2.0
+ * Proxy Auto-Configuration file made by pac-maker v2.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-05-24T14:26:46.842Z
+ * Generated at: 2022-06-17T15:27:49.367Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -5515,6 +5515,7 @@ globalThis.rules = {
 	"watchmygf.net": 0,
 	"wav.tv": 0,
 	"wdf5.com": 0,
+	"wealth.com.tw": 0,
 	"wearehairy.com": 0,
 	"wearn.com": 0,
 	"hkcoc.weather.com.hk": 0,
@@ -5702,6 +5703,7 @@ globalThis.rules = {
 	"xihua.es": 0,
 	"forum.xinbao.de": 0,
 	"xing.com": 0,
+	"xinjiangpolicefiles.org": 0,
 	"xinmiao.com.hk": 0,
 	"xinsheng.net": 0,
 	"xinshijue.com": 0,
@@ -5900,13 +5902,17 @@ globalThis.rules = {
 	"vercel.com": 0,
 	"aka.ms": 0,
 	"zh.ifixit.com": 0,
+	"proton.me": 0,
 	"www.spring-plus.net": 0,
 	"2dfan.com": 0,
+	"www.charliebbs.com": 0,
 	"www.xinjiangpolicefiles.org": 0,
 	"hostloc.com": 0,
-	"js.sentry-cdn.com": 0,
+	"sentry-cdn.com": 0,
 	"spring.io": 0,
 	"sentry.io": 0,
+	"creativecommons.org": 0,
+	"lain.bgm.tv": 0,
 	"www.tianshie.com": 0
 };
 

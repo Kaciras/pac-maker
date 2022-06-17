@@ -1,6 +1,9 @@
 # Blocked by China Unicom
 
 hostloc.com
-js.sentry-cdn.com
+sentry-cdn.com
 spring.io
 sentry.io
+creativecommons.org
+
+lain.bgm.tv
