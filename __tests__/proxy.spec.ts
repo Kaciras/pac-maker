@@ -124,8 +124,8 @@ it("should support TLS over socks", async () => {
 		"SOCKS [::1]:1080",
 		{ connect: { rejectUnauthorized: false } },
 	);
-	await secureServer
-		.forGet("/foobar")
+	await secureServer.forGet("/foobar")
+		.withProtocol("https")
 		.thenReply(200, "__RESPONSE_DATA__");
 
 	const res = await fetch("https://example.com/foobar", { dispatcher });
