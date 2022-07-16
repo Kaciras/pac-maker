@@ -5,41 +5,56 @@ import { fork } from "child_process";
 import { fileURLToPath } from "url";
 import { loadPAC } from "../loader.js";
 
+/**
+ * This function is only available with node option --expose_gc.
+ */
 declare function gc(): void;
 
+interface CliOptions {
+	_: string[];
+}
+
+const LOAD_ITER = 100;
+const FIND_ITER = 1000;
+
+/**
+ * Get memory used of current process in MB.
+ */
+function getHeapUsageMB() {
+	gc();
+	return memoryUsage().heapUsed / 1048576;
+}
+
 function benchPAC(file: string) {
-	console.log(`\nBenchmark for PAC script: ${file}`);
+	console.log(`\nBenchmark result for PAC script: ${file}`);
 	const code = readFileSync(file, "utf8");
 
-	gc();
-	const a = memoryUsage();
+	const before = getHeapUsageMB();
 	const { FindProxyForURL } = loadPAC(code);
-	gc();
-	const b = memoryUsage();
-	const memory = (b.heapUsed - a.heapUsed) / 1048576;
-	console.log(`Memory usage: ${memory.toFixed(2)}MB`);
+	const memory = getHeapUsageMB() - before;
+	console.log(`Memory usage: ${memory.toFixed(2)} MB`);
 
 	const lStart = performance.now();
-	for (let i = 0; i < 100; i++) {
+	for (let i = 0; i < LOAD_ITER; i++) {
 		loadPAC(code);
 	}
-	const loadTime = (performance.now() - lStart) / 100;
-	console.log(`Load time: ${loadTime.toFixed(2)}ms`);
+	const loadTime = (performance.now() - lStart) / LOAD_ITER;
+	console.log(`Load time: ${loadTime.toFixed(2)} ms`);
 
 	const fStart = performance.now();
-	for (let i = 0; i < 1000; i++) {
+	for (let i = 0; i < FIND_ITER; i++) {
 		FindProxyForURL("", "www.google.com");
 	}
-	const findTime = (performance.now() - fStart);
+	const findTime = (performance.now() - fStart) / FIND_ITER * 1000;
 
-	console.log(`Find proxy time: ${findTime.toFixed(2)}μs`);
+	console.log(`Find proxy time: ${findTime.toFixed(2)} μs/op`);
 }
 
 if (process.send) {
 	process.argv.slice(2).forEach(benchPAC);
 }
 
-export default async function (argv: any) {
+export default async function (argv: CliOptions) {
 	const worker = fork(fileURLToPath(import.meta.url), argv._.slice(1), {
 		stdio: "inherit",
 		execArgv: ["--expose_gc"],
