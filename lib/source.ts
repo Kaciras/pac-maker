@@ -24,7 +24,7 @@ export interface HostnameSource {
 	getHostnames(): Promise<string[]>;
 }
 
-interface GFWListSourceOptions {
+interface HttpSourceOptions {
 
 	/**
 	 * Check update interval in seconds.
@@ -50,7 +50,7 @@ class GFWListSource implements HostnameSource {
 	private lastModified = new Date(0);
 	private timer?: NodeJS.Timer;
 
-	constructor(options: GFWListSourceOptions) {
+	constructor(options: HttpSourceOptions) {
 		const { period = 21600 } = options;
 		if (period <= 0) {
 			throw new Error("Period cannot be zero or negative");
@@ -128,6 +128,66 @@ class GFWListSource implements HostnameSource {
 	}
 }
 
+const DCL_URL = "https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/*.china.conf";
+
+export class DnsmasqLists implements HostnameSource {
+
+	private readonly name: string;
+	private readonly dispatcher?: Dispatcher;
+	private readonly period: number;
+
+	private listeners: ChangeHandler[] = [];
+	private lastModified = new Date(0);
+	private timer?: NodeJS.Timer;
+
+	constructor(name: string, options: HttpSourceOptions = {}) {
+		this.name = name;
+		this.period = options.period ?? 86400 * 1000;
+		this.dispatcher = options.dispatcher;
+	}
+
+	async getHostnames() {
+		const { dispatcher, name } = this;
+
+		const response = await fetch(DCL_URL.replace("*", name), { dispatcher });
+		const text = await response.text();
+
+		return text.split(/\n+/)
+			.filter(v => v[0] !== "#")  // skip commented lines.
+			.map(v => v.slice(8, -16))  // server=/<sliced>/114.114.114.114
+			.slice(0, -1);				// remove the last empty string.
+	}
+
+	watch(handler: ChangeHandler) {
+		const { timer, period, checkUpdate } = this;
+		if (!timer) {
+			const bound = checkUpdate.bind(this);
+			this.timer = setInterval(bound, period);
+		}
+		this.listeners.push(handler);
+	}
+
+	stopWatching() {
+		clearInterval(this.timer!);
+		this.listeners = [];
+	}
+
+	async checkUpdate() {
+		const { name, dispatcher } = this;
+		const url = `https://api.github.com/repos/felixonmars/dnsmasq-china-list/commits?path=${name}.china.conf&page=1&per_page=1`;
+
+		const response = await fetch(url, { dispatcher });
+		const entries: any = await response.json();
+		const lastUpdate = new Date(entries[0].commit.committer.date);
+
+		if (lastUpdate.getTime() > this.lastModified.getTime()) {
+			const list = await this.getHostnames();
+			this.lastModified = lastUpdate;
+			this.listeners.forEach(fn => fn(list));
+		}
+	}
+}
+
 class HostnameFileSource implements HostnameSource {
 
 	private readonly path: string;
@@ -189,7 +249,7 @@ export class MemorySource implements HostnameSource {
  *
  * @see https://github.com/gfwlist/gfwlist
  */
-export function gfwlist(options: GFWListSourceOptions = {}) {
+export function gfwlist(options: HttpSourceOptions = {}) {
 	return new GFWListSource(options);
 }
 

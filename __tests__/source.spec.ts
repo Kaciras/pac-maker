@@ -1,9 +1,9 @@
 import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { MockAgent } from "undici";
-import { builtinList, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source";
-import { readFixture, testDir, useTempDirectory } from "./share";
 import { afterEach } from "@jest/globals";
+import { builtinList, DnsmasqLists, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source";
+import { readFixture, testDir, useTempDirectory } from "./share";
 
 // Used to stop watch progress to ensure program exit.
 let source: HostnameSource;
@@ -23,7 +23,7 @@ describe("gfwlist", () => {
 
 	afterEach(() => dispatcher.close());
 
-	it("should parse rules", async () => {
+	it("should get hostnames", async () => {
 		const source = gfwlist({ dispatcher });
 		const hostnames = await source.getHostnames();
 
@@ -31,6 +31,18 @@ describe("gfwlist", () => {
 			expect(item).toBeHostname();
 		}
 		expect(hostnames.length).toBeGreaterThan(7000);
+	});
+});
+
+describe("DnsmasqLists", () => {
+
+	it("should get hostnames", async () => {
+		const source = new DnsmasqLists("accelerated-domains");
+		const hostnames = await source.getHostnames();
+
+		expect(hostnames.length).toBeGreaterThan(65894);
+		expect(hostnames).toContain("cn");
+		expect(hostnames).toContain("baidupcs.com");
 	});
 });
 
