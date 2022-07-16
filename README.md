@@ -16,11 +16,21 @@ Features:
 
 # Usage
 
-## proxy.pac
+## PAC files
 
-The pre-generated PAC file [proxy.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/proxy.pac) can be used to bypass GFW.
+The pre-generated PAC file at `/dist` can be used to bypass GFW:
 
-By default, it dispatches requests of blocked hosts to `SOCKS5 localhost:2080`, you can change the value to your proxy server address.
+* [blacklist.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/blacklist.pac) forward GFW blocked hostnames to the proxy server, other hostnames will connect directly.
+* [whitelist.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/whitelist.pac) forward all but China hostnames to the proxy server.
+
+By default, the proxy is `SOCKS5 localhost:2080`, you can change the value to your proxy server address.
+
+Performance:
+
+| file          | Load time (ms) | FindProxyForURL (μs/op) | Memory usage (MB) |
+|---------------|----------------|-------------------------|-------------------|
+| blacklist.pac | 3.25           | 0.74                    | 0.79              |
+| whitelist.pac | 37.54          | 1.35                    | 6.12              |
 
 ## Install
 
@@ -87,6 +97,14 @@ node bin/pac-maker.js analyze [--config=<path>] [--json=<path>]
 ```
 
 * `--json` Save matched rules to this file, default is `matches.json`.
+
+### `bench`
+
+Benchmark PAC files, show load time, memory usage, and `FindProxyForURL` performance.
+
+```shell
+node bin/pac-maker.js bench <path/to/file.pac> [morefiles...]
+```
 
 ### `serve`
 
