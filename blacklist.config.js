@@ -1,12 +1,12 @@
 import { readFileSync } from "fs";
 import { builtinList, gfwlist, PACDispatcher } from "./lib/index.js";
 
-const pac = readFileSync("dist/proxy.pac", "utf8");
+const pac = readFileSync("dist/blacklist.pac", "utf8");
 const dispatcher = new PACDispatcher(pac);
 
-// The config used to generate dist/proxy.pac
+// The config used to generate dist/blacklist.pac
 export default {
-	path: "dist/proxy.pac",
+	path: "dist/blacklist.pac",
 	direct: "DIRECT",
 	sources: {
 		"SOCKS5 localhost:2080": [
