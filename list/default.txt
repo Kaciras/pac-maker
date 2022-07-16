@@ -1,9 +1,11 @@
 # Hostnames that blocked from China but missing in gfwlist
 
+www.extrabux.com
 vercel.com
 aka.ms
 zh.ifixit.com
 proton.me
+diygod.me
 
 www.spring-plus.net
 2dfan.com
