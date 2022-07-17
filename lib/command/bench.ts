@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { memoryUsage } from "process";
+import { argv, env, memoryUsage } from "process";
 import { performance } from "perf_hooks";
 import { fork } from "child_process";
 import { fileURLToPath } from "url";
@@ -12,10 +12,9 @@ declare function gc(): void;
 
 interface CliOptions {
 	_: string[];
+	workCount: number;
+	loadCount: number;
 }
-
-const LOAD_ITER = 100;
-const FIND_ITER = 1000;
 
 /**
  * Get memory used of current process in MB.
@@ -25,8 +24,8 @@ function getHeapUsageMB() {
 	return memoryUsage().heapUsed / 1048576;
 }
 
-function benchPAC(file: string) {
-	console.log(`\nBenchmark result for PAC script: ${file}`);
+function benchPAC(file: string, lCount: number, wCount: number) {
+	console.log(`\nResult of PAC script: ${file}`);
 	const code = readFileSync(file, "utf8");
 
 	const before = getHeapUsageMB();
@@ -35,27 +34,38 @@ function benchPAC(file: string) {
 	console.log(`Memory usage: ${memory.toFixed(2)} MB`);
 
 	const lStart = performance.now();
-	for (let i = 0; i < LOAD_ITER; i++) {
+	for (let i = 0; i < lCount; i++) {
 		loadPAC(code);
 	}
-	const loadTime = (performance.now() - lStart) / LOAD_ITER;
+	const loadTime = (performance.now() - lStart) / lCount;
 	console.log(`Load time: ${loadTime.toFixed(2)} ms`);
 
 	const fStart = performance.now();
-	for (let i = 0; i < FIND_ITER; i++) {
+	for (let i = 0; i < wCount; i++) {
 		FindProxyForURL("", "www.google.com");
 	}
-	const findTime = (performance.now() - fStart) / FIND_ITER * 1000;
-
+	const findTime = (performance.now() - fStart) / wCount * 1000;
 	console.log(`Find proxy time: ${findTime.toFixed(2)} μs/op`);
 }
 
 if (process.send) {
-	process.argv.slice(2).forEach(benchPAC);
+	const lCount = parseInt(env.LOAD_COUNT!);
+	const wCount = parseInt(env.WORK_COUNT!);
+
+	console.log(`Benchmark ${argv.length - 2} PACs ` +
+		`(load iterations = ${lCount}, work iterations = ${wCount})`);
+	for (let i = 2; i < argv.length; i++) {
+		benchPAC(argv[i], lCount, wCount);
+	}
 }
 
-export default async function (argv: CliOptions) {
-	const worker = fork(fileURLToPath(import.meta.url), argv._.slice(1), {
+export default async function (options: CliOptions) {
+	const { _, workCount = 1000, loadCount = 100 } = options;
+	const worker = fork(fileURLToPath(import.meta.url), _.slice(1), {
+		env: {
+			LOAD_COUNT: loadCount.toString(),
+			WORK_COUNT: workCount.toString(),
+		},
 		stdio: "inherit",
 		execArgv: ["--expose_gc"],
 	});

@@ -103,8 +103,11 @@ node bin/pac-maker.js analyze [--config=<path>] [--json=<path>]
 Benchmark PAC files, show load time, memory usage, and `FindProxyForURL` performance.
 
 ```shell
-node bin/pac-maker.js bench <path/to/file.pac> [morefiles...]
+node bin/pac-maker.js bench <path/to/file.pac> [morefiles...] [--loadCount=<number>] [--workCount=<number>]
 ```
+
+* `--loadCount` Number of load iterations to do, default is 100.
+* `--workCount` Number of work iterations to do, default is 1000.
 
 ### `serve`
 
