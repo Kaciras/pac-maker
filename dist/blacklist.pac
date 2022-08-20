@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v2.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-07-16T05:43:40.903Z
+ * Generated at: 2022-08-20T12:14:20.941Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -233,6 +233,7 @@ globalThis.rules = {
 	"wheretowatch.com": 0,
 	"wingamestore.com": 0,
 	"wizcrafts.net": 0,
+	"wowhead.com": 0,
 	"vod.wwe.com": 0,
 	"xfinity.com": 0,
 	"youwin.com": 0,
@@ -758,6 +759,7 @@ globalThis.rules = {
 	"blogspot.hk": 0,
 	"blogspot.jp": 0,
 	"blogspot.tw": 0,
+	"business.page": 0,
 	"certificate-transparency.org": 0,
 	"chrome.com": 0,
 	"chromecast.com": 0,
@@ -1321,7 +1323,6 @@ globalThis.rules = {
 	"animecrazy.net": 0,
 	"aniscartujo.com": 0,
 	"anobii.com": 0,
-	"anonymise.us": 0,
 	"anonymitynetwork.com": 0,
 	"anonymizer.com": 0,
 	"anonymouse.org": 0,
@@ -1599,6 +1600,7 @@ globalThis.rules = {
 	"brave.com": 0,
 	"bravotube.net": 0,
 	"brazzers.com": 0,
+	"breached.to": 0,
 	"break.com": 0,
 	"breakgfw.com": 0,
 	"breaking911.com": 0,
@@ -2402,6 +2404,7 @@ globalThis.rules = {
 	"fingerdaily.com": 0,
 	"finler.net": 0,
 	"firearmsworld.net": 0,
+	"relay.firefox.com": 0,
 	"fireofliberty.org": 0,
 	"firetweet.io": 0,
 	"firstpost.com": 0,
@@ -2560,6 +2563,7 @@ globalThis.rules = {
 	"gamousa.com": 0,
 	"gaoming.net": 0,
 	"ganges.com": 0,
+	"ganjingworld.com": 0,
 	"gaopi.net": 0,
 	"gaozhisheng.org": 0,
 	"gaozhisheng.net": 0,
@@ -4047,6 +4051,7 @@ globalThis.rules = {
 	"pastebin.com": 0,
 	"pastie.org": 0,
 	"blog.pathtosharepoint.com": 0,
+	"patreon.com": 0,
 	"pbs.org": 0,
 	"video.pbs.org": 0,
 	"pbwiki.com": 0,
@@ -4230,6 +4235,7 @@ globalThis.rules = {
 	"privoxy.org": 0,
 	"procopytips.com": 0,
 	"project-syndicate.org": 0,
+	"proton.me": 0,
 	"provideocoalition.com": 0,
 	"prosiben.de": 0,
 	"proxifier.com": 0,
@@ -4485,6 +4491,7 @@ globalThis.rules = {
 	"seezone.net": 0,
 	"sejie.com": 0,
 	"sendspace.com": 0,
+	"sensortower.com": 0,
 	"tweets.seraph.me": 0,
 	"sesawe.net": 0,
 	"sesawe.org": 0,
@@ -5903,7 +5910,6 @@ globalThis.rules = {
 	"vercel.com": 0,
 	"aka.ms": 0,
 	"zh.ifixit.com": 0,
-	"proton.me": 0,
 	"diygod.me": 0,
 	"www.spring-plus.net": 0,
 	"2dfan.com": 0,
