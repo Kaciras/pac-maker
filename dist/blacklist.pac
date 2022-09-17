@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v2.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-08-20T12:14:20.941Z
+ * Generated at: 2022-09-17T02:59:01.372Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1543,6 +1543,7 @@ globalThis.rules = {
 	"blinkx.com": 0,
 	"blinw.com": 0,
 	"blip.tv": 0,
+	"blockcast.it": 0,
 	"blockcn.com": 0,
 	"blockedbyhk.com": 0,
 	"blockless.com": 0,
@@ -1940,6 +1941,7 @@ globalThis.rules = {
 	"creaders.net": 0,
 	"creadersnet.com": 0,
 	"cristyli.com": 0,
+	"croxyproxy.com": 0,
 	"crocotube.com": 0,
 	"crossthewall.net": 0,
 	"crossvpn.net": 0,
@@ -3405,7 +3407,7 @@ globalThis.rules = {
 	"liberal.org.hk": 0,
 	"libertytimes.com.tw": 0,
 	"blogs.libraryinformationtechnology.com": 0,
-	"lidecheng.com": 0,
+	"libredd.it": 0,
 	"lighten.org.tw": 0,
 	"lightnovel.cn": 0,
 	"limiao.net": 0,
@@ -4778,6 +4780,7 @@ globalThis.rules = {
 	"studentsforafreetibet.org": 0,
 	"stumbleupon.com": 0,
 	"stupidvideos.com": 0,
+	"substack.com": 0,
 	"successfn.com": 0,
 	"panamapapers.sueddeutsche.de": 0,
 	"sugarsync.com": 0,
@@ -5425,6 +5428,7 @@ globalThis.rules = {
 	"vital247.org": 0,
 	"viu.com": 0,
 	"vivahentai4u.net": 0,
+	"vivaldi.com": 0,
 	"vivatube.com": 0,
 	"vivthomas.com": 0,
 	"vjav.com": 0,
@@ -5911,6 +5915,7 @@ globalThis.rules = {
 	"aka.ms": 0,
 	"zh.ifixit.com": 0,
 	"diygod.me": 0,
+	"www.geeksforgeeks.org": 0,
 	"www.spring-plus.net": 0,
 	"2dfan.com": 0,
 	"www.charliebbs.com": 0,
@@ -5920,6 +5925,7 @@ globalThis.rules = {
 	"spring.io": 0,
 	"sentry.io": 0,
 	"creativecommons.org": 0,
+	"greyli.com": 0,
 	"lain.bgm.tv": 0,
 	"www.tianshie.com": 0
 };
