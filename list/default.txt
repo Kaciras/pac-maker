@@ -2,11 +2,14 @@
 
 www.extrabux.com
 vercel.com
+static.rust-lang.org
 aka.ms
 zh.ifixit.com
 proton.me
 diygod.me
 www.geeksforgeeks.org
+inty.news
+www.utorrent.com
 
 www.spring-plus.net
 2dfan.com

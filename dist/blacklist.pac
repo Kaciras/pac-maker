@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v2.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-09-17T02:59:01.372Z
+ * Generated at: 2022-10-17T16:04:54.889Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -3104,6 +3104,7 @@ globalThis.rules = {
 	"inoreader.com": 0,
 	"inote.tw": 0,
 	"insecam.org": 0,
+	"inside.com.tw": 0,
 	"insidevoa.com": 0,
 	"institut-tibetain.org": 0,
 	"internet.org": 0,
@@ -3209,6 +3210,7 @@ globalThis.rules = {
 	"jgoodies.com": 0,
 	"jiangweiping.com": 0,
 	"jiaoyou8.com": 0,
+	"jichangtj.com": 0,
 	"jiehua.cz": 0,
 	"hk.jiepang.com": 0,
 	"tw.jiepang.com": 0,
@@ -3918,6 +3920,7 @@ globalThis.rules = {
 	"nypost.com": 0,
 	"nzchinese.com": 0,
 	"nzchinese.net.nz": 0,
+	"oann.com": 0,
 	"observechina.net": 0,
 	"obutu.com": 0,
 	"ocaspro.com": 0,
@@ -4092,10 +4095,9 @@ globalThis.rules = {
 	"peopo.org": 0,
 	"percy.in": 0,
 	"perfectgirls.net": 0,
-	"perfectvpn.net": 0,
+	"perfect-privacy.com": 0,
 	"persecutionblog.com": 0,
 	"persiankitty.com": 0,
-	"pfd.org.hk": 0,
 	"phapluan.org": 0,
 	"phayul.com": 0,
 	"philborges.com": 0,
@@ -5397,6 +5399,7 @@ globalThis.rules = {
 	"venchina.com": 0,
 	"venetianmacao.com": 0,
 	"veoh.com": 0,
+	"vercel.app": 0,
 	"mysite.verizon.net": 0,
 	"vermonttibet.org": 0,
 	"versavpn.com": 0,
@@ -5912,10 +5915,13 @@ globalThis.rules = {
 	"zzcartoon.com": 0,
 	"www.extrabux.com": 0,
 	"vercel.com": 0,
+	"static.rust-lang.org": 0,
 	"aka.ms": 0,
 	"zh.ifixit.com": 0,
 	"diygod.me": 0,
 	"www.geeksforgeeks.org": 0,
+	"inty.news": 0,
+	"www.utorrent.com": 0,
 	"www.spring-plus.net": 0,
 	"2dfan.com": 0,
 	"www.charliebbs.com": 0,
