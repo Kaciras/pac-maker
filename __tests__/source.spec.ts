@@ -40,7 +40,7 @@ describe("DnsmasqLists", () => {
 		const source = new DnsmasqLists("accelerated-domains");
 		const hostnames = await source.getHostnames();
 
-		expect(hostnames.length).toBeGreaterThan(65894);
+		expect(hostnames.length).toBeGreaterThan(60000);
 		expect(hostnames).toContain("cn");
 		expect(hostnames).toContain("baidupcs.com");
 	});

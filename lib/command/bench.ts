@@ -48,7 +48,7 @@ function benchPAC(file: string, lCount: number, wCount: number) {
 	console.log(`Find proxy time: ${findTime.toFixed(2)} μs/op`);
 }
 
-if (process.send) {
+if (env.BENCHMARK_WORKER === "true") {
 	const lCount = parseInt(env.LOAD_COUNT!);
 	const wCount = parseInt(env.WORK_COUNT!);
 
@@ -63,6 +63,7 @@ export default async function (options: CliOptions) {
 	const { _, workCount = 1000, loadCount = 100 } = options;
 	const worker = fork(fileURLToPath(import.meta.url), _.slice(1), {
 		env: {
+			BENCHMARK_WORKER: "true",
 			LOAD_COUNT: loadCount.toString(),
 			WORK_COUNT: workCount.toString(),
 		},
