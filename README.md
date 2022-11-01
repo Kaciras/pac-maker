@@ -27,10 +27,11 @@ By default, the proxy is `SOCKS5 localhost:2080`, you can change the value to yo
 
 Performance:
 
-| file          | Load time (ms) | FindProxyForURL (μs/op) | Memory usage (MB) |
-|---------------|----------------|-------------------------|-------------------|
-| blacklist.pac | 3.25           | 0.74                    | 0.79              |
-| whitelist.pac | 37.54          | 1.35                    | 6.12              |
+| file                                                   | Load time (ms) | Memory usage (MB) | FindProxyForURL(μs/op) |
+|--------------------------------------------------------|----------------|-------------------|------------------------|
+| blacklist.pac                                          | 7.28           | 0.78              | 0.74                   |
+| whitelist.pac                                          | 69.48          | 6.09              | 1.35                   |
+| [gfwlist2pac](https://github.com/petronny/gfwlist2pac) | 4.22           | 0.20              | 3355.43                |
 
 ## Install
 
@@ -51,8 +52,22 @@ config file should export a configuration object:
 import { builtinList, gfwlist, ofArray } from "pac-maker";
 
 export default {
+	/**
+	 * Location of the generated PAC file, default is "dist/proxy.pac".
+	 */
 	path: "dist/proxy.pac",
+
+	/**
+	 * Fallback route when no rule matching in `sources`, default is "DIRECT".
+	 */
 	direct: "DIRECT",
+
+	/**
+	 * Proxy source map, the key is a proxy sorting, value is an array of HostnameSource.
+	 * pac-maker will get hostnames from all sources and route them to the corresponding key.
+	 *
+	 * Default read hostnames from built-in lists, route them to "SOCKS5 localhost:2080".
+	 */
 	sources: {
 		"SOCKS5 localhost:2080": [
 			gfwlist(),
@@ -74,7 +89,7 @@ There are some built-in sources in pac-maker:
 * `builtinList` Read hostnames from a file in the [list](https://github.com/Kaciras/pac-maker/tree/master/list)
   directory.
 
-* `ofArray` Just use an array of hostnames
+* `ofArray` Just use an array of hostnames.
 
 ## CLI commands
 

@@ -9,15 +9,15 @@ export interface PACMakerConfig {
 	path: string;
 
 	/**
-	 * Fallback when no rule matching in source, default is "DIRECT".
+	 * Fallback when no rule matching in `sources`, default is "DIRECT".
 	 */
 	direct: string;
 
 	/**
 	 * Proxy source map, the key is a proxy sorting, value is an array of HostnameSource.
-	 * pac-maker will get hostnames from all sources in array and map it to the corresponding key.
+	 * pac-maker will get hostnames from all sources and route them to the corresponding key.
 	 *
-	 * Default read hostnames built-in lists, map them to "SOCKS5 localhost:2080".
+	 * Default read hostnames from built-in lists, route them to "SOCKS5 localhost:2080".
 	 */
 	sources: Record<string, HostnameSource[]>;
 }
