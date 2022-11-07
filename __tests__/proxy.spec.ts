@@ -2,7 +2,7 @@ import { Socket } from "net";
 import { afterEach, beforeEach, jest } from "@jest/globals";
 import { getLocal, Mockttp } from "mockttp";
 import { fetch } from "undici";
-import { PACDispatcherOptions } from "../lib";
+import { PACDispatcherOptions } from "../lib/proxy.js";
 
 const createConnection = jest.fn<any>();
 
@@ -38,6 +38,17 @@ function setupSocksTarget(dist: Mockttp) {
 	});
 }
 
+it("should load the PAC code", async () => {
+	await httpServer.forGet("http://foo.bar")
+		.thenReply(200, "__RESPONSE_DATA__");
+
+	const code = `function FindProxyForURL() { return "HTTP [::1]:${httpServer.port}"; }`;
+	const dispatcher = new PACDispatcher(code);
+
+	const res = await fetch("http://foo.bar", { dispatcher });
+	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
+});
+
 it("should make fetch fail with invalid proxy", () => {
 	const dispatcher = create("INVALID [::1]:1080");
 	return expect(fetch("http://foo.bar", { dispatcher })).rejects.toThrow();
@@ -62,10 +73,10 @@ it("should dispatch request directly", async () => {
 it("should proxy the request", async () => {
 	const dispatcher = create(`PROXY [::1]:${httpServer.port}`);
 	const endpoint = await httpServer
-		.forGet("https://foo.bar")
+		.forGet("http://foo.bar")
 		.thenReply(200, "__RESPONSE_DATA__");
 
-	const res = await fetch("https://foo.bar", { dispatcher });
+	const res = await fetch("http://foo.bar", { dispatcher });
 
 	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
 
@@ -74,30 +85,19 @@ it("should proxy the request", async () => {
 	expect(requests[0].headers.host).toBe("foo.bar");
 });
 
-it("should load the PAC code", async () => {
-	await httpServer.forGet("https://foo.bar")
-		.thenReply(200, "__RESPONSE_DATA__");
-
-	const code = `function FindProxyForURL() { return "HTTP [::1]:${httpServer.port}"; }`;
-	const dispatcher = new PACDispatcher(code);
-
-	const res = await fetch("https://foo.bar", { dispatcher });
-	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
-});
-
-it("should work for https proxy", async () => {
-	const dispatcher = create(
-		`HTTPS [::1]:${secureServer.port}`,
-		{ connect: { rejectUnauthorized: false } },
-	);
-	await secureServer
-		.forGet("http://foo.bar")
-		.thenReply(200, "__RESPONSE_DATA__");
-
-	const res = await fetch("http://foo.bar", { dispatcher });
-
-	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
-});
+// it("should work for https proxy", async () => {
+// 	const dispatcher = create(
+// 		`HTTPS [::1]:${secureServer.port}`,
+// 		{ connect: { rejectUnauthorized: false } },
+// 	);
+// 	await secureServer
+// 		.forGet("http://foo.bar")
+// 		.thenReply(200, "__RESPONSE_DATA__");
+//
+// 	const res = await fetch("http://foo.bar", { dispatcher });
+//
+// 	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
+// });
 
 it("should connect target through socks", async () => {
 	setupSocksTarget(httpServer);
@@ -158,7 +158,9 @@ it("should throw error if all proxies failed", async () => {
 
 it("should cache agents", async () => {
 	setupSocksTarget(httpServer);
-	const dispatcher = create("SOCKS [::1]:1; SOCKS [::1]:2");
+	const dispatcher = create("SOCKS [::1]:1; SOCKS [::1]:2", {
+		connections: 1, // Ensure connection reuse.
+	});
 	await httpServer
 		.forGet("/foobar")
 		.thenReply(200, "__RESPONSE_DATA__");

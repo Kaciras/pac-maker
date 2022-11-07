@@ -18,6 +18,10 @@ function socksConnector(
 ) {
 	return async (options: Options, callback: Callback) => {
 		const { protocol, hostname, port } = options;
+		const delegateError = (e: Error) => {
+			callback(e, null);
+		};
+
 		const connection = await SocksClient.createConnection({
 			proxy: {
 				host: socksHost,
@@ -29,7 +33,7 @@ function socksConnector(
 				host: hostname,
 				port: resolvePort(protocol, port as any),
 			},
-		}).catch(error => { callback(error, null); });
+		}).catch(delegateError);
 
 		if (!connection) {
 			return; // Error occurred.
@@ -47,7 +51,7 @@ function socksConnector(
 		}
 
 		return socket
-			.on("error", callback)
+			.on("error", delegateError)
 			.on(connectEvent, () => callback(null, socket));
 	};
 }
