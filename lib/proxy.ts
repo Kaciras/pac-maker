@@ -1,4 +1,4 @@
-import tls from "tls";
+import tls, { TlsOptions } from "tls";
 import { Agent, Dispatcher, ProxyAgent } from "undici";
 import { SocksClient } from "socks";
 import { DispatchHandlers, DispatchOptions } from "undici/types/dispatcher";
@@ -50,16 +50,41 @@ function socksConnector(
 			connectEvent = "secureConnect";
 		}
 
-		return socket
+		socket
 			.on("error", delegateError)
 			.on(connectEvent, () => callback(null, socket));
 	};
 }
 
+export interface PACDispatcherOptions extends Agent.Options {
+
+	/**
+	 * Specifies a timeout in milliseconds that the dispatcher
+	 * should keep the proxy agent object.
+	 *
+	 * @default 300_000
+	 */
+	agentTTL?: number;
+
+	/**
+	 * When using HTTP tunnel proxy, specific the options to
+	 * connect to the proxy server.
+	 */
+	proxyTls?: TlsOptions & { servername?: string };
+
+	/**
+	 * When using HTTP tunnel proxy, specific the options to
+	 * connect to the destination.
+	 */
+	requestTls?: TlsOptions & { servername?: string };
+}
+
+type AgentOptions = Omit<PACDispatcherOptions, "agentTTL">;
+
 /**
  * Create an undici `Agent` that dispatch requests to the proxy server.
  */
-function createAgent(proxy: ParsedProxy, options: Agent.Options = {}) {
+function createAgent(proxy: ParsedProxy, options: AgentOptions = {}) {
 	const { protocol, host, hostname, port } = proxy;
 	switch (protocol) {
 		case "DIRECT":
@@ -89,23 +114,12 @@ interface PACDispatchHandlers extends DispatchHandlers {
 	dispatchNext(): boolean;
 }
 
-export interface PACDispatcherOptions extends Agent.Options {
-
-	/**
-	 * Specifies a timeout in milliseconds that the dispatcher should keep
-	 * the proxy agent object.
-	 *
-	 * @default 300_000
-	 */
-	agentTTL?: number;
-}
-
 /**
  * The undici dispatcher that dispatch requests based on rule described by the PAC.
  */
 export class PACDispatcher extends Dispatcher {
 
-	private readonly agentOptions: PACDispatcherOptions;
+	private readonly agentOptions: AgentOptions;
 	private readonly findProxy: FindProxy;
 	private readonly cache: LRUCache<string, Dispatcher>;
 

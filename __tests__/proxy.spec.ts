@@ -1,10 +1,12 @@
-import { Socket } from "net";
-import { afterEach, beforeEach, jest } from "@jest/globals";
+import { AddressInfo, connect, Socket } from "net";
+import { createServer } from "http";
+import { afterEach, beforeEach, expect, jest } from "@jest/globals";
 import { getLocal, Mockttp } from "mockttp";
+import { SocksClient } from "socks";
 import { fetch } from "undici";
 import { PACDispatcherOptions } from "../lib/proxy.js";
 
-const createConnection = jest.fn<any>();
+const createConnection = jest.fn<typeof SocksClient.createConnection>();
 
 jest.mock("socks", () => ({
 	SocksClient: { createConnection },
@@ -30,12 +32,24 @@ function create(proxy: string, options?: PACDispatcherOptions) {
 	return new PACDispatcher(() => proxy, options);
 }
 
-function setupSocksTarget(dist: Mockttp) {
+function setupSocksTarget(dest: Mockttp) {
 	createConnection.mockImplementation(() => {
 		const socket = new Socket();
-		socket.connect(dist.port);
+		socket.connect(dest.port);
 		return Promise.resolve({ socket });
 	});
+}
+
+function tunnelProxy(dest: Mockttp) {
+	const proxy = createServer().on("connect", (req, socket, head) => {
+		const serverSocket = connect(dest.port, "localhost", () => {
+			socket.write("HTTP/1.1 200\r\n\r\n");
+			serverSocket.write(head);
+			serverSocket.pipe(socket);
+			socket.pipe(serverSocket);
+		});
+	});
+	return new Promise(resolve => proxy.listen(resolve)).then(() => proxy);
 }
 
 it("should load the PAC code", async () => {
@@ -85,19 +99,24 @@ it("should proxy the request", async () => {
 	expect(requests[0].headers.host).toBe("foo.bar");
 });
 
-// it("should work for https proxy", async () => {
-// 	const dispatcher = create(
-// 		`HTTPS [::1]:${secureServer.port}`,
-// 		{ connect: { rejectUnauthorized: false } },
-// 	);
-// 	await secureServer
-// 		.forGet("http://foo.bar")
-// 		.thenReply(200, "__RESPONSE_DATA__");
-//
-// 	const res = await fetch("http://foo.bar", { dispatcher });
-//
-// 	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
-// });
+it("should work for tunnel proxy", async () => {
+	const proxy = await tunnelProxy(secureServer);
+	await secureServer
+		.forGet("/path")
+		.thenReply(200, "__RESPONSE_DATA__");
+
+	const dispatcher = create(
+		`HTTP [::1]:${(proxy.address() as AddressInfo).port}`,
+		{ requestTls: { rejectUnauthorized: false } },
+	);
+
+	try {
+		const res = await fetch("https://foo.bar/path", { dispatcher });
+		await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
+	} finally {
+		proxy.close();
+	}
+});
 
 it("should connect target through socks", async () => {
 	setupSocksTarget(httpServer);
