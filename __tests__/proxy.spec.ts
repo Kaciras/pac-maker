@@ -2,11 +2,10 @@ import { AddressInfo, connect, Socket } from "net";
 import { createServer } from "http";
 import { afterEach, beforeEach, expect, jest } from "@jest/globals";
 import { getLocal, Mockttp } from "mockttp";
-import { SocksClient } from "socks";
 import { fetch } from "undici";
 import { PACDispatcherOptions } from "../lib/proxy.js";
 
-const createConnection = jest.fn<typeof SocksClient.createConnection>();
+const createConnection = jest.fn();
 
 jest.mock("socks", () => ({
 	SocksClient: { createConnection },
@@ -32,11 +31,14 @@ function create(proxy: string, options?: PACDispatcherOptions) {
 	return new PACDispatcher(() => proxy, options);
 }
 
-function setupSocksTarget(dest: Mockttp) {
-	createConnection.mockImplementation(() => {
+function setupSocksTarget(dest: Mockttp | Error) {
+	createConnection.mockImplementation((_, callback: any) => {
+		if(dest instanceof Error) {
+			return callback(dest);
+		}
 		const socket = new Socket();
 		socket.connect(dest.port);
-		return Promise.resolve({ socket });
+		callback(null, { socket });
 	});
 }
 
@@ -69,7 +71,7 @@ it("should make fetch fail with invalid proxy", () => {
 });
 
 it("should make fetch fail with invalid proxy 2", () => {
-	createConnection.mockRejectedValue(new Error());
+	setupSocksTarget(new Error());
 	const dispatcher = create("SOCKS [::1]:1; INVALID [::1]:1080");
 	return expect(fetch("http://foo.bar", { dispatcher })).rejects.toThrow();
 });
@@ -152,7 +154,7 @@ it("should support TLS over socks", async () => {
 });
 
 it("should try the next if a proxy not work", async () => {
-	createConnection.mockRejectedValue(new Error());
+	setupSocksTarget(new Error());
 	const dispatcher = create(`SOCKS [::1]:1; HTTP [::1]:${httpServer.port}`);
 	await httpServer
 		.forGet("http://foo.bar")
@@ -165,7 +167,7 @@ it("should try the next if a proxy not work", async () => {
 });
 
 it("should throw error if all proxies failed", async () => {
-	createConnection.mockRejectedValue(new Error());
+	setupSocksTarget(new Error());
 	const dispatcher = create("SOCKS [::1]:1; SOCKS [::1]:2");
 	const promise = fetch("http://example.com", { dispatcher });
 

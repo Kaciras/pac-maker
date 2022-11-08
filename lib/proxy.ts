@@ -18,11 +18,7 @@ function socksConnector(
 ) {
 	return async (options: Options, callback: Callback) => {
 		const { protocol, hostname, port } = options;
-		const delegateError = (e: Error) => {
-			callback(e, null);
-		};
-
-		const connection = await SocksClient.createConnection({
+		SocksClient.createConnection({
 			proxy: {
 				host: socksHost,
 				port: socksPort,
@@ -33,26 +29,26 @@ function socksConnector(
 				host: hostname,
 				port: resolvePort(protocol, port as any),
 			},
-		}).catch(delegateError);
+		}, (error, connection) => {
+			if (error) {
+				return callback(error, null);
+			}
+			let { socket } = connection!;
 
-		if (!connection) {
-			return; // Error occurred.
-		}
-		let { socket } = connection;
+			let connectEvent = "connect";
+			if (protocol === "https:") {
+				socket = tls.connect({
+					...tlsOptions,
+					socket,
+					servername: hostname,
+				});
+				connectEvent = "secureConnect";
+			}
 
-		let connectEvent = "connect";
-		if (protocol === "https:") {
-			socket = tls.connect({
-				...tlsOptions,
-				socket,
-				servername: hostname,
-			});
-			connectEvent = "secureConnect";
-		}
-
-		socket
-			.on("error", delegateError)
-			.on(connectEvent, () => callback(null, socket));
+			socket
+				.on("error", error => callback(error, null))
+				.on(connectEvent, () => callback(null, socket));
+		});
 	};
 }
 
