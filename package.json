@@ -20,8 +20,8 @@
 	},
 	"type": "module",
 	"files": [
-		"lib",
-		"bin",
+		"lib/**/*.{js,d.ts}",
+		"bin/**/*.{js,d.ts}",
 		"list",
 		"template"
 	],
