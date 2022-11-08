@@ -1,8 +1,8 @@
 /*
- * Proxy Auto-Configuration file made by pac-maker v2.0.0
+ * Proxy Auto-Configuration file made by pac-maker v2.1.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-10-17T16:04:54.889Z
+ * Generated at: 2022-11-08T09:14:02.749Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1214,6 +1214,7 @@ globalThis.rules = {
 	"aboluowang.com": 0,
 	"aboutgfw.com": 0,
 	"abs.edu": 0,
+	"acast.com": 0,
 	"accim.org": 0,
 	"aceros-de-hispania.com": 0,
 	"acevpn.com": 0,
@@ -1566,6 +1567,7 @@ globalThis.rules = {
 	"blubrry.com": 0,
 	"bmfinn.com": 0,
 	"bnews.co": 0,
+	"bnext.com.tw": 0,
 	"bnrmetal.com": 0,
 	"boardreader.com": 0,
 	"bod.asia": 0,
@@ -2410,6 +2412,7 @@ globalThis.rules = {
 	"fireofliberty.org": 0,
 	"firetweet.io": 0,
 	"firstpost.com": 0,
+	"firstrade.com": 0,
 	"flagsonline.it": 0,
 	"fleshbot.com": 0,
 	"fleursdeslettres.com": 0,
@@ -2942,6 +2945,7 @@ globalThis.rules = {
 	"hornygamer.com": 0,
 	"hornytrip.com": 0,
 	"horrorporn.com": 0,
+	"hostloc.com": 0,
 	"hotair.com": 0,
 	"hotav.tv": 0,
 	"hotels.cn": 0,
@@ -3259,6 +3263,7 @@ globalThis.rules = {
 	"bbs.junglobal.net": 0,
 	"juoaa.com": 0,
 	"justfreevpn.com": 0,
+	"justhost.ru": 0,
 	"justicefortenzin.org": 0,
 	"justpaste.it": 0,
 	"justmysocks1.net": 0,
@@ -4395,6 +4400,7 @@ globalThis.rules = {
 	"ritouki.jp": 0,
 	"ritter.vg": 0,
 	"rlwlw.com": 0,
+	"rmbl.ws": 0,
 	"rmjdw.com": 0,
 	"rmjdw132.info": 0,
 	"roadshow.hk": 0,
@@ -4424,6 +4430,7 @@ globalThis.rules = {
 	"rtycminnesota.org": 0,
 	"rukor.org": 0,
 	"rule34.xxx": 0,
+	"rumble.com": 0,
 	"runbtx.com": 0,
 	"rushbee.com": 0,
 	"rusvpn.com": 0,
@@ -5926,7 +5933,6 @@ globalThis.rules = {
 	"2dfan.com": 0,
 	"www.charliebbs.com": 0,
 	"www.xinjiangpolicefiles.org": 0,
-	"hostloc.com": 0,
 	"sentry-cdn.com": 0,
 	"spring.io": 0,
 	"sentry.io": 0,
