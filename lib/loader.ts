@@ -1,4 +1,4 @@
-import vm from "vm";
+import { runInNewContext } from "vm";
 import * as EnvFunctions from "./includes.js";
 
 /**
@@ -42,12 +42,13 @@ export interface BuiltinPAC extends PACGlobals {
  * SECURITY NOTICE:
  * PAC file will be executed as JavaScript, you should only load the code from trusted source.
  *
- * @param code the PAC script content.
+ * @param code the PAC script text.
+ * @param timeout The number of milliseconds to execute code before terminating execution.
  * @return an object represent the script exports.
  */
-export function loadPAC<T = PACGlobals>(code: string) {
+export function loadPAC<T = PACGlobals>(code: string, timeout = 5000) {
 	const context = Object.create(EnvFunctions);
-	vm.runInNewContext(code, context, { timeout: 5000 });
+	runInNewContext(code, context, { timeout });
 	return Object.assign(Object.create(null), context) as T;
 }
 
