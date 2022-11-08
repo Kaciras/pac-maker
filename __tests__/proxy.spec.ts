@@ -1,6 +1,6 @@
 import { AddressInfo, connect, Socket } from "net";
-import { createServer } from "http";
-import { afterEach, beforeEach, expect, jest } from "@jest/globals";
+import * as http from "http";
+import { afterAll, afterEach, beforeEach, expect, jest } from "@jest/globals";
 import { getLocal, Mockttp } from "mockttp";
 import { fetch } from "undici";
 import { PACDispatcherOptions } from "../lib/proxy.js";
@@ -11,8 +11,55 @@ jest.mock("socks", () => ({
 	SocksClient: { createConnection },
 }));
 
-// Dynamic import is required for mocking ES Module.
+// Dynamic import is required for mocking ES Modules.
 const { PACDispatcher } = await import("../lib/proxy.js");
+
+function pac(proxy: string, options?: PACDispatcherOptions) {
+	return new PACDispatcher(() => proxy, options);
+}
+
+function setupSocksTarget(dest: Mockttp | Error) {
+	createConnection.mockImplementation((_, callback: any) => {
+		if (dest instanceof Error) {
+			return callback(dest);
+		}
+		const socket = new Socket();
+		socket.connect(dest.port);
+		callback(null, { socket });
+	});
+}
+
+interface TunnelProxyServer extends http.Server {
+
+	/**
+	 * The latest connect request to the server, used for assertion.
+	 */
+	proxyReq: http.IncomingMessage;
+}
+
+/**
+ * Create a simple HTTP tunnel proxy server. The code is derived from:
+ * https://nodejs.org/dist/latest-v19.x/docs/api/http.html#event-connect
+ */
+function createTunnelProxy() {
+	const proxy = http.createServer() as TunnelProxyServer;
+	proxy.on("connect", (req, socket, head) => {
+		const { port, hostname } = new URL(`http://${req.url}`);
+		proxy.proxyReq = req;
+
+		// @ts-ignore Pass a string to port is ok.
+		const serverSocket = connect(port, hostname, () => {
+			socket.write("HTTP/1.1 200\r\n\r\n");
+			serverSocket.write(head);
+			serverSocket.pipe(socket);
+			socket.pipe(serverSocket);
+		});
+	});
+	return new Promise(resolve => proxy.listen(resolve)).then(() => proxy);
+}
+
+const tunnelProxy = await createTunnelProxy();
+afterAll(callback => void tunnelProxy.close(callback));
 
 const httpServer = getLocal();
 beforeEach(() => httpServer.start());
@@ -27,33 +74,6 @@ const secureServer = getLocal({
 beforeEach(() => secureServer.start());
 afterEach(() => secureServer.stop());
 
-function create(proxy: string, options?: PACDispatcherOptions) {
-	return new PACDispatcher(() => proxy, options);
-}
-
-function setupSocksTarget(dest: Mockttp | Error) {
-	createConnection.mockImplementation((_, callback: any) => {
-		if(dest instanceof Error) {
-			return callback(dest);
-		}
-		const socket = new Socket();
-		socket.connect(dest.port);
-		callback(null, { socket });
-	});
-}
-
-function tunnelProxy(dest: Mockttp) {
-	const proxy = createServer().on("connect", (req, socket, head) => {
-		const serverSocket = connect(dest.port, "localhost", () => {
-			socket.write("HTTP/1.1 200\r\n\r\n");
-			serverSocket.write(head);
-			serverSocket.pipe(socket);
-			socket.pipe(serverSocket);
-		});
-	});
-	return new Promise(resolve => proxy.listen(resolve)).then(() => proxy);
-}
-
 it("should load the PAC code", async () => {
 	await httpServer.forGet("http://foo.bar")
 		.thenReply(200, "__RESPONSE_DATA__");
@@ -66,18 +86,18 @@ it("should load the PAC code", async () => {
 });
 
 it("should make fetch fail with invalid proxy", () => {
-	const dispatcher = create("INVALID [::1]:1080");
+	const dispatcher = pac("INVALID [::1]:1080");
 	return expect(fetch("http://foo.bar", { dispatcher })).rejects.toThrow();
 });
 
 it("should make fetch fail with invalid proxy 2", () => {
 	setupSocksTarget(new Error());
-	const dispatcher = create("SOCKS [::1]:1; INVALID [::1]:1080");
+	const dispatcher = pac("SOCKS [::1]:1; INVALID [::1]:1080");
 	return expect(fetch("http://foo.bar", { dispatcher })).rejects.toThrow();
 });
 
 it("should dispatch request directly", async () => {
-	const dispatcher = create("DIRECT");
+	const dispatcher = pac("DIRECT");
 	await httpServer
 		.forGet("/foobar")
 		.thenReply(200, "__RESPONSE_DATA__");
@@ -87,7 +107,7 @@ it("should dispatch request directly", async () => {
 });
 
 it("should proxy the request", async () => {
-	const dispatcher = create(`PROXY [::1]:${httpServer.port}`);
+	const dispatcher = pac(`PROXY [::1]:${httpServer.port}`);
 	const endpoint = await httpServer
 		.forGet("http://foo.bar")
 		.thenReply(200, "__RESPONSE_DATA__");
@@ -102,27 +122,24 @@ it("should proxy the request", async () => {
 });
 
 it("should work for tunnel proxy", async () => {
-	const proxy = await tunnelProxy(secureServer);
 	await secureServer
 		.forGet("/path")
 		.thenReply(200, "__RESPONSE_DATA__");
 
-	const dispatcher = create(
-		`HTTP [::1]:${(proxy.address() as AddressInfo).port}`,
+	const dispatcher = pac(
+		`HTTP [::1]:${(tunnelProxy.address() as AddressInfo).port}`,
 		{ requestTls: { rejectUnauthorized: false } },
 	);
 
-	try {
-		const res = await fetch("https://foo.bar/path", { dispatcher });
-		await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
-	} finally {
-		proxy.close();
-	}
+	const res = await fetch(secureServer.urlFor("/path"), { dispatcher });
+
+	expect(tunnelProxy.proxyReq).toBeDefined();
+	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
 });
 
 it("should connect target through socks", async () => {
 	setupSocksTarget(httpServer);
-	const dispatcher = create("SOCKS [::1]:1080");
+	const dispatcher = pac("SOCKS [::1]:1080");
 	await httpServer
 		.forGet("/foobar")
 		.thenReply(200, "__RESPONSE_DATA__");
@@ -141,7 +158,7 @@ it("should connect target through socks", async () => {
 
 it("should support TLS over socks", async () => {
 	setupSocksTarget(secureServer);
-	const dispatcher = create(
+	const dispatcher = pac(
 		"SOCKS [::1]:1080",
 		{ connect: { rejectUnauthorized: false } },
 	);
@@ -155,7 +172,7 @@ it("should support TLS over socks", async () => {
 
 it("should try the next if a proxy not work", async () => {
 	setupSocksTarget(new Error());
-	const dispatcher = create(`SOCKS [::1]:1; HTTP [::1]:${httpServer.port}`);
+	const dispatcher = pac(`SOCKS [::1]:1; HTTP [::1]:${httpServer.port}`);
 	await httpServer
 		.forGet("http://foo.bar")
 		.thenReply(200, "__RESPONSE_DATA__");
@@ -168,7 +185,7 @@ it("should try the next if a proxy not work", async () => {
 
 it("should throw error if all proxies failed", async () => {
 	setupSocksTarget(new Error());
-	const dispatcher = create("SOCKS [::1]:1; SOCKS [::1]:2");
+	const dispatcher = pac("SOCKS [::1]:1; SOCKS [::1]:2");
 	const promise = fetch("http://example.com", { dispatcher });
 
 	await expect(promise).rejects.toThrow(TypeError);
@@ -179,7 +196,7 @@ it("should throw error if all proxies failed", async () => {
 
 it("should cache agents", async () => {
 	setupSocksTarget(httpServer);
-	const dispatcher = create("SOCKS [::1]:1; SOCKS [::1]:2", {
+	const dispatcher = pac("SOCKS [::1]:1; SOCKS [::1]:2", {
 		connections: 1, // Ensure connection reuse.
 	});
 	await httpServer
