@@ -1,5 +1,6 @@
 import { setTimeout } from "timers/promises";
 import { readFileSync } from "fs";
+import { afterEach, expect, it } from "@jest/globals";
 import { ExecaChildProcess } from "execa";
 import { getTestSettings, readFixture, runCommand, testDir, useTempDirectory } from "../share";
 
@@ -12,7 +13,7 @@ let process: ExecaChildProcess;
 
 useTempDirectory(testDir);
 
-afterEach(() => process?.kill());
+afterEach(() => void process?.kill());
 
 it("should generate PAC file", async () => {
 	await runCommand("generate");

@@ -1,4 +1,4 @@
-import { jest } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 import { buildPAC, HostnameListLoader } from "../lib/generator";
 import { ofArray } from "../lib/source";
 import { mockTime, readFixture } from "./share";

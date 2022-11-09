@@ -1,7 +1,7 @@
 import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { MockAgent } from "undici";
-import { afterEach } from "@jest/globals";
+import { afterEach, describe, expect, it } from "@jest/globals";
 import { builtinList, DnsmasqLists, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source";
 import { readFixture, testDir, useTempDirectory } from "./share";
 

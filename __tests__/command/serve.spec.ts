@@ -1,5 +1,6 @@
 import { setTimeout } from "timers/promises";
 import { rmSync } from "fs";
+import { afterEach, expect, it } from "@jest/globals";
 import { fetch } from "undici";
 import { ExecaChildProcess } from "execa";
 import { getTestSettings, readFixture, runCommand } from "../share";

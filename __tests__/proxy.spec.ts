@@ -1,6 +1,6 @@
 import { AddressInfo, connect, Socket } from "net";
 import * as http from "http";
-import { afterAll, afterEach, beforeEach, expect, jest } from "@jest/globals";
+import { afterAll, afterEach, beforeEach, expect, it, jest } from "@jest/globals";
 import { getLocal, Mockttp } from "mockttp";
 import { fetch } from "undici";
 import { PACDispatcherOptions } from "../lib/proxy.js";

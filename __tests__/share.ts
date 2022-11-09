@@ -1,9 +1,9 @@
 import { tmpdir } from "os";
 import { join } from "path";
 import { mkdirSync, readFileSync, rmSync } from "fs";
+import { afterEach, beforeEach } from "@jest/globals";
 import { execaNode } from "execa";
 import { root } from "../lib/utils.js";
-import { ChangeHandler, MemorySource } from "../lib/source.js";
 import { loadConfig } from "../lib/config.js";
 
 export const mockTime = Date.UTC(2021, 5, 17);
@@ -19,31 +19,12 @@ export const testDir = join(tmpdir(), "pac-maker");
  * @param path A path to a directory
  */
 export function useTempDirectory(path: string) {
-	beforeEach(() => mkdirSync(path, { recursive: true }));
-	afterEach(() => rmSync(path, { force: true, recursive: true }));
-}
-
-/**
- * Similar to MemorySource but receive updates from process message.
- * Used to trigger update across process.
- */
-export class ProcessMessageSource extends MemorySource {
-
-	private boundUpdate?: ChangeHandler;
-
-	watch(handler: ChangeHandler) {
-		super.watch(handler);
-
-		if (!this.boundUpdate) {
-			this.boundUpdate = this.update.bind(this);
-			process.on("message", this.boundUpdate);
-		}
-	}
-
-	stopWatching() {
-		super.stopWatching();
-		process.off("message", this.boundUpdate!);
-	}
+	beforeEach(() => {
+		mkdirSync(path, { recursive: true });
+	});
+	afterEach(() => {
+		rmSync(path, { force: true, recursive: true });
+	});
 }
 
 /**

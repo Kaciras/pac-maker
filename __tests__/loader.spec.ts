@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import { readFixture } from "./share";
 import { BuiltinPAC, loadPAC, parseProxies } from "../lib/loader";
 
