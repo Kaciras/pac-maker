@@ -25,6 +25,11 @@ describe("loadPAC", () => {
 		expect(FindProxyForURL("", "www.example.com")).toBe("SOCKS5 localhost:1080");
 	});
 
+	it("should terminating execution when timeout exceed", () => {
+		expect(() => loadPAC("while(true){}", 100))
+			.toThrow("Script execution timed out after 100ms");
+	});
+
 	it("should not expose predefined functions", () => {
 		const pac = loadPAC<any>(functionsStub);
 		expect(pac.dnsDomainLevels).toBeUndefined();

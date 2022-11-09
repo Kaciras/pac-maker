@@ -1,5 +1,5 @@
 import { basename, join } from "path";
-import fs, { FSWatcher } from "fs";
+import { FSWatcher, watch } from "fs";
 import { readFile } from "fs/promises";
 import { Dispatcher, fetch } from "undici";
 import { root } from "./utils.js";
@@ -210,8 +210,7 @@ class HostnameFileSource implements HostnameSource {
 	}
 
 	watch(handler: ChangeHandler) {
-		this.watcher ??= fs.watch(this.path);
-		this.watcher.on("change", () => this.getHostnames().then(handler));
+		this.watcher ??= watch(this.path, () => this.getHostnames().then(handler));
 	}
 }
 
