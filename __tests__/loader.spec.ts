@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 import { readFixture } from "./share";
-import { BuiltinPAC, loadPAC, parseProxies } from "../lib/loader";
+import { BuiltinPAC, loadPAC, ParsedProxy, parseProxies } from "../lib/loader";
 
 const stubPAC = readFixture("proxy-1.pac");
 
@@ -60,56 +60,70 @@ describe("parseProxies", () => {
 		["HTTP [::1]:foobar"],
 		["localhost:1080"],
 	])("should fail with %s", (value) => {
-		expect(() => parseProxies(value)).toThrow();
+		expect(() => parseProxies(value)).toThrow(`"${value}" is not a valid proxy`);
 	});
 
-	it.each([
+	it.each<[string, ParsedProxy[]]>([
 		[
 			"PROXY localhost:80",
-			{
+			[{
 				protocol: "PROXY",
 				host: "localhost:80",
 				port: 80,
 				hostname: "localhost",
-			},
+			}],
 		],
 		[
 			"PROXY foo.bar:80;",
-			{
+			[{
 				protocol: "PROXY",
 				host: "foo.bar:80",
 				port: 80,
 				hostname: "foo.bar",
-			},
+			}],
 		],
 		[
 			"DIRECT",
-			{
+			[{
 				protocol: "DIRECT",
 				host: "",
 				port: NaN,
 				hostname: "",
-			},
+			}],
 		],
 		[
 			"SOCKS [::1]:1080",
-			{
+			[{
 				protocol: "SOCKS",
 				host: "[::1]:1080",
 				port: 1080,
 				hostname: "[::1]",
-			},
+			}],
 		],
 		[
 			"\tSOCKS \t [::1]:80  ",
-			{
+			[{
 				protocol: "SOCKS",
 				host: "[::1]:80",
 				port: 80,
 				hostname: "[::1]",
-			},
+			}],
+		],
+		[
+			"SOCKS [::1]:80; \tDIRECT",
+			[{
+				protocol: "SOCKS",
+				host: "[::1]:80",
+				port: 80,
+				hostname: "[::1]",
+			}, {
+				protocol: "DIRECT",
+				host: "",
+				port: NaN,
+				hostname: "",
+			}],
 		],
 	])("should parse %s", (value, expected) => {
-		expect(parseProxies(value)).toStrictEqual([expected]);
+		expect(parseProxies(value)).toStrictEqual(expected);
 	});
 });

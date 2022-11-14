@@ -68,7 +68,7 @@ const re = /^(\w+)(?:\s+(([\w.]+|\[[\d:]+]):(\d+)))?$/;
  * @return parsed proxy description array
  */
 export function parseProxies(value: string) {
-	return value.split(/\s*;\s*/g).filter(Boolean).map(block => {
+	return value.split(";").filter(Boolean).map(block => {
 		const match = re.exec(block.trim());
 		if (!match) {
 			throw new Error(`"${block}" is not a valid proxy`);
