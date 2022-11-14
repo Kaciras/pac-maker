@@ -1,7 +1,11 @@
 declare module "expect" {
 
-	// Implemented in setup-jest.ts
 	interface Matchers<R> {
+		// Implemented in setup-jest.ts
 		toBeHostname(): R;
+	}
+
+	interface AsymmetricMatchers {
+		toBeHostname(): void;
 	}
 }

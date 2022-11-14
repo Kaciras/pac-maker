@@ -12,6 +12,4 @@ export * from "./loader.js";
 
 export { PACMakerConfig };
 
-export type Command = (argv: any, config: PACMakerConfig) => Promise<void>;
-
-export const commands: Record<string, Command> = { analyze, bench, serve, generate };
+export const commands = { analyze, bench, serve, generate };

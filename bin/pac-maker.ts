@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 import yargs, { Argv } from "yargs";
-import { loadConfig } from "../lib/config.js";
+import { loadConfig, PACMakerConfig } from "../lib/config.js";
 import { commands } from "../lib/index.js";
+
+type Command = (argv: any, config: PACMakerConfig) => Promise<unknown>;
 
 interface BaseOptions {
 	config?: string;
@@ -14,7 +16,7 @@ const configFile = argv.config ?? "pac.config.js";
 const required = !!argv.config;
 const config = await loadConfig(configFile, required);
 
-const commandFn = commands[name];
+const commandFn = (commands as Record<string, Command>)[name];
 if (commandFn) {
 	await commandFn(argv, config);
 } else {
