@@ -30,6 +30,7 @@
 	"scripts": {
 		"lint": "eslint --fix .",
 		"test": "jest",
+		"test:mutation": "stryker run",
 		"compile": "tsc"
 	},
 	"dependencies": {
@@ -50,6 +51,8 @@
 		"@kaciras/eslint-config-core": "^2.4.1",
 		"@kaciras/eslint-config-jest": "^2.4.1",
 		"@kaciras/eslint-config-typescript": "^2.4.1",
+		"@stryker-mutator/core": "^6.3.0",
+		"@stryker-mutator/jest-runner": "^6.3.0",
 		"@swc/core": "^1.3.14",
 		"@swc/jest": "^0.2.23",
 		"@types/ini": "^1.3.31",

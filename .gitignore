@@ -21,3 +21,6 @@ coverage/
 /lib/**/*.js
 /bin/*.js
 /__tests__/*.js
+
+# stryker temp files
+/stryker-tmp
