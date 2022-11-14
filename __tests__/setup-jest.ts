@@ -1,5 +1,11 @@
 import { isIP } from "net";
 import { expect } from "@jest/globals";
+import { mockTime } from "./share.js";
+
+/**
+ * Ensure consistent time tag in generated PAC.
+ */
+process.env.MOCK_TIME = mockTime.toString();
 
 // https://stackoverflow.com/a/106223
 const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;

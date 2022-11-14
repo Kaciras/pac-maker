@@ -1,31 +1,27 @@
 import { setTimeout } from "timers/promises";
 import { readFileSync } from "fs";
-import { afterEach, expect, it } from "@jest/globals";
-import { ExecaChildProcess } from "execa";
-import { getTestSettings, readFixture, runCommand, testDir, useTempDirectory } from "../share";
+import { expect, it } from "@jest/globals";
+import { getTestSettings, readFixture, testDir, useTempDirectory } from "../share.js";
+import generate from "../../lib/command/generate.js";
 
 const stubPAC1 = readFixture("proxy-1.pac");
 const stubPAC2 = readFixture("proxy-2.pac");
 
-const config = await getTestSettings();
-
-let process: ExecaChildProcess;
-
 useTempDirectory(testDir);
 
-afterEach(() => void process?.kill());
-
 it("should generate PAC file", async () => {
-	await runCommand("generate");
+	const config = getTestSettings();
+	await generate({}, config);
 	expect(readFileSync(config.path, "utf8")).toBe(stubPAC1);
 });
 
 it("should rebuild when source have updates", async () => {
-	process = runCommand("generate", "--watch");
-	await setTimeout(1000);
+	const config = getTestSettings();
+	generate({ watch: true }, config).then();
+	await setTimeout(100);
 
-	process.send(["kaciras.com", "foo.bar"]);
-	await setTimeout(1000);
+	config.sources["HTTP [::1]:2080"][0].update(["kaciras.com", "foo.bar"]);
+	await setTimeout(100);
 
 	expect(readFileSync(config.path, "utf8")).toBe(stubPAC2);
 });

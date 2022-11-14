@@ -1,24 +1,24 @@
 import { setTimeout } from "timers/promises";
-import { rmSync } from "fs";
+import * as http from "http";
 import { afterEach, expect, it } from "@jest/globals";
 import { fetch } from "undici";
-import { ExecaChildProcess } from "execa";
-import { getTestSettings, readFixture, runCommand } from "../share";
+import { getTestSettings, readFixture, testDir, useTempDirectory } from "../share";
+import serve from "../../lib/command/serve.js";
 
 const stubPAC = readFixture("proxy-1.pac");
 
-const config = await getTestSettings();
+useTempDirectory(testDir);
 
-let process: ExecaChildProcess;
+let server: http.Server;
 
-afterEach(() => {
-	process.kill();
-	rmSync(config.path, { force: true });
+afterEach(callback => {
+	server?.close(callback);
 });
 
 it("should serve PAC file with HTTP", async () => {
-	process = runCommand("serve");
-	await setTimeout(1000);
+	const config = getTestSettings();
+	server = await serve({}, config);
+	await setTimeout(100);
 
 	const response = await fetch("http://localhost:7568/proxy.pac");
 	const code = await response.text();

@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, rmSync } from "fs";
 import { afterEach, beforeEach } from "@jest/globals";
 import { execaNode } from "execa";
 import { root } from "../lib/utils.js";
-import { loadConfig } from "../lib/config.js";
+import { ofArray } from "../lib/source.js";
 
 export const mockTime = Date.UTC(2021, 5, 17);
 
@@ -46,10 +46,21 @@ export function readFixture(filename: string) {
 const configPath = "__tests__/fixtures/test.config.js";
 
 /**
- * Load settings from fixtures/test.config.js
+ *
  */
 export function getTestSettings() {
-	return loadConfig(configPath);
+	return {
+		path: join(testDir, "proxy.pac"),
+		direct: "DIRECT",
+		sources: {
+			"HTTP [::1]:2080": [
+				ofArray(["foo.bar"]),
+			],
+			"SOCKS5 localhost:1080": [
+				ofArray(["example.com"]),
+			],
+		},
+	};
 }
 
 /**
