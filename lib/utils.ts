@@ -1,3 +1,4 @@
+import { readFileSync } from "fs";
 import { mkdir } from "fs/promises";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -15,4 +16,18 @@ export const root = dirname(dirname(fileURLToPath(import.meta.url)));
  */
 export function ensureDirectory(file: string) {
 	return mkdir(dirname(file), { recursive: true });
+}
+
+/**
+ * Import a JSON file as module from project root directory.
+ *
+ * Currently, JSON module is experimental:
+ * https://nodejs.org/api/esm.html#esm_no_json_module_loading
+ *
+ * @param file file to import
+ * @return imported json module
+ */
+export function importJson(file: string) {
+	const url = new URL(file, import.meta.url);
+	return JSON.parse(readFileSync(url, "utf8"));
 }

@@ -1,7 +1,6 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import packageJson from "../package.json" assert { type: "json" };
-import { root } from "./utils.js";
+import { importJson, root } from "./utils.js";
 import { HostnameSource } from "./source.js";
 
 /**
@@ -19,6 +18,7 @@ const placeholder = /__(.+?)__/g;
  * @return the PAC script content
  */
 export function buildPAC(rules: HostRules, fallback = "DIRECT") {
+	const packageJson = importJson("../package.json");
 	const proxies: string[] = [];
 	const hostMap: Record<string, number> = {};
 
