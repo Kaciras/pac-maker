@@ -1,9 +1,9 @@
 import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { MockAgent } from "undici";
-import { afterEach, describe, expect, it } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { builtinList, DnsmasqLists, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source";
-import { readFixture, testDir, useTempDirectory } from "./share";
+import { fixturePath, readFixture, testDir, useTempDirectory } from "./share";
 
 // Used to stop watch progress to ensure program exit.
 let source: HostnameSource;
@@ -23,6 +23,11 @@ describe("gfwlist", () => {
 
 	afterEach(() => dispatcher.close());
 
+	it("should check parameter", () => {
+		expect(() => gfwlist({ period: 0 }))
+			.toThrow("Period cannot be zero or negative");
+	});
+
 	it("should get hostnames", async () => {
 		const source = gfwlist({ dispatcher });
 		const hostnames = await source.getHostnames();
@@ -30,7 +35,7 @@ describe("gfwlist", () => {
 		for (const item of hostnames) {
 			expect(item).toBeHostname();
 		}
-		expect(hostnames.length).toBeGreaterThan(7000);
+		expect(hostnames).toHaveLength(7055);
 	});
 });
 
@@ -55,18 +60,21 @@ describe("file source", () => {
 		return expect(task).rejects.toThrow();
 	});
 
+	it("should parse the file", async () => {
+		source = hostnameFile(fixturePath("hostnames.txt"));
+		const list = await source.getHostnames();
+		expect(list).toEqual(["foo.com", "bar.com"]);
+	});
+
 	it("should trigger update on file modified", async () => {
 		const file = join(testDir, "hostnames.txt");
-		writeFileSync(file, "example.com\n");
-
+		writeFileSync(file, "foo.com");
 		source = hostnameFile(file);
-		const list = await source.getHostnames();
-		expect(list).toEqual(["example.com"]);
 
 		const watching = waitForUpdate();
-		appendFileSync(file, "foobar.com\n");
+		appendFileSync(file, "\nbar.com");
 
-		expect(await watching).toEqual(["example.com", "foobar.com"]);
+		expect(await watching).toEqual(["foo.com", "bar.com"]);
 	});
 });
 
@@ -79,7 +87,8 @@ describe("built-in source", () => {
 	});
 
 	it("should failed with invalid name", async () => {
-		expect(() => builtinList("../default")).toThrow();
+		expect(() => builtinList("../default"))
+			.toThrow("Invalid list name: ../default");
 	});
 });
 
@@ -99,5 +108,16 @@ describe("array source", () => {
 
 		expect(await watching).toEqual([]);
 		expect(await source.getHostnames()).toEqual([]);
+	});
+
+	it("should remove listeners when stop watching", () => {
+		const listener = jest.fn();
+		source = ofArray(["foo.com", "bar.com"]);
+		source.watch(listener);
+
+		source.stopWatching();
+		(source as MemorySource).update([]);
+
+		expect(listener).not.toHaveBeenCalled();
 	});
 });

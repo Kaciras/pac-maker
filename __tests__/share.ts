@@ -3,8 +3,8 @@ import { join } from "path";
 import { mkdirSync, readFileSync, rmSync } from "fs";
 import { afterEach, beforeEach } from "@jest/globals";
 import { execaNode } from "execa";
-import { root } from "../lib/utils.js";
-import { ofArray } from "../lib/source.js";
+import { root } from "../lib/utils";
+import { ofArray } from "../lib/source";
 
 export const mockTime = Date.UTC(2021, 5, 17);
 

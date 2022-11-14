@@ -216,9 +216,9 @@ class HostnameFileSource implements HostnameSource {
 
 export class MemorySource implements HostnameSource {
 
-	private listeners: ChangeHandler[] = [];
+	private listeners: ChangeHandler[];
 
-	private hostnames: string[] = [];
+	private hostnames: string[];
 
 	constructor(hostnames: string[]) {
 		this.listeners = [];
@@ -257,7 +257,7 @@ export function gfwlist(options: HttpSourceOptions = {}) {
  *
  * The hostname file format:
  * 1) One hostname per line.
- * 2) Any line starts with an hash mark (#) is considered a comment.
+ * 2) Any line starts with a hash mark (#) is considered a comment.
  * 3) White spaces and empty lines are ignored.
  *
  * @param path the file path

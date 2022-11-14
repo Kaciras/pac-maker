@@ -1,6 +1,6 @@
 import { isIP } from "net";
 import { expect } from "@jest/globals";
-import { mockTime } from "./share.js";
+import { mockTime } from "./share";
 
 /**
  * Ensure consistent time tag in generated PAC.

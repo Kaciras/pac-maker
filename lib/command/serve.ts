@@ -31,7 +31,7 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 		ctx.type = "application/x-ns-proxy-autoconfig";
 		ctx.body = script;
 	});
-	app.listen(port, host, () => {
+	return app.listen(port, host, () => {
 		console.info(`server started, http://localhost:${port}/proxy.pac`);
 	});
 }

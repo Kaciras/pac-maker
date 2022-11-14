@@ -3,7 +3,7 @@ import * as http from "http";
 import { afterAll, afterEach, beforeEach, expect, it, jest } from "@jest/globals";
 import { getLocal, Mockttp } from "mockttp";
 import { fetch } from "undici";
-import { PACDispatcherOptions } from "../lib/proxy.js";
+import { PACDispatcherOptions } from "../lib/proxy";
 
 const createConnection = jest.fn();
 
@@ -12,7 +12,7 @@ jest.mock("socks", () => ({
 }));
 
 // Dynamic import is required for mocking ES Modules.
-const { PACDispatcher } = await import("../lib/proxy.js");
+const { PACDispatcher } = await import("../lib/proxy");
 
 function pac(proxy: string, options?: PACDispatcherOptions) {
 	return new PACDispatcher(() => proxy, options);
@@ -139,7 +139,7 @@ it("should work for tunnel proxy", async () => {
 
 it("should connect target through socks", async () => {
 	setupSocksTarget(httpServer);
-	const dispatcher = pac("SOCKS [::1]:1080");
+	const dispatcher = pac("SOCKS5 [::1]:1080");
 	await httpServer
 		.forGet("/foobar")
 		.thenReply(200, "__RESPONSE_DATA__");
@@ -151,6 +151,23 @@ it("should connect target through socks", async () => {
 	const [options] = createConnection.mock.calls[0];
 	expect(options).toStrictEqual({
 		proxy: { host: "[::1]", port: 1080, type: 5 },
+		command: "connect",
+		destination: { host: "example.com", port: 80 },
+	});
+});
+
+it("should pass socks version", async () => {
+	setupSocksTarget(httpServer);
+	const dispatcher = pac("SOCKS4 [::1]:1080");
+	await httpServer
+		.forGet("/foobar")
+		.thenReply(200, "__RESPONSE_DATA__");
+
+	await fetch("http://example.com/foobar", { dispatcher });
+
+	const [options] = createConnection.mock.calls[0];
+	expect(options).toStrictEqual({
+		proxy: { host: "[::1]", port: 1080, type: 4 },
 		command: "connect",
 		destination: { host: "example.com", port: 80 },
 	});
