@@ -41,7 +41,7 @@ export async function loadConfig(file: string, required = true) {
 		const url = pathToFileURL(file).toString();
 		userConfig = (await import(url)).default;
 	} catch (e) {
-		if (required || e.code !== "ERR_MODULE_NOT_FOUND") {
+		if (required || e.code !== "MODULE_NOT_FOUND") {
 			throw e;
 		}
 	}
