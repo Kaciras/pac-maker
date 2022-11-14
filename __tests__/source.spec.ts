@@ -1,7 +1,7 @@
 import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { MockAgent } from "undici";
-import { afterEach, describe, expect, it, jest } from "@jest/globals";
+import { afterAll, afterEach, describe, expect, it, jest } from "@jest/globals";
 import { builtinList, DnsmasqLists, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source";
 import { fixturePath, readFixture, testDir, useTempDirectory } from "./share";
 
@@ -21,7 +21,7 @@ describe("gfwlist", () => {
 		.intercept({ path: "/gfwlist/gfwlist/master/gfwlist.txt" })
 		.reply(200, readFixture("gfwlist.txt"));
 
-	afterEach(() => dispatcher.close());
+	afterAll(() => dispatcher.close());
 
 	it("should check parameter", () => {
 		expect(() => gfwlist({ period: 0 }))
@@ -40,12 +40,19 @@ describe("gfwlist", () => {
 });
 
 describe("DnsmasqLists", () => {
+	const dispatcher = new MockAgent();
+
+	dispatcher.get("https://raw.githubusercontent.com")
+		.intercept({ path: "/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf" })
+		.reply(200, readFixture("dnsmasq.txt"));
+
+	afterAll(() => dispatcher.close());
 
 	it("should get hostnames", async () => {
-		const source = new DnsmasqLists("accelerated-domains");
+		const source = new DnsmasqLists("accelerated-domains", { dispatcher });
 		const hostnames = await source.getHostnames();
 
-		expect(hostnames.length).toBeGreaterThan(60000);
+		expect(hostnames).toHaveLength(65042);
 		expect(hostnames).toContain("cn");
 		expect(hostnames).toContain("baidupcs.com");
 	});
