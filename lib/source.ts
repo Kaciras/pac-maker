@@ -57,9 +57,6 @@ class GFWListSource implements HostnameSource {
 		}
 		this.period = period * 1000;
 		this.dispatcher = options.dispatcher;
-
-		this.listeners = [];
-		this.lastModified = new Date(0);
 	}
 
 	async getHostnames() {

@@ -13,7 +13,7 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 	const { host, port = 7568 } = argv;
 	const { direct, sources } = config;
 
-	let script = "";
+	let script: string;
 
 	async function rebuildPACScript() {
 		script = buildPAC(loader.getRules(), direct);
