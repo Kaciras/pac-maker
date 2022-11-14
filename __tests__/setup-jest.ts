@@ -4,6 +4,8 @@ import { mockTime } from "./share.js";
 
 /**
  * Ensure consistent time tag in generated PAC.
+ *
+ * Don't use `jest.setSystemTime(mockTime)` as fake timers will break `fetch`.
  */
 process.env.MOCK_TIME = mockTime.toString();
 
