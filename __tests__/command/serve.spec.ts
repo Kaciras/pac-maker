@@ -6,6 +6,7 @@ import { getTestSettings, readFixture, testDir, useTempDirectory } from "../shar
 import serve from "../../lib/command/serve";
 
 const stubPAC = readFixture("proxy-1.pac");
+const stubPAC2 = readFixture("proxy-2.pac");
 
 useTempDirectory(testDir);
 
@@ -26,4 +27,16 @@ it("should serve PAC file with HTTP", async () => {
 	expect(code).toBe(stubPAC);
 	expect(response.status).toBe(200);
 	expect(response.headers.get("content-type")).toBe("application/x-ns-proxy-autoconfig");
+});
+
+it("should rebuild when source have updates", async () => {
+	const config = getTestSettings();
+	server = await serve({}, config).then();
+	await setTimeout(100);
+
+	config.sources["HTTP [::1]:2080"][0].update(["kaciras.com", "foo.bar"]);
+	await setTimeout(100);
+
+	const response = await fetch("http://localhost:7568/proxy.pac");
+	expect(await response.text()).toBe(stubPAC2);
 });

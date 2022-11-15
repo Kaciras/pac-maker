@@ -17,12 +17,13 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 
 	async function rebuildPACScript() {
 		script = buildPAC(loader.getRules(), direct);
-		console.info("PAC file updated at " + new Date());
+		console.info("PAC updated at " + new Date());
 	}
 
 	const loader = new HostnameListLoader(sources);
 	await loader.refresh();
 	await rebuildPACScript();
+	loader.watch(rebuildPACScript);
 
 	const app = new Koa();
 	app.on("error", err => console.error(err));
