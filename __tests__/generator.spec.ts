@@ -6,13 +6,13 @@ import { readFixture } from "./share";
 const stubPAC = readFixture("proxy-1.pac");
 
 describe("buildPAC", () => {
+	const ruleProxy1 = {
+		"HTTP [::1]:2080": ["foo.bar"],
+		"SOCKS5 localhost:1080": ["example.com"],
+	};
 
 	it("should return PAC script", () => {
-		const code = buildPAC({
-			"HTTP [::1]:2080": ["foo.bar"],
-			"SOCKS5 localhost:1080": ["example.com"],
-		});
-		expect(code).toBe(stubPAC);
+		expect(buildPAC(ruleProxy1)).toBe(stubPAC);
 	});
 
 	it("should throw error on rule conflict", () => {
@@ -20,7 +20,7 @@ describe("buildPAC", () => {
 			"HTTP [::1]:2080": ["foo.com"],
 			"DIRECT": ["foo.com"],
 		};
-		expect(() => buildPAC(rules)).toThrow();
+		expect(() => buildPAC(rules)).toThrow("foo.com already exists");
 	});
 
 	it("should allow hostname with same proxy", () => {
@@ -28,6 +28,31 @@ describe("buildPAC", () => {
 			"HTTP [::1]:2080": ["foo.com", "foo.com"],
 		};
 		expect(() => buildPAC(rules)).not.toThrow();
+	});
+
+	it("should throw error if `env.MOCK_TIME` is invalid", () => {
+		const backup = process.env.MOCK_TIME;
+		process.env.MOCK_TIME = "foobar";
+		try {
+			expect(() => buildPAC(ruleProxy1)).toThrow("Invalid MOCK_TIME: foobar");
+		} finally {
+			process.env.MOCK_TIME = backup;
+		}
+	});
+
+	it("should generate correct time header", () => {
+		const backup = process.env.MOCK_TIME;
+		delete process.env.MOCK_TIME;
+		try {
+			const now = new Date().getTime();
+			const pac = buildPAC(ruleProxy1);
+			const [, v] = / * Generated at: (.+)/.exec(pac)!;
+
+			const tag = new Date(v).getTime();
+			expect(tag).toBeGreaterThanOrEqual(now);
+		} finally {
+			process.env.MOCK_TIME = backup;
+		}
 	});
 });
 

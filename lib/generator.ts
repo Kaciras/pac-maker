@@ -49,7 +49,7 @@ export function buildPAC(rules: HostRules, fallback = "DIRECT") {
 	if (mockTime) {
 		const value = parseInt(mockTime);
 		if (!Number.isInteger(value)) {
-			throw new Error("Invalid MOCK_TIME:" + mockTime);
+			throw new Error("Invalid MOCK_TIME: " + mockTime);
 		}
 		replacements.TIME = new Date(value).toISOString();
 	}
@@ -68,17 +68,13 @@ export function buildPAC(rules: HostRules, fallback = "DIRECT") {
  */
 export class HostnameListLoader {
 
-	private readonly sources: HostnameSource[];
-	private readonly proxies: string[];
+	private readonly sources: HostnameSource[] = [];
+	private readonly proxies: string[] = [];
 
-	private lists: string[][];
+	private lists: string[][] = [];
 	private onRuleUpdated?: () => void;
 
 	constructor(map: Record<string, HostnameSource[]>) {
-		this.sources = [];
-		this.proxies = [];
-		this.lists = [];
-
 		const { sources, proxies } = this;
 
 		for (const k of Object.keys(map)) {

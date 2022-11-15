@@ -47,7 +47,7 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 			// Old file is not exists or cannot parse
 		}
 
-		await writeFile(path, script, "utf8");
+		await writeFile(path, script);
 		console.log(`[${new Date()}] PAC updated.${detail}`);
 	}
 
