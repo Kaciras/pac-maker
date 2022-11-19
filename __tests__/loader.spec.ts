@@ -57,8 +57,13 @@ describe("parseProxies", () => {
 		"",
 		";;;",
 		"\t",
-	])("should fail with %s", (value) => {
+	])("should throw error for %s", (value) => {
 		expect(() => parseProxies(value)).toThrow(`"${value}" is not a valid proxy`);
+	});
+
+	it("should throw error if DIRECT with host", () => {
+		expect(() => parseProxies("DIRECT [::1]:1080"))
+			.toThrow("Cannot specific host for DIRECT connection");
 	});
 
 	it.each<[string, ParsedProxy[]]>([

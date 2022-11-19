@@ -78,7 +78,11 @@ export function parseProxies(value: string) {
 		}
 
 		const [, protocol, host = "", hostname = "", p] = match;
-		if (!host && protocol !== "DIRECT") {
+		if (protocol === "DIRECT") {
+			if (host) {
+				throw new Error("Cannot specific host for DIRECT connection");
+			}
+		} else if (!host) {
 			throw new Error(`"${block}" is not a valid proxy`);
 		}
 
