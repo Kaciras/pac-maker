@@ -14,7 +14,7 @@ jest.mock("socks", () => ({
 // Dynamic import is required for mocking ES Modules.
 const { PACDispatcher } = await import("../lib/proxy");
 
-function pac(proxy: string, options?: PACDispatcherOptions) {
+function pac(proxy: string | null, options?: PACDispatcherOptions) {
 	return new PACDispatcher(() => proxy, options);
 }
 
@@ -96,8 +96,12 @@ it("should make fetch fail with invalid proxy 2", () => {
 	return expect(fetch("http://foo.bar", { dispatcher })).rejects.toThrow();
 });
 
-it("should dispatch request directly", async () => {
-	const dispatcher = pac("DIRECT");
+it.each([
+	null,
+	"",
+	"DIRECT",
+])("should connect directly with %s", async proxy => {
+	const dispatcher = pac(proxy);
 	await httpServer
 		.forGet("/foobar")
 		.thenReply(200, "__RESPONSE_DATA__");

@@ -4,7 +4,7 @@ import * as EnvFunctions from "./includes.js";
 /**
  * Signature of FindProxyForURL.
  */
-export type FindProxy = (url: string, host: string) => string;
+export type FindProxy = (url: string, host: string) => string | null;
 
 /**
  * Essential type that PAC should expose.

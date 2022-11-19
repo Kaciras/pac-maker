@@ -157,7 +157,7 @@ export class PACDispatcher extends Dispatcher {
 		const { agentOptions, cache, findProxy } = this;
 		const { path, origin } = options;
 
-		const p = findProxy(path, origin!.toString());
+		const p = findProxy(path, origin!.toString()) || "DIRECT";
 		const proxies = parseProxies(p)[Symbol.iterator]();
 		const errors: Error[] = [];
 
