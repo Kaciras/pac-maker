@@ -59,17 +59,20 @@ export interface ParsedProxy {
 	hostname: string;
 }
 
-const re = /^(\w+)(?:\s+(([\w.]+|\[[\d:]+]):(\d+)))?$/;
+const blockRE = /^\s*(\w+)(?:\s+(([\w.]+|\[[\d:]+]):(\d+)))?\s*$/;
 
 /**
  * Parse the return value of `FindProxyForURL()`.
+ *
+ * Unlike browsers, this function will throw an error if the value is blank
+ * or contains invalid blocks.
  *
  * @param value the proxy string
  * @return parsed proxy description array
  */
 export function parseProxies(value: string) {
-	return value.split(";").filter(Boolean).map(block => {
-		const match = re.exec(block.trim());
+	return value.split(";").map(block => {
+		const match = blockRE.exec(block);
 		if (!match) {
 			throw new Error(`"${block}" is not a valid proxy`);
 		}

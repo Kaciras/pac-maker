@@ -45,20 +45,18 @@ describe("loadPAC", () => {
 
 describe("parseProxies", () => {
 
-	it("should return empty array if value is empty", () => {
-		expect(parseProxies("")).toStrictEqual([]);
-		expect(parseProxies(";;;")).toStrictEqual([]);
-	});
-
 	it.each([
-		["HTTP [not IPv6]:1080"],
-		["+HTTP [::1]:1080"],
-		["HTTP [::1]:1080foobar"],
-		["PROXY"],
-		["HTTP [::1]"],
-		["HTTP :1080"],
-		["HTTP [::1]:foobar"],
-		["localhost:1080"],
+		"HTTP [not IPv6]:1080",
+		"+HTTP [::1]:1080",
+		"HTTP [::1]:1080foobar",
+		"PROXY",
+		"HTTP [::1]",
+		"HTTP :1080",
+		"HTTP [::1]:foobar",
+		"localhost:1080",
+		"",
+		";;;",
+		"\t",
 	])("should fail with %s", (value) => {
 		expect(() => parseProxies(value)).toThrow(`"${value}" is not a valid proxy`);
 	});
