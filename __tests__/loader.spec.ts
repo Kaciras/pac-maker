@@ -45,25 +45,74 @@ describe("loadPAC", () => {
 
 describe("parseProxies", () => {
 
-	it.each([
-		"HTTP [not IPv6]:1080",
-		"+HTTP [::1]:1080",
-		"HTTP [::1]:1080foobar",
-		"PROXY",
-		"HTTP [::1]",
-		"HTTP :1080",
-		"HTTP [::1]:foobar",
-		"localhost:1080",
-		"",
-		";;;",
-		"\t",
-	])("should throw error for %s", (value) => {
-		expect(() => parseProxies(value)).toThrow(`"${value}" is not a valid proxy`);
+	interface TestInvalidData {
+		/**
+		 * Test string will pass to parseProxies().
+		 */
+		value: string;
+
+		/**
+		 * The return value on non-strict mode.
+		 *
+		 * @default []
+		 */
+		expected?: ParsedProxy[];
+
+		/**
+		 * The error should be thrown on strict mode.
+		 *
+		 * @default `"${value}" is not a valid proxy`
+		 */
+		error?: string;
+	}
+
+	const invalid: TestInvalidData[] = [
+		{ value: "" },
+		{ value: "\t" },
+		{ value: "HTTP [not IPv6]:1080" },
+		{ value: "+HTTP [::1]:1080" },
+		{ value: "HTTP [::1]:1080foobar" },
+		{ value: "PROXY" },
+		{ value: "HTTP [::1]" },
+		{ value: "HTTP :1080" },
+		{ value: "HTTP [::1]:foobar" },
+		{ value: "localhost:1080" },
+
+		{
+			value: ";;;",
+			error: '"" is not a valid proxy',
+		},
+
+		{
+			value: "xxx; HTTP [::1]:1080",
+			expected: [{
+				protocol: "HTTP",
+				host: "[::1]:1080",
+				port: 1080,
+				hostname: "[::1]",
+			}],
+			error: '"xxx" is not a valid proxy',
+		},
+		{
+			value: "DIRECT [::1]:1080",
+			expected: [{
+				protocol: "DIRECT",
+				host: "[::1]:1080",
+				port: 1080,
+				hostname: "[::1]",
+			}],
+			error: "Cannot specific host for DIRECT connection",
+		},
+	];
+
+	it.each(invalid)("should ignore invalid formats for %s", data => {
+		const { value, expected = [] } = data;
+		expect(parseProxies(value)).toStrictEqual(expected);
 	});
 
-	it("should throw error if DIRECT with host", () => {
-		expect(() => parseProxies("DIRECT [::1]:1080"))
-			.toThrow("Cannot specific host for DIRECT connection");
+	it.each(invalid)("should throw error for %s in strict mode", data => {
+		const { value, error = `"${value}" is not a valid proxy` } = data;
+		expect(() => parseProxies(value, true)).toThrow(error);
 	});
 
 	it.each<[string, ParsedProxy[]]>([

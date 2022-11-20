@@ -64,29 +64,34 @@ const blockRE = /^\s*(\w+)(?:\s+(([\w.]+|\[[\d:]+]):(\d+)))?\s*$/;
 /**
  * Parse the return value of `FindProxyForURL()`.
  *
- * Unlike browsers, this function will throw an error if the value is blank
- * or contains invalid blocks.
- *
  * @param value the proxy string
+ * @param strict true to throw an error if the value contains invalid block,
+ * 				 false to ignore them, just like browser.
  * @return parsed proxy description array
  */
-export function parseProxies(value: string) {
-	return value.split(";").map(block => {
+export function parseProxies(value: string, strict = false) {
+	const invalid = strict
+		? (v: string) => {throw new Error(`"${v}" is not a valid proxy`);}
+		: () => null;
+
+	function parseProxyBlock(block: string) {
 		const match = blockRE.exec(block);
 		if (!match) {
-			throw new Error(`"${block}" is not a valid proxy`);
+			return invalid(block);
 		}
 
 		const [, protocol, host = "", hostname = "", p] = match;
 		if (protocol === "DIRECT") {
-			if (host) {
+			if (strict && host) {
 				throw new Error("Cannot specific host for DIRECT connection");
 			}
 		} else if (!host) {
-			throw new Error(`"${block}" is not a valid proxy`);
+			return invalid(block);
 		}
 
 		const port = p ? parseInt(p) : NaN;
 		return { protocol, host, hostname, port } as ParsedProxy;
-	});
+	}
+
+	return value.split(";").map(parseProxyBlock).filter(Boolean);
 }
