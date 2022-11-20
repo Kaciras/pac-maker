@@ -74,7 +74,7 @@ export function parseProxies(value: string, strict = false) {
 		? (v: string) => {throw new Error(`"${v}" is not a valid proxy`);}
 		: () => null;
 
-	function parseProxyBlock(block: string) {
+	function parseBlock(block: string) {
 		const match = blockRE.exec(block);
 		if (!match) {
 			return invalid(block);
@@ -93,5 +93,5 @@ export function parseProxies(value: string, strict = false) {
 		return { protocol, host, hostname, port } as ParsedProxy;
 	}
 
-	return value.split(";").map(parseProxyBlock).filter(Boolean);
+	return value.split(";").map(parseBlock).filter(Boolean) as ParsedProxy[];
 }
