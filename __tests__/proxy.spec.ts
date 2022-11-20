@@ -85,15 +85,29 @@ it("should load the PAC code", async () => {
 	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
 });
 
-it("should make fetch fail with invalid proxy", () => {
+it("should make fetch fail with invalid proxy", async () => {
 	const dispatcher = pac("INVALID [::1]:1080");
-	return expect(fetch("http://foo.bar", { dispatcher })).rejects.toThrow();
+
+	const promise = fetch("http://foo.bar", { dispatcher });
+
+	const cause: AggregateError = await promise.catch(e => e.cause);
+	await expect(promise).rejects.toThrow(TypeError);
+	expect(cause.message).toBe("All proxies are failed");
+	expect(cause.errors).toHaveLength(1);
+	expect(cause.errors[0].message).toBe("Unknown proxy protocol: INVALID");
 });
 
-it("should make fetch fail with invalid proxy 2", () => {
-	setupSocksTarget(new Error());
-	const dispatcher = pac("SOCKS [::1]:1; INVALID [::1]:1080");
-	return expect(fetch("http://foo.bar", { dispatcher })).rejects.toThrow();
+it("should make fetch fail with invalid proxy 2", async () => {
+	setupSocksTarget(new Error("Foobar"));
+	const dispatcher = pac("SOCKS [::1]:1; INVALID");
+
+	const promise = fetch("http://foo.bar", { dispatcher });
+
+	const cause: AggregateError = await promise.catch(e => e.cause);
+	await expect(promise).rejects.toThrow(TypeError);
+	expect(cause.message).toBe("All proxies are failed");
+	expect(cause.errors).toHaveLength(1);
+	expect(cause.errors[0].message).toBe("Foobar");
 });
 
 it.each([
@@ -160,20 +174,24 @@ it("should connect target through socks", async () => {
 	});
 });
 
-it("should pass socks version", async () => {
-	setupSocksTarget(httpServer);
-	const dispatcher = pac("SOCKS4 [::1]:1080");
-	await httpServer
+it("should pass parameters to socks proxy", async () => {
+	setupSocksTarget(secureServer);
+	const dispatcher = pac("SOCKS4 [::1]:1080", {
+		connect: {
+			rejectUnauthorized: false,
+		},
+	});
+	await secureServer
 		.forGet("/foobar")
 		.thenReply(200, "__RESPONSE_DATA__");
 
-	await fetch("http://example.com/foobar", { dispatcher });
+	await fetch("https://example.com/foobar", { dispatcher });
 
 	const [options] = createConnection.mock.calls[0];
 	expect(options).toStrictEqual({
 		proxy: { host: "[::1]", port: 1080, type: 4 },
 		command: "connect",
-		destination: { host: "example.com", port: 80 },
+		destination: { host: "example.com", port: 443 },
 	});
 });
 
@@ -213,6 +231,7 @@ it("should throw error if all proxies failed", async () => {
 
 	const error: AggregateError = await promise.catch(e => e.cause);
 	expect(error.errors).toHaveLength(2);
+	expect(error.message).toBe("All proxies are failed");
 });
 
 it("should cache agents", async () => {

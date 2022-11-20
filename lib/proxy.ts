@@ -107,7 +107,10 @@ function createAgent(proxy: ParsedProxy, options: AgentOptions = {}) {
 }
 
 interface PACDispatchHandlers extends DispatchHandlers {
+
 	dispatchNext(): boolean;
+
+	dispatchWithProxy(value: ParsedProxy): boolean;
 }
 
 /**
@@ -164,11 +167,7 @@ export class PACDispatcher extends Dispatcher {
 		const extension: PACDispatchHandlers = {
 			onError(error: Error) {
 				errors.push(error);
-				try {
-					this.dispatchNext();
-				} catch (e) {
-					handler.onError?.(e);
-				}
+				this.dispatchNext();
 			},
 			dispatchNext() {
 				const { done, value } = proxies.next();
@@ -176,14 +175,20 @@ export class PACDispatcher extends Dispatcher {
 					handler.onError?.(new AggregateError(errors, "All proxies are failed"));
 					return false;
 				}
-
+				try {
+					return this.dispatchWithProxy(value);
+				} catch (e) {
+					errors.push(e);
+					return this.dispatchNext();
+				}
+			},
+			dispatchWithProxy(value: ParsedProxy) {
 				const key = `${value.protocol} ${value.host}`;
 				let dispatcher = cache.get(key);
 				if (!dispatcher) {
 					dispatcher = createAgent(value, agentOptions);
 					cache.set(key, dispatcher);
 				}
-
 				return dispatcher.dispatch(options, this);
 			},
 		};
