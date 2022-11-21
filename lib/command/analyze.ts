@@ -70,7 +70,8 @@ export default async function (argv: CliOptions, config: PACMakerConfig) {
 	const { FindProxyForURL } = loadPAC(await readFile(path, "utf8"));
 	const routes: HostRules = {};
 	for (const host of hostSet) {
-		(routes[FindProxyForURL("", host)] ??= []).push(host);
+		const route = FindProxyForURL("", host) || "DIRECT";
+		(routes[route] ??= []).push(host);
 	}
 
 	console.info(`\nInspect ${hostSet.size} distinct hosts.`);
