@@ -18,7 +18,7 @@ Features:
 
 ## PAC files
 
-The pre-generated PAC file at `/dist` can be used to bypass GFW:
+Pre-generated PAC files at `/dist` can be used to bypass GFW:
 
 * [blacklist.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/blacklist.pac) forward GFW blocked hostnames to the proxy server, other hostnames will connect directly.
 * [whitelist.pac](https://raw.githubusercontent.com/Kaciras/pac-maker/master/dist/whitelist.pac) forward all but China hostnames to the proxy server.
