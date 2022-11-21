@@ -53,9 +53,9 @@ import { builtinList, gfwlist, ofArray } from "pac-maker";
 
 export default {
 	/**
-	 * Location of the generated PAC file, default is "dist/proxy.pac".
+	 * Location of the generated PAC file, default is "proxy.pac".
 	 */
-	path: "dist/proxy.pac",
+	path: "proxy.pac",
 
 	/**
 	 * Fallback route when no rule matching in `sources`, default is "DIRECT".
@@ -65,8 +65,6 @@ export default {
 	/**
 	 * Proxy source map, the key is a proxy sorting, value is an array of HostnameSource.
 	 * pac-maker will get hostnames from all sources and route them to the corresponding key.
-	 *
-	 * Default read hostnames from built-in lists, route them to "SOCKS5 localhost:2080".
 	 */
 	sources: {
 		"SOCKS5 localhost:2080": [

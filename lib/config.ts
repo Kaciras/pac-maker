@@ -1,15 +1,19 @@
 import { pathToFileURL } from "url";
-import { builtinList, HostnameSource } from "./index.js";
+import { HostnameSource } from "./index.js";
 
 export interface PACMakerConfig {
 
 	/**
-	 * Location of the generated PAC file, default is "dist/proxy.pac".
+	 * Location of the generated PAC file.
+	 *
+	 * @default "proxy.pac"
 	 */
 	path: string;
 
 	/**
-	 * Fallback when no rule matching in `sources`, default is "DIRECT".
+	 * Fallback when no rule matching in `sources`.
+	 *
+	 * @default "DIRECT"
 	 */
 	direct: string;
 
@@ -17,21 +21,15 @@ export interface PACMakerConfig {
 	 * Proxy source map, the key is a proxy sorting, value is an array of HostnameSource.
 	 * pac-maker will get hostnames from all sources and route them to the corresponding key.
 	 *
-	 * Default read hostnames from built-in lists, route them to "SOCKS5 localhost:2080".
+	 * @default {}
 	 */
 	sources: Record<string, HostnameSource[]>;
 }
 
 const defaultConfig: PACMakerConfig = {
-	path: "dist/proxy.pac",
+	path: "proxy.pac",
 	direct: "DIRECT",
-	sources: {
-		"SOCKS5 localhost:2080": [
-			builtinList("default"),
-			builtinList("forbidden"),
-			builtinList("unicom"),
-		],
-	},
+	sources: {},
 };
 
 export async function loadConfig(file: string, required = true) {
