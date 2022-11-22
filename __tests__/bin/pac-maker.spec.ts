@@ -31,7 +31,7 @@ it("should load the config file", async () => {
 
 	const [, config] = testCmd.mock.calls[0];
 	expect(config).toStrictEqual({
-		path: "dist/proxy.pac",
+		path: "proxy.pac",
 		direct: "DIRECT",
 		sources: { "HTTPS [::1]:8080": {} },
 	});
