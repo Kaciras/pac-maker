@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
-import { readFixture } from "./share";
-import { BuiltinPAC, loadPAC, ParsedProxy, parseProxies } from "../lib/loader";
+import { readFixture } from "./share.js";
+import { BuiltinPAC, loadPAC, ParsedProxy, parseProxies } from "../lib/loader.js";
 
 const stubPAC = readFixture("proxy-1.pac");
 
@@ -168,6 +168,20 @@ describe("parseProxies", () => {
 				host: "[::1]:80",
 				port: 80,
 				hostname: "[::1]",
+			}, {
+				protocol: "DIRECT",
+				host: "",
+				port: NaN,
+				hostname: "",
+			}],
+		],
+		[
+			"DIRECT;DIRECT",
+			[{
+				protocol: "DIRECT",
+				host: "",
+				port: NaN,
+				hostname: "",
 			}, {
 				protocol: "DIRECT",
 				host: "",

@@ -2,8 +2,16 @@ import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { MockAgent } from "undici";
 import { afterAll, afterEach, describe, expect, it, jest } from "@jest/globals";
-import { builtinList, DnsmasqLists, gfwlist, hostnameFile, HostnameSource, MemorySource, ofArray } from "../lib/source";
-import { fixturePath, readFixture, testDir, useTempDirectory } from "./share";
+import {
+	builtinList,
+	DnsmasqLists,
+	gfwlist,
+	hostnameFile,
+	HostnameSource,
+	MemorySource,
+	ofArray
+} from "../lib/source.js";
+import { fixturePath, readFixture, testDir, useTempDirectory } from "./share.js";
 
 // Used to stop watch progress to ensure program exit.
 let source: HostnameSource;

@@ -1,8 +1,8 @@
 import { setTimeout } from "timers/promises";
 import { readFileSync } from "fs";
 import { expect, it } from "@jest/globals";
-import { getTestSettings, readFixture, testDir, useTempDirectory } from "../share";
-import generate from "../../lib/command/generate";
+import { getTestSettings, readFixture, testDir, useTempDirectory } from "../share.js";
+import generate from "../../lib/command/generate.js";
 
 const stubPAC1 = readFixture("proxy-1.pac");
 const stubPAC2 = readFixture("proxy-2.pac");

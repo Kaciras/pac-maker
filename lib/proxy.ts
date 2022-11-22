@@ -1,10 +1,11 @@
 import tls, { TlsOptions } from "tls";
-import { Agent, Dispatcher, ProxyAgent } from "undici";
+import { Agent, buildConnector, Dispatcher, ProxyAgent } from "undici";
 import { SocksClient } from "socks";
-import { DispatchHandlers, DispatchOptions } from "undici/types/dispatcher";
-import { Callback, Options } from "undici/types/connector";
 import { LRUCache } from "@kaciras/utilities/node";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
+
+type DispatchHandlers = Dispatcher.DispatchHandlers;
+type DispatchOptions = Dispatcher.DispatchOptions;
 
 function resolvePort(protocol: string, port: string) {
 	return port ? Number.parseInt(port) : protocol === "http:" ? 80 : 443;
@@ -15,8 +16,8 @@ function socksConnector(
 	socksPort: number,
 	version: 4 | 5,
 	tlsOptions?: any,
-) {
-	return async (options: Options, callback: Callback) => {
+): buildConnector.connector {
+	return async (options, callback) => {
 		const { protocol, hostname, port } = options;
 		SocksClient.createConnection({
 			proxy: {

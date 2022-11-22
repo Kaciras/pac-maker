@@ -2,8 +2,8 @@ import { setTimeout } from "timers/promises";
 import * as http from "http";
 import { afterEach, expect, it } from "@jest/globals";
 import { fetch } from "undici";
-import { getTestSettings, readFixture, testDir, useTempDirectory } from "../share";
-import serve from "../../lib/command/serve";
+import { getTestSettings, readFixture, testDir, useTempDirectory } from "../share.js";
+import serve from "../../lib/command/serve.js";
 
 const stubPAC = readFixture("proxy-1.pac");
 const stubPAC2 = readFixture("proxy-2.pac");

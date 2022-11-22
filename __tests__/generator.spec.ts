@@ -1,7 +1,7 @@
 import { describe, expect, it, jest } from "@jest/globals";
-import { buildPAC, HostnameListLoader } from "../lib/generator";
-import { ofArray } from "../lib/source";
-import { readFixture } from "./share";
+import { buildPAC, HostnameListLoader } from "../lib/generator.js";
+import { ofArray } from "../lib/source.js";
+import { readFixture } from "./share.js";
 
 const stubPAC = readFixture("proxy-1.pac");
 

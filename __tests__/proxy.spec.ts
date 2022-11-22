@@ -3,7 +3,7 @@ import * as http from "http";
 import { afterAll, afterEach, beforeEach, expect, it, jest } from "@jest/globals";
 import { getLocal, Mockttp } from "mockttp";
 import { fetch } from "undici";
-import { PACDispatcherOptions } from "../lib/proxy";
+import { PACDispatcherOptions } from "../lib/proxy.js";
 
 const createConnection = jest.fn();
 
@@ -12,7 +12,7 @@ jest.mock("socks", () => ({
 }));
 
 // Dynamic import is required for mocking ES Modules.
-const { PACDispatcher } = await import("../lib/proxy");
+const { PACDispatcher } = await import("../lib/proxy.js");
 
 function pac(proxy: string | null, options?: PACDispatcherOptions) {
 	return new PACDispatcher(() => proxy, options);
