@@ -3,7 +3,7 @@ import { Agent, Dispatcher, ProxyAgent } from "undici";
 import { SocksClient } from "socks";
 import { DispatchHandlers, DispatchOptions } from "undici/types/dispatcher";
 import { Callback, Options } from "undici/types/connector";
-import { LRUCache } from "@kaciras/utilities";
+import { LRUCache } from "@kaciras/utilities/node";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
 
 function resolvePort(protocol: string, port: string) {
