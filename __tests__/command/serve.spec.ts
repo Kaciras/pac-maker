@@ -2,7 +2,7 @@ import { setTimeout } from "timers/promises";
 import * as http from "http";
 import { afterEach, expect, it } from "@jest/globals";
 import { fetch } from "undici";
-import { getTestSettings, readFixture, testDir, useTempDirectory } from "../share.js";
+import { getTestConfig, readFixture, testDir, useTempDirectory } from "../share.js";
 import serve from "../../lib/command/serve.js";
 
 const stubPAC = readFixture("proxy-1.pac");
@@ -17,8 +17,7 @@ afterEach(callback => {
 });
 
 it("should serve PAC file with HTTP", async () => {
-	const config = getTestSettings();
-	server = await serve({}, config);
+	server = await serve({}, getTestConfig());
 	await setTimeout(100);
 
 	const response = await fetch("http://localhost:7568/proxy.pac");
@@ -30,7 +29,7 @@ it("should serve PAC file with HTTP", async () => {
 });
 
 it("should rebuild when source have updates", async () => {
-	const config = getTestSettings();
+	const config = getTestConfig();
 	server = await serve({}, config).then();
 	await setTimeout(100);
 

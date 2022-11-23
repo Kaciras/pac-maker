@@ -7,7 +7,7 @@ import { BuiltinPAC, loadPAC } from "../loader.js";
 
 const { redBright, greenBright } = chalk;
 
-interface CliOptions {
+interface GenerateOptions {
 	watch?: true;
 	config?: string;
 }
@@ -27,7 +27,7 @@ async function diff(file: string, newRules: HostRules) {
 	};
 }
 
-export default async function (argv: CliOptions, config: PACMakerConfig) {
+export default async function (argv: GenerateOptions, config: PACMakerConfig) {
 	const { path, direct, sources } = config;
 
 	const loader = new HostnameListLoader(sources);

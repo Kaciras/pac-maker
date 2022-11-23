@@ -10,7 +10,7 @@ import { loadPAC } from "../loader.js";
  */
 declare function gc(): void;
 
-interface CliOptions {
+interface BenchOptions {
 	_: string[];
 	workCount: number;
 	loadCount: number;
@@ -59,7 +59,7 @@ if (env.BENCHMARK_WORKER === "true") {
 	}
 }
 
-export default async function (options: CliOptions) {
+export default async function (options: BenchOptions) {
 	const { _, workCount = 1000, loadCount = 100 } = options;
 	const worker = fork(fileURLToPath(import.meta.url), _.slice(1), {
 		env: {

@@ -3,13 +3,13 @@ import cors from "@koa/cors";
 import { buildPAC, HostnameListLoader } from "../generator.js";
 import { PACMakerConfig } from "../config.js";
 
-interface CliOptions {
+interface ServeOptions {
 	host?: string;
 	port?: number;
 	config?: string;
 }
 
-export default async function (argv: CliOptions, config: PACMakerConfig) {
+export default async function (argv: ServeOptions, config: PACMakerConfig) {
 	const { host, port = 7568 } = argv;
 	const { direct, sources } = config;
 

@@ -5,7 +5,7 @@ import { loadPAC } from "../loader.js";
 import { BrowserData, findAllBrowsers } from "../browser.js";
 import { PACMakerConfig } from "../config.js";
 
-interface CliOptions {
+interface AnalyzeOptions {
 	json?: string;
 	config?: string;
 }
@@ -51,7 +51,7 @@ function percentage(numerator: any, denominator: any) {
 	return (dividend / divisor * 100).toFixed(2) + "%";
 }
 
-export default async function (argv: CliOptions, config: PACMakerConfig) {
+export default async function (argv: AnalyzeOptions, config: PACMakerConfig) {
 	const { path } = config;
 	console.info("Finding what hosts will be proxied by PAC in browser history...\n");
 

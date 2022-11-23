@@ -1,8 +1,8 @@
-import { AddressInfo, connect, Socket } from "net";
-import * as http from "http";
+import { AddressInfo, Socket } from "net";
 import { afterAll, afterEach, beforeEach, expect, it, jest } from "@jest/globals";
 import { getLocal, Mockttp } from "mockttp";
 import { fetch } from "undici";
+import { createTunnelProxy } from "./share.js";
 import { PACDispatcherOptions } from "../lib/proxy.js";
 
 const createConnection = jest.fn();
@@ -29,35 +29,6 @@ function setupSocksTarget(dest: Mockttp | Error) {
 	});
 }
 
-interface TunnelProxyServer extends http.Server {
-
-	/**
-	 * The latest connect request to the server, used for assertion.
-	 */
-	proxyReq: http.IncomingMessage;
-}
-
-/**
- * Create a simple HTTP tunnel proxy server. The code is derived from:
- * https://nodejs.org/dist/latest-v19.x/docs/api/http.html#event-connect
- */
-function createTunnelProxy() {
-	const proxy = http.createServer() as TunnelProxyServer;
-	proxy.on("connect", (req, socket, head) => {
-		const { port, hostname } = new URL(`http://${req.url}`);
-		proxy.proxyReq = req;
-
-		// @ts-ignore Pass a string to port is ok.
-		const serverSocket = connect(port, hostname, () => {
-			socket.write("HTTP/1.1 200\r\n\r\n");
-			serverSocket.write(head);
-			serverSocket.pipe(socket);
-			socket.pipe(serverSocket);
-		});
-	});
-	return new Promise(resolve => proxy.listen(resolve)).then(() => proxy);
-}
-
 const tunnelProxy = await createTunnelProxy();
 afterAll(callback => void tunnelProxy.close(callback));
 
@@ -73,6 +44,21 @@ const secureServer = getLocal({
 });
 beforeEach(() => secureServer.start());
 afterEach(() => secureServer.stop());
+
+/**
+ * Assert the fetching failed by all proxies failed with errors.
+ */
+async function expectProxyFailed(promise: Promise<any>, errors: any[]) {
+	await expect(promise).rejects.toThrow(TypeError);
+
+	const cause: AggregateError = await promise.catch(e => e.cause);
+	expect(cause.message).toBe("All proxies are failed");
+	expect(cause.errors).toHaveLength(errors.length);
+
+	for (let i = 0; i < errors.length; i++) {
+		expect(() => { throw cause.errors[i]; }).toThrow(errors[i]);
+	}
+}
 
 it("should load the PAC code", async () => {
 	await httpServer.forGet("http://foo.bar")
@@ -90,11 +76,7 @@ it("should make fetch fail with invalid proxy", async () => {
 
 	const promise = fetch("http://foo.bar", { dispatcher });
 
-	const cause: AggregateError = await promise.catch(e => e.cause);
-	await expect(promise).rejects.toThrow(TypeError);
-	expect(cause.message).toBe("All proxies are failed");
-	expect(cause.errors).toHaveLength(1);
-	expect(cause.errors[0].message).toBe("Unknown proxy protocol: INVALID");
+	await expectProxyFailed(promise, ["Unknown proxy protocol: INVALID"]);
 });
 
 it("should make fetch fail with invalid proxy 2", async () => {
@@ -103,11 +85,15 @@ it("should make fetch fail with invalid proxy 2", async () => {
 
 	const promise = fetch("http://foo.bar", { dispatcher });
 
-	const cause: AggregateError = await promise.catch(e => e.cause);
-	await expect(promise).rejects.toThrow(TypeError);
-	expect(cause.message).toBe("All proxies are failed");
-	expect(cause.errors).toHaveLength(1);
-	expect(cause.errors[0].message).toBe("Foobar");
+	await expectProxyFailed(promise, ["Foobar"]);
+});
+
+it("should throw error if all proxies failed", async () => {
+	setupSocksTarget(new Error("Foobar"));
+	const dispatcher = pac("SOCKS [::1]:1; SOCKS [::1]:2");
+	const promise = fetch("http://example.com", { dispatcher });
+
+	await expectProxyFailed(promise, ["Foobar", "Foobar"]);
 });
 
 it.each([
@@ -220,18 +206,6 @@ it("should try the next if a proxy not work", async () => {
 	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
 
 	expect(createConnection).toHaveBeenCalledTimes(1);
-});
-
-it("should throw error if all proxies failed", async () => {
-	setupSocksTarget(new Error());
-	const dispatcher = pac("SOCKS [::1]:1; SOCKS [::1]:2");
-	const promise = fetch("http://example.com", { dispatcher });
-
-	await expect(promise).rejects.toThrow(TypeError);
-
-	const error: AggregateError = await promise.catch(e => e.cause);
-	expect(error.errors).toHaveLength(2);
-	expect(error.message).toBe("All proxies are failed");
 });
 
 it("should cache agents", async () => {
