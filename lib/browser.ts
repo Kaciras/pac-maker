@@ -1,6 +1,6 @@
 import { env, platform } from "process";
 import { join } from "path";
-import { readFileSync, statSync } from "fs";
+import { existsSync, readFileSync, statSync } from "fs";
 import ini from "ini";
 import sqlite3 from "sqlite3";
 import { open } from "sqlite";
@@ -32,8 +32,13 @@ export class Chromium implements BrowserData {
 	}
 
 	async getHistories(afterBy?: HistoryEntry) {
+		let profile = join(this.directory, "Default");
+		if (!existsSync(profile)) {
+			const state = JSON.parse(readFileSync(join(this.directory, "Local State"), "utf8"));
+			profile = join(this.directory, state.profile.last_used);
+		}
 		const db = await open({
-			filename: join(this.directory, "Default/History"),
+			filename: join(profile, "History"),
 			driver: sqlite3.Database,
 			mode: sqlite3.OPEN_READONLY,
 		});
