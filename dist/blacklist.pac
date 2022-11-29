@@ -1,8 +1,8 @@
 /*
- * Proxy Auto-Configuration file made by pac-maker v2.1.0
+ * Proxy Auto-Configuration file made by pac-maker v2.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2022-11-08T09:14:02.749Z
+ * Generated at: 2022-11-29T10:55:35.821Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1624,6 +1624,7 @@ globalThis.rules = {
 	"bt95.com": 0,
 	"btaia.com": 0,
 	"btbtav.com": 0,
+	"btdig.com": 0,
 	"btdigg.org": 0,
 	"btku.me": 0,
 	"btku.org": 0,
@@ -1631,7 +1632,6 @@ globalThis.rules = {
 	"btsynckeys.com": 0,
 	"budaedu.org": 0,
 	"buddhanet.com.tw": 0,
-	"buddhistchannel.tv": 0,
 	"buffered.com": 0,
 	"bullguard.com": 0,
 	"bullog.org": 0,
@@ -3980,6 +3980,7 @@ globalThis.rules = {
 	"openervpn.in": 0,
 	"openid.net": 0,
 	"openleaks.org": 0,
+	"openstreetmap.org": 0,
 	"opentech.fund": 0,
 	"openvpn.net": 0,
 	"openwebster.com": 0,
