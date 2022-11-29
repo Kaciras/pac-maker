@@ -1,5 +1,5 @@
 import { runInNewContext } from "vm";
-import * as EnvFunctions from "./includes.js";
+import * as EnvFunctions from "./context.js";
 
 /**
  * Signature of FindProxyForURL.
