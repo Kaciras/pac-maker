@@ -1,5 +1,5 @@
 import { TlsOptions } from "tls";
-import { Agent, Dispatcher, ProxyAgent } from "undici";
+import { Agent, buildConnector, Dispatcher, ProxyAgent } from "undici";
 import { LRUCache } from "@kaciras/utilities/node";
 import { socksDispatcher } from "fetch-socks";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
@@ -8,6 +8,14 @@ type DispatchHandlers = Dispatcher.DispatchHandlers;
 type DispatchOptions = Dispatcher.DispatchOptions;
 
 export interface PACDispatcherOptions extends Agent.Options {
+
+	/**
+	 * TLS upgrade options, see:
+	 * https://undici.nodejs.org/#/docs/api/Client?id=parameter-connectoptions
+	 *
+	 * The connect function currently is not supported.
+	 */
+	connect?: buildConnector.BuildOptions;
 
 	/**
 	 * Specifies a timeout in milliseconds that the dispatcher
@@ -42,15 +50,9 @@ function createAgent(proxy: ParsedProxy, options: AgentOptions = {}) {
 			return new Agent(options);
 		case "SOCKS":
 		case "SOCKS5":
-			return socksDispatcher({
-				...options,
-				proxy: { type: 5, host: hostname, port },
-			});
+			return socksDispatcher({ type: 5, host: hostname, port }, options);
 		case "SOCKS4":
-			return socksDispatcher({
-				...options,
-				proxy: { type: 4, host: hostname, port },
-			});
+			return socksDispatcher({ type: 4, host: hostname, port }, options);
 		case "PROXY":
 		case "HTTP":
 			return new ProxyAgent({ ...options, uri: `http://${host}` });

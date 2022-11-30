@@ -143,7 +143,7 @@ it("should pass parameters to socks proxy", async () => {
 		.intercept({ path: "/foobar" })
 		.reply(200, "__OK__");
 
-	const dispatcher = pac("SOCKS5 [::22]:1080", {
+	const dispatcher = pac("SOCKS5 [::22]:10086", {
 		bodyTimeout: 123,
 		connect: { rejectUnauthorized: false },
 	});
@@ -151,11 +151,15 @@ it("should pass parameters to socks proxy", async () => {
 
 	expect(mockSocksDispatcher.mock.calls).toHaveLength(1);
 
-	const [options] = mockSocksDispatcher.mock.calls[0];
+	const [proxy, options] = mockSocksDispatcher.mock.calls[0];
+	expect(proxy).toStrictEqual({
+		type: 5,
+		host: "[::22]",
+		port: 10086,
+	});
 	expect(options).toStrictEqual({
-		connect: { rejectUnauthorized: false },
 		bodyTimeout: 123,
-		proxy: { host: "[::22]", port: 1080, type: 5 },
+		connect: { rejectUnauthorized: false },
 	});
 });
 
