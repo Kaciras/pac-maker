@@ -23,6 +23,9 @@ import { isIPv4 } from "net";
 import dns from "dns";
 import { deasync } from "@kaciras/deasync";
 
+// We don't test third party code.
+// Stryker disable all
+
 /**
  * Returns true if and only if the domain of hostname matches.
  *

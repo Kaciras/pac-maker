@@ -10,6 +10,9 @@ export default {
 	collectCoverageFrom: [
 		"bin/*.ts",
 		"lib/**/*.ts",
+
+		// We don't test third party code.
+		"!lib/context.ts",
 	],
 	coverageDirectory: "coverage",
 	coverageProvider: "v8",

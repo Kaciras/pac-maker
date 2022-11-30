@@ -30,7 +30,7 @@
 	"scripts": {
 		"lint": "eslint --fix .",
 		"test": "jest",
-		"test:mutation": "stryker run --ignoreStatic",
+		"test:mutation": "stryker run",
 		"compile": "tsc"
 	},
 	"dependencies": {

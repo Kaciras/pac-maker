@@ -6,6 +6,7 @@ export default {
 	htmlReporter: {
 		fileName: "coverage/stryker.html",
 	},
+	ignoreStatic: true,
 	tempDirName: "stryker-tmp",
 	coverageAnalysis: "perTest",
 	testRunner: "jest",
