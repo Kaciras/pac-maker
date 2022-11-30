@@ -1,57 +1,11 @@
-import tls, { TlsOptions } from "tls";
-import { Agent, buildConnector, Dispatcher, ProxyAgent } from "undici";
-import { SocksClient } from "socks";
+import { TlsOptions } from "tls";
+import { Agent, Dispatcher, ProxyAgent } from "undici";
 import { LRUCache } from "@kaciras/utilities/node";
+import { socksDispatcher } from "fetch-socks";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
 
 type DispatchHandlers = Dispatcher.DispatchHandlers;
 type DispatchOptions = Dispatcher.DispatchOptions;
-
-function resolvePort(protocol: string, port: string) {
-	return port ? Number.parseInt(port) : protocol === "http:" ? 80 : 443;
-}
-
-function socksConnector(
-	socksHost: string,
-	socksPort: number,
-	version: 4 | 5,
-	tlsOptions?: any,
-): buildConnector.connector {
-	return async (options, callback) => {
-		const { protocol, hostname, port } = options;
-		SocksClient.createConnection({
-			proxy: {
-				host: socksHost,
-				port: socksPort,
-				type: version,
-			},
-			command: "connect",
-			destination: {
-				host: hostname,
-				port: resolvePort(protocol, port as any),
-			},
-		}, (error, connection) => {
-			if (error) {
-				return callback(error, null);
-			}
-			let { socket } = connection!;
-
-			let connectEvent = "connect";
-			if (protocol === "https:") {
-				socket = tls.connect({
-					...tlsOptions,
-					socket,
-					servername: hostname,
-				});
-				connectEvent = "secureConnect";
-			}
-
-			socket
-				.on("error", error => callback(error, null))
-				.on(connectEvent, () => callback(null, socket));
-		});
-	};
-}
 
 export interface PACDispatcherOptions extends Agent.Options {
 
@@ -88,14 +42,14 @@ function createAgent(proxy: ParsedProxy, options: AgentOptions = {}) {
 			return new Agent(options);
 		case "SOCKS":
 		case "SOCKS5":
-			return new Agent({
+			return socksDispatcher({
 				...options,
-				connect: socksConnector(hostname, port, 5, options.connect),
+				proxy: { type: 5, host: hostname, port },
 			});
 		case "SOCKS4":
-			return new Agent({
+			return socksDispatcher({
 				...options,
-				connect: socksConnector(hostname, port, 4, options.connect),
+				proxy: { type: 4, host: hostname, port },
 			});
 		case "PROXY":
 		case "HTTP":
