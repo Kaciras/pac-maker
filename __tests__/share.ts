@@ -66,7 +66,7 @@ export function readFixture(filename: string) {
 export function getTestConfig() {
 	return {
 		path: join(testDir, "proxy.pac"),
-		direct: "DIRECT",
+		fallback: "DIRECT",
 		sources: {
 			"HTTP [::1]:2080": [
 				ofArray(["foo.bar"]),

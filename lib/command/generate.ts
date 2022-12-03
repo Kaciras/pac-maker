@@ -28,14 +28,14 @@ async function diff(file: string, newRules: HostRules) {
 }
 
 export default async function (argv: GenerateOptions, config: PACMakerConfig) {
-	const { path, direct, sources } = config;
+	const { path, fallback, sources } = config;
 
 	const loader = new HostnameListLoader(sources);
 	await loader.refresh();
 
 	async function rebuildPACScript() {
 		const rules = loader.getRules();
-		const script = buildPAC(rules, direct);
+		const script = buildPAC(rules, fallback);
 		await ensureDirectory(path);
 
 		let detail = "";

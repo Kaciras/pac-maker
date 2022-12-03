@@ -15,7 +15,7 @@ export interface PACMakerConfig {
 	 *
 	 * @default "DIRECT"
 	 */
-	direct: string;
+	fallback: string;
 
 	/**
 	 * Proxy source map, the key is a proxy sorting, value is an array of HostnameSource.
@@ -28,7 +28,7 @@ export interface PACMakerConfig {
 
 const defaultConfig: PACMakerConfig = {
 	path: "proxy.pac",
-	direct: "DIRECT",
+	fallback: "DIRECT",
 	sources: {},
 };
 

@@ -7,7 +7,6 @@ const dispatcher = new PACDispatcher(pac);
 // The config used to generate dist/blacklist.pac
 export default {
 	path: "dist/blacklist.pac",
-	direct: "DIRECT",
 	sources: {
 		"SOCKS5 localhost:2080": [
 			gfwlist({ dispatcher }),

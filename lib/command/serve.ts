@@ -11,12 +11,12 @@ interface ServeOptions {
 
 export default async function (argv: ServeOptions, config: PACMakerConfig) {
 	const { host, port = 7568 } = argv;
-	const { direct, sources } = config;
+	const { fallback, sources } = config;
 
 	let script: string;
 
 	async function rebuildPACScript() {
-		script = buildPAC(loader.getRules(), direct);
+		script = buildPAC(loader.getRules(), fallback);
 		console.info("PAC updated at " + new Date());
 	}
 

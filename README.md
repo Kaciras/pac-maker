@@ -27,11 +27,11 @@ By default, the proxy is `SOCKS5 localhost:2080`, you can change the value to yo
 
 Performance:
 
-| file                                                   | Load time (ms) | Memory usage (MB) | FindProxyForURL(μs/op) |
-|--------------------------------------------------------|----------------|-------------------|------------------------|
-| blacklist.pac                                          | 7.28           | 0.78              | 0.74                   |
-| whitelist.pac                                          | 69.48          | 6.09              | 1.35                   |
-| [gfwlist2pac](https://github.com/petronny/gfwlist2pac) | 4.22           | 0.20              | 3355.43                |
+| file                                                   | Load time (ms) | Memory usage (MB) | FindProxyForURL (μs/op) |
+|--------------------------------------------------------|----------------|-------------------|-------------------------|
+| blacklist.pac                                          | 7.28           | 0.78              | 0.74                    |
+| whitelist.pac                                          | 69.48          | 6.09              | 1.35                    |
+| [gfwlist2pac](https://github.com/petronny/gfwlist2pac) | 4.22           | 0.20              | 3355.43                 |
 
 ## Install
 
@@ -60,7 +60,7 @@ export default {
 	/**
 	 * Fallback route when no rule matching in `sources`, default is "DIRECT".
 	 */
-	direct: "DIRECT",
+	fallback: "DIRECT",
 
 	/**
 	 * Proxy source map, the key is a proxy sorting, value is an array of HostnameSource.
