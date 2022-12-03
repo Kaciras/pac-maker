@@ -105,7 +105,7 @@ describe("parseProxies", () => {
 		},
 	];
 
-	it.each(invalid)("should ignore invalid formats for %s", data => {
+	it.each(invalid)("should ignore invalid formats %s", data => {
 		const { value, expected = [] } = data;
 		expect(parseProxies(value)).toStrictEqual(expected);
 	});

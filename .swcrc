@@ -1,5 +1,4 @@
 {
-	"sourceMaps": "inline",
 	"jsc": {
 		"parser": {
 			"syntax": "typescript"

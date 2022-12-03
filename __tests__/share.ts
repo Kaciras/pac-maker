@@ -4,9 +4,11 @@ import { join } from "path";
 import { mkdirSync, readFileSync, rmSync } from "fs";
 import * as http from "http";
 import { connect } from "net";
-import { afterEach, beforeEach } from "@jest/globals";
+import * as https from "https";
+import { afterAll, afterEach, beforeEach } from "@jest/globals";
 import { root } from "../lib/utils.js";
 import { ofArray } from "../lib/source.js";
+import { TlsOptions } from "tls";
 
 export const mockTime = Date.UTC(2021, 5, 17);
 
@@ -83,15 +85,21 @@ export interface TunnelProxyServer extends http.Server {
 	/**
 	 * The latest connect request to the server, used for assertion.
 	 */
-	proxyReq: http.IncomingMessage;
+	proxyReq?: http.IncomingMessage;
 }
 
 /**
  * Create a simple HTTP tunnel proxy server. The code is derived from:
  * https://nodejs.org/dist/latest-v19.x/docs/api/http.html#event-connect
  */
-export function createTunnelProxy() {
-	const proxy = http.createServer() as TunnelProxyServer;
+export function createTunnelProxy(tls?: TlsOptions) {
+	const proxy = tls
+		? https.createServer(tls) as unknown as TunnelProxyServer
+		: http.createServer() as TunnelProxyServer;
+
+	beforeEach(() => void delete proxy.proxyReq);
+	afterAll(done => void proxy.close(done));
+
 	proxy.on("connect", (req, socket, head) => {
 		const { port, hostname } = new URL(`http://${req.url}`);
 		proxy.proxyReq = req;

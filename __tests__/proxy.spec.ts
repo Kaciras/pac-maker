@@ -1,12 +1,14 @@
 import type { socksDispatcher } from "fetch-socks";
 import type { PACDispatcherOptions } from "../lib/proxy.js";
 import { AddressInfo } from "net";
-import { afterAll, afterEach, beforeEach, expect, it, jest } from "@jest/globals";
+import { afterEach, beforeEach, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { fetch, MockAgent } from "undici";
-import { createTunnelProxy } from "./share.js";
+import { createTunnelProxy, readFixture } from "./share.js";
 
 const mockSocksAgent = new MockAgent();
+mockSocksAgent.disableNetConnect();
+
 const mockSocksDispatcher = jest.fn<typeof socksDispatcher>(() => mockSocksAgent as any);
 
 jest.mock("fetch-socks", () => ({
@@ -21,7 +23,11 @@ function pac(proxy: string | null, options?: PACDispatcherOptions) {
 }
 
 const tunnelProxy = await createTunnelProxy();
-afterAll(callback => void tunnelProxy.close(callback));
+
+const tlsTunnelProxy = await createTunnelProxy({
+	cert: readFixture("localhost.pem"),
+	key: readFixture("localhost.pvk"),
+});
 
 const httpServer = getLocal();
 beforeEach(() => httpServer.start());
@@ -122,7 +128,7 @@ it("should proxy the request", async () => {
 	expect(requests[0].headers.host).toBe("foo.bar");
 });
 
-it("should work for tunnel proxy", async () => {
+it("should establish secure connection over tunnel proxy", async () => {
 	await secureServer
 		.forGet("/path")
 		.thenReply(200, "__RESPONSE_DATA__");
@@ -138,29 +144,67 @@ it("should work for tunnel proxy", async () => {
 	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
 });
 
-it("should pass parameters to socks proxy", async () => {
+it("should establish connection over HTTPS tunnel proxy", async () => {
+	await httpServer
+		.forGet("/path")
+		.thenReply(200, "__RESPONSE_DATA__");
+
+	const dispatcher = pac(
+		`HTTPS [::1]:${(tlsTunnelProxy.address() as AddressInfo).port}`,
+		{ proxyTls: { rejectUnauthorized: false } },
+	);
+
+	const res = await fetch(httpServer.urlFor("/path"), { dispatcher });
+
+	expect(tlsTunnelProxy.proxyReq).toBeDefined();
+	await expect(res.text()).resolves.toBe("__RESPONSE_DATA__");
+});
+
+it.each<any>([
+	{
+		dispatcher: pac("SOCKS 127.0.0.1:1080"),
+		socks: {
+			type: 5,
+			host: "127.0.0.1",
+			port: 1080,
+		},
+	},
+	{
+		dispatcher: pac("SOCKS4 socks.example.com:80"),
+		socks: {
+			type: 4,
+			host: "socks.example.com",
+			port: 80,
+		},
+	},
+	{
+		dispatcher: pac("SOCKS5 [::22]:10086", {
+			bodyTimeout: 123,
+			connect: { rejectUnauthorized: false },
+		}),
+		socks: {
+			type: 5,
+			host: "[::22]",
+			port: 10086,
+		},
+		agentOpts: {
+			bodyTimeout: 123,
+			connect: { rejectUnauthorized: false },
+		},
+	},
+])("should pass parameters to socks dispatcher %#", async params => {
+	const { dispatcher, socks, agentOpts = {} } = params;
 	mockSocksAgent.get("http://example.com")
 		.intercept({ path: "/foobar" })
 		.reply(200, "__OK__");
 
-	const dispatcher = pac("SOCKS5 [::22]:10086", {
-		bodyTimeout: 123,
-		connect: { rejectUnauthorized: false },
-	});
 	await fetch("http://example.com/foobar", { dispatcher });
 
 	expect(mockSocksDispatcher.mock.calls).toHaveLength(1);
 
 	const [proxy, options] = mockSocksDispatcher.mock.calls[0];
-	expect(proxy).toStrictEqual({
-		type: 5,
-		host: "[::22]",
-		port: 10086,
-	});
-	expect(options).toStrictEqual({
-		bodyTimeout: 123,
-		connect: { rejectUnauthorized: false },
-	});
+	expect(proxy).toStrictEqual(socks);
+	expect(options).toStrictEqual(agentOpts);
 });
 
 it("should try the next if a proxy not work", async () => {
