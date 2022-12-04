@@ -12,6 +12,7 @@ declare function gc(): void;
 
 interface BenchOptions {
 	_: string[];
+	host: string;
 	workCount: number;
 	loadCount: number;
 }
@@ -24,7 +25,7 @@ function getHeapUsageMB() {
 	return memoryUsage().heapUsed / 1048576;
 }
 
-function benchPAC(file: string, lCount: number, wCount: number) {
+function benchPAC(file: string, host: string, lCount: number, wCount: number) {
 	console.log(`\nResult of PAC script: ${file}`);
 	const code = readFileSync(file, "utf8");
 
@@ -55,15 +56,16 @@ if (env.BENCHMARK_WORKER === "true") {
 	console.log(`Benchmark ${argv.length - 2} PACs ` +
 		`(load iterations = ${lCount}, work iterations = ${wCount})`);
 	for (let i = 2; i < argv.length; i++) {
-		benchPAC(argv[i], lCount, wCount);
+		benchPAC(argv[i], env.HOST!, lCount, wCount);
 	}
 }
 
 export default async function (options: BenchOptions) {
-	const { _, workCount = 1000, loadCount = 100 } = options;
+	const { _, host = "www.google.com", workCount = 1000, loadCount = 100 } = options;
 	const worker = fork(fileURLToPath(import.meta.url), _.slice(1), {
 		env: {
 			BENCHMARK_WORKER: "true",
+			HOST: host,
 			LOAD_COUNT: loadCount.toString(),
 			WORK_COUNT: workCount.toString(),
 		},

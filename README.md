@@ -35,7 +35,7 @@ Performance:
 
 ## Install
 
-pac-maker requires NodeJS >= 16.
+This package is pure ESM, it cannot be `require()`'d from CommonJS.
 
 ```shell
 npm install pac-maker
@@ -116,9 +116,10 @@ node bin/pac-maker.js analyze [--config=<path>] [--json=<path>]
 Benchmark PAC files, show load time, memory usage, and `FindProxyForURL` performance.
 
 ```shell
-node bin/pac-maker.js bench <path/to/file.pac> [morefiles...] [--loadCount=<number>] [--workCount=<number>]
+node bin/pac-maker.js bench <path/to/file.pac> [morefiles...] [--host=example.com] [--loadCount=<number>] [--workCount=<number>]
 ```
 
+* `--host` The `host` parameter passed to `FindProxyForURL`, default is "www.google.com".
 * `--loadCount` Number of load iterations to do, default is 100.
 * `--workCount` Number of work iterations to do, default is 1000.
 
