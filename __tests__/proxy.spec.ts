@@ -6,10 +6,14 @@ import { getLocal } from "mockttp";
 import { fetch, MockAgent } from "undici";
 import { createTunnelProxy, readFixture } from "./share.js";
 
-const mockSocksAgent = new MockAgent();
-mockSocksAgent.disableNetConnect();
+const mockSocksDispatcher = jest.fn<typeof socksDispatcher>();
 
-const mockSocksDispatcher = jest.fn<typeof socksDispatcher>(() => mockSocksAgent as any);
+function mockSocks() {
+	const agent = new MockAgent();
+	agent.disableNetConnect();
+	mockSocksDispatcher.mockImplementation(() => agent as any);
+	return agent;
+}
 
 jest.mock("fetch-socks", () => ({
 	socksDispatcher: mockSocksDispatcher,
@@ -77,7 +81,7 @@ it("should make fetch fail with invalid proxy", async () => {
 });
 
 it("should make fetch fail with invalid proxy 2", async () => {
-	mockSocksAgent.get("http://example.com")
+	mockSocks().get("http://example.com")
 		.intercept({ path: "/" })
 		.replyWithError(new Error("Foobar"));
 	const dispatcher = pac("SOCKS [::1]:1; INVALID");
@@ -88,7 +92,7 @@ it("should make fetch fail with invalid proxy 2", async () => {
 });
 
 it("should throw error if all proxies failed", async () => {
-	mockSocksAgent.get("http://example.com")
+	mockSocks().get("http://example.com")
 		.intercept({ path: "/" })
 		.replyWithError(new Error("Foobar"))
 		.persist();
@@ -194,7 +198,7 @@ it.each<any>([
 	},
 ])("should pass parameters to socks dispatcher %#", async params => {
 	const { dispatcher, socks, agentOpts = {} } = params;
-	mockSocksAgent.get("http://example.com")
+	mockSocks().get("http://example.com")
 		.intercept({ path: "/foobar" })
 		.reply(200, "__OK__");
 
@@ -208,7 +212,7 @@ it.each<any>([
 });
 
 it("should try the next if a proxy not work", async () => {
-	mockSocksAgent.get("http://foo.bar")
+	mockSocks().get("http://foo.bar")
 		.intercept({ path: "/" })
 		.replyWithError(new Error());
 
@@ -223,7 +227,7 @@ it("should try the next if a proxy not work", async () => {
 });
 
 it("should cache agents", async () => {
-	mockSocksAgent.get("http://example.com")
+	mockSocks().get("http://example.com")
 		.intercept({ path: "/foobar" })
 		.reply(200, "__OK__")
 		.persist();
@@ -236,4 +240,36 @@ it("should cache agents", async () => {
 
 	expect((dispatcher as any).cache.size).toBe(1);
 	expect(mockSocksDispatcher).toHaveBeenCalledTimes(1);
+});
+
+it("should cleanup cached agents on close", async () => {
+	const mockSocksAgent = mockSocks();
+	jest.spyOn(mockSocksAgent, "close");
+
+	const dispatcher = pac("SOCKS [::1]:1");
+	mockSocksAgent.get("http://example.com")
+		.intercept({ path: "/" })
+		.reply(200, "__OK__");
+
+	await fetch("http://example.com", { dispatcher });
+
+	await dispatcher.close();
+
+	expect(mockSocksAgent.close).toHaveBeenCalledTimes(1);
+});
+
+it("should cleanup cached agents on destroy", async () => {
+	const mockSocksAgent = mockSocks();
+	mockSocksAgent.destroy = jest.fn<any>();
+
+	const dispatcher = pac("SOCKS [::1]:1");
+	mockSocksAgent.get("http://example.com")
+		.intercept({ path: "/" })
+		.reply(200, "__OK__");
+
+	await fetch("http://example.com", { dispatcher });
+
+	await dispatcher.destroy();
+
+	expect(mockSocksAgent.destroy).toHaveBeenCalledTimes(1);
 });

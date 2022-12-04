@@ -1,5 +1,6 @@
 import { setTimeout } from "timers/promises";
 import { readFileSync } from "fs";
+import { join } from "path";
 import { expect, it } from "@jest/globals";
 import { getTestConfig, readFixture, testDir, useTempDirectory } from "../share.js";
 import generate from "../../lib/command/generate.js";
@@ -11,6 +12,8 @@ useTempDirectory(testDir);
 
 it("should generate PAC file", async () => {
 	const config = getTestConfig();
+	config.path = join(testDir, "deep", "path", "proxy.pac");
+
 	await generate({}, config);
 	expect(readFileSync(config.path, "utf8")).toBe(stubPAC1);
 });

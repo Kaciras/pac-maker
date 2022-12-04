@@ -10,7 +10,7 @@ it("should throw error when file not found and required=true", () => {
 });
 
 it("should throw error when load failed", () => {
-	const loading = loadConfig(fixturePath("hostnames.txt"));
+	const loading = loadConfig(fixturePath("hostnames.txt"), false);
 	return expect(loading)
 		.rejects
 		.toThrow("Invalid or unexpected token");
