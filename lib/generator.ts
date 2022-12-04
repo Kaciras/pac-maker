@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
 import { join } from "path";
+import { EventEmitter } from "events";
 import { importJson, root } from "./utils.js";
 import { HostnameSource } from "./source.js";
 
@@ -66,15 +67,15 @@ export function buildPAC(rules: HostRules, fallback = "DIRECT") {
 /**
  * This class aggregate hostname sources.
  */
-export class HostnameListLoader {
+export class HostnameListLoader extends EventEmitter {
 
 	private readonly sources: HostnameSource[] = [];
 	private readonly proxies: string[] = [];
 
-	private lists: string[][] = [];
-	private onRuleUpdated?: () => void;
+	private lists!: string[][];
 
 	constructor(map: Record<string, HostnameSource[]>) {
+		super();
 		const { sources, proxies } = this;
 
 		for (const k of Object.keys(map)) {
@@ -90,13 +91,22 @@ export class HostnameListLoader {
 	 * before others in HostnameListLoader.
 	 */
 	async refresh() {
-		this.lists = await Promise.all(this.sources.map(s => s.getHostnames()));
+		const { sources } = this;
+
+		for (let i = 0; i < sources.length; i++) {
+			sources[i].watch(v => {
+				this.lists[i] = v;
+				this.emit("update");
+			});
+		}
+
+		this.lists = await Promise.all(sources.map(s => s.getHostnames()));
 	}
 
 	getRules() {
 		const { proxies, lists } = this;
 
-		if (lists.length !== proxies.length) {
+		if (!lists) {
 			throw new Error("Please call refresh() first");
 		}
 
@@ -106,24 +116,5 @@ export class HostnameListLoader {
 			(rules[p] ??= []).push(...lists[i]);
 		}
 		return rules;
-	}
-
-	watch(onRuleUpdated: () => void) {
-		const { sources, lists } = this;
-
-		if (lists.length !== sources.length) {
-			throw new Error("Please call refresh() first");
-		}
-		if (this.onRuleUpdated) {
-			throw new Error("Already watched");
-		}
-
-		for (let i = 0; i < sources.length; i++) {
-			sources[i].watch(v => {
-				lists[i] = v;
-				onRuleUpdated();
-			});
-		}
-		this.onRuleUpdated = onRuleUpdated;
 	}
 }

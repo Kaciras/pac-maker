@@ -23,7 +23,7 @@ export default async function (argv: ServeOptions, config: PACMakerConfig) {
 	const loader = new HostnameListLoader(sources);
 	await loader.refresh();
 	await rebuildPACScript();
-	loader.watch(rebuildPACScript);
+	loader.on("update", rebuildPACScript);
 
 	const app = new Koa();
 	app.on("error", err => console.error(err));

@@ -62,13 +62,13 @@ describe("HostnameListLoader", () => {
 		const loader = new HostnameListLoader({
 			foo: [ofArray([])],
 		});
-		expect(() => loader.getRules()).toThrow();
-		expect(() => loader.watch(() => {})).toThrow();
+		expect(() => loader.getRules()).toThrow("Please call refresh() first");
 	});
 
-	it("should allow empty sources", () => {
+	it("should allow empty sources", async () => {
 		const loader = new HostnameListLoader({});
-		loader.watch(() => {});
+		await loader.refresh();
+
 		expect(loader.getRules()).toEqual({});
 	});
 
@@ -98,7 +98,7 @@ describe("HostnameListLoader", () => {
 		await loader.refresh();
 
 		const handler = jest.fn();
-		loader.watch(handler);
+		loader.on("update", handler);
 
 		source.update(["example.com"]);
 		expect(handler).toHaveBeenCalledTimes(1);
@@ -115,7 +115,6 @@ describe("HostnameListLoader", () => {
 
 		await loader.refresh();
 		noChange.getHostnames = jest.fn<() => Promise<string[]>>();
-		loader.watch(() => {});
 		source.update(["example.com"]);
 
 		expect(loader.getRules()).toEqual({

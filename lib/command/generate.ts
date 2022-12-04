@@ -54,7 +54,7 @@ export default async function (argv: GenerateOptions, config: PACMakerConfig) {
 	await rebuildPACScript();
 
 	if (argv.watch) {
-		loader.watch(rebuildPACScript);
+		loader.on("update", rebuildPACScript);
 		console.info("pac-maker is watching for source updates...");
 	}
 }
