@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@jest/globals': ^29.3.1
-  '@kaciras/deasync': ^1.0.2
+  '@kaciras/deasync': ^1.0.3
   '@kaciras/eslint-config-core': ^2.5.0
   '@kaciras/eslint-config-jest': ^2.5.0
   '@kaciras/eslint-config-typescript': ^2.5.0
@@ -30,7 +30,7 @@ specifiers:
   yargs: ^17.6.2
 
 dependencies:
-  '@kaciras/deasync': 1.0.2
+  '@kaciras/deasync': 1.0.3
   '@kaciras/utilities': 0.4.0
   '@koa/cors': 4.0.0
   chalk: 5.1.2
@@ -1002,8 +1002,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@kaciras/deasync/1.0.2:
-    resolution: {integrity: sha512-kRNpC9sgevdT9Ir7iawh+jV0EqKGtP+Nnr0XimL1ci+7Vd22cvtU6kySGUtIT5o4f/tDg8rIXWiCJZ78YmKuhw==}
+  /@kaciras/deasync/1.0.3:
+    resolution: {integrity: sha512-6ODifUTZkNMtjOPCpzz6FBoQQ8uqq9PuNM0eOT7CxXDc+1nXOdraTQf0WUymOeKtQo0rsyXMrbFqdDW6APPmqg==}
     engines: {node: '>=14'}
     requiresBuild: true
     dependencies:

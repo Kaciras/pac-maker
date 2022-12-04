@@ -23,7 +23,28 @@ import { isIPv4 } from "net";
 import dns from "dns";
 import { deasync } from "@kaciras/deasync";
 
-// We don't test third party code.
+let dnsLookupSync: (host: string, family: number) => string;
+
+/**
+ * Resolves the given DNS hostname into an IP address,
+ * and returns it in the dot-separated format as a string.
+ *
+ * @param host hostname to resolve.
+ */
+export function dnsResolve(host: string) {
+	if (!dnsLookupSync) {
+		dnsLookupSync = deasync<void, [string, number], string>(dns.lookup);
+		console.warn("Warning: since Node doesn't provide a synchronous DNS API, pac-maker " +
+			"converts dns.resolve into sync by polling the event loop, this may cause bad performance.");
+	}
+	try {
+		return dnsLookupSync(host, 4);
+	} catch (e) {
+		if (e.code === "ENOTFOUND") return null; else throw e;
+	}
+}
+
+// We don't test following third party code.
 // Stryker disable all
 
 /**
@@ -44,23 +65,6 @@ export function dnsDomainIs(host: string, domain: string) {
  */
 export function dnsDomainLevels(host: string) {
 	return host.split(".").length - 1;
-}
-
-let dnsResolveSync: (host: string) => string;
-
-/**
- * Resolves the given DNS hostname into an IP address,
- * and returns it in the dot-separated format as a string.
- *
- * @param host hostname to resolve.
- */
-export function dnsResolve(host: string) {
-	if (!dnsResolveSync) {
-		dnsResolveSync = deasync<void, string>(dns.resolve);
-		console.warn("Warning: since Node doesn't provide a synchronous DNS API, pac-maker " +
-			"converts dns.resolve into sync by polling the event loop, this may cause bad performance.");
-	}
-	return dnsResolveSync(host);
 }
 
 /**
@@ -100,7 +104,7 @@ export function isInNet(ipaddr: string, pattern: string, maskstr: string) {
 		return false;
 	}
 	if (!isIPv4(ipaddr)) {
-		ipaddr = dnsResolve(ipaddr);
+		ipaddr = dnsResolve(ipaddr) as any;
 		if (ipaddr === null) {
 			return false;
 		}

@@ -34,7 +34,7 @@
 		"compile": "tsc"
 	},
 	"dependencies": {
-		"@kaciras/deasync": "^1.0.2",
+		"@kaciras/deasync": "^1.0.3",
 		"@kaciras/utilities": "^0.4.0",
 		"@koa/cors": "^4.0.0",
 		"chalk": "^5.1.0",
