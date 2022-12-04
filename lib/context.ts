@@ -39,8 +39,14 @@ export function dnsResolve(host: string) {
 	}
 	try {
 		return dnsLookupSync(host, 4);
-	} catch (e) {
-		if (e.code === "ENOTFOUND") return null; else throw e;
+	} catch (error) {
+		switch (error.code) {
+			case "ENOTFOUND":	// DNS respond, not found.
+			case "EAI_AGAIN":	// DNS lookup timed out.
+				return null;
+			default:
+				throw error;	// Should we return null in all cases?
+		}
 	}
 }
 
