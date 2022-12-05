@@ -1,5 +1,6 @@
 import { appendFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { setTimeout } from "timers/promises";
 import { MockAgent } from "undici";
 import { afterAll, afterEach, describe, expect, it, jest } from "@jest/globals";
 import {
@@ -9,7 +10,7 @@ import {
 	hostnameFile,
 	HostnameSource,
 	MemorySource,
-	ofArray
+	ofArray,
 } from "../lib/source.js";
 import { fixturePath, readFixture, testDir, useTempDirectory } from "./share.js";
 
@@ -27,7 +28,8 @@ describe("gfwlist", () => {
 
 	dispatcher.get("https://raw.githubusercontent.com")
 		.intercept({ path: "/gfwlist/gfwlist/master/gfwlist.txt" })
-		.reply(200, readFixture("gfwlist.txt"));
+		.reply(200, readFixture("gfwlist.txt"))
+		.persist();
 
 	afterAll(() => dispatcher.close());
 
@@ -37,13 +39,24 @@ describe("gfwlist", () => {
 	});
 
 	it("should get hostnames", async () => {
-		const source = gfwlist({ dispatcher });
+		source = gfwlist({ dispatcher });
 		const hostnames = await source.getHostnames();
 
 		for (const item of hostnames) {
 			expect(item).toBeHostname();
 		}
 		expect(hostnames).toHaveLength(7055);
+	});
+
+	it("should not trigger update if no changes", async () => {
+		const listener = jest.fn();
+		source = gfwlist({ period: 1, dispatcher });
+		await source.getHostnames();
+
+		source.watch(listener);
+		await setTimeout(1001);
+
+		expect(listener).not.toHaveBeenCalled();
 	});
 });
 
@@ -54,15 +67,32 @@ describe("DnsmasqLists", () => {
 		.intercept({ path: "/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf" })
 		.reply(200, readFixture("dnsmasq.txt"));
 
+	dispatcher.get("https://api.github.com")
+		.intercept({ path: "/repos/felixonmars/dnsmasq-china-list/commits" })
+		.reply(200, readFixture("commits.json"));
+
 	afterAll(() => dispatcher.close());
 
 	it("should get hostnames", async () => {
-		const source = new DnsmasqLists("accelerated-domains", { dispatcher });
+		source = new DnsmasqLists("accelerated-domains", { dispatcher });
 		const hostnames = await source.getHostnames();
 
 		expect(hostnames).toHaveLength(65042);
 		expect(hostnames).toContain("cn");
 		expect(hostnames).toContain("baidupcs.com");
+	});
+
+	it("should check for updates",async () => {
+		const listener = jest.fn();
+		source = new DnsmasqLists("accelerated-domains", { dispatcher });
+		source.watch(listener);
+		source.getHostnames = jest.fn(async () => []);
+
+		await (source as DnsmasqLists).checkUpdate();
+		await (source as DnsmasqLists).checkUpdate();
+
+		expect(listener).toHaveBeenCalledTimes(1);
+		expect(source.getHostnames).toHaveBeenCalledTimes(1);
 	});
 });
 

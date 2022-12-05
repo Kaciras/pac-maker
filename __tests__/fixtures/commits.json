@@ -1,0 +1,81 @@
+[
+  {
+    "sha": "7eac56fbf3aaa036f7894f671657b5116993b15b",
+    "node_id": "C_kwDOAJ8tK9oAKDdlYWM1NmZiZjNhYWEwMzZmNzg5NGY2NzE2NTdiNTExNjk5M2IxNWI",
+    "commit": {
+      "author": {
+        "name": "Felix Yan",
+        "email": "felixonmars@archlinux.org",
+        "date": "2022-12-03T15:15:50Z"
+      },
+      "committer": {
+        "name": "Felix Yan",
+        "email": "↓ Modified for tests",
+        "date": "2099-12-03T15:15:50Z"
+      },
+      "message": "accelerated-domains: remove 54hei.com",
+      "tree": {
+        "sha": "964941e4ce6cd818f19e7b90c2d494cea88f519a",
+        "url": "https://api.github.com/repos/felixonmars/dnsmasq-china-list/git/trees/964941e4ce6cd818f19e7b90c2d494cea88f519a"
+      },
+      "url": "https://api.github.com/repos/felixonmars/dnsmasq-china-list/git/commits/7eac56fbf3aaa036f7894f671657b5116993b15b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQJOBAABCAA4FiEEtZcfLFwQqaCMYAMPeGxj8zDXy5IFAmOLaCYaHGZlbGl4b25t\nYXJzQGFyY2hsaW51eC5vcmcACgkQeGxj8zDXy5JOOg//WqVnonGbOKbEI5iiyiVe\nDDj7w9VqwpHFjz3DHpz54vrSFzWuwHfqRC97pc7VgyLx2k+/GxQc96Hd37aloE24\nbJiZc5lRz9xwzWObjvRFZp1gj3gNUEbJBoi524FnJF9FOUNorSPMCOx5gpCL5KyR\n87SOX7fU9HLZWNXVmUz9dJ5+uF2aAoxSahdZYkxWAmuEVvhKsAnGaHrWo7CMaT9u\n/7i3z+bVZnoiSKoaMh0OlvubMDN72h4U/ILm/xETnHFZkBjpgO2bnNta+sQEWo/g\nLxZbEEY9PjHCtae3OLoiaaqHNTd/sKj4Y3CloMxfuQKr0eCIh545BMnCDAgUWEKe\nig74HoLqTHXMQjk8hvplNyQv9PQ5xgTybd8meotnvmjqqGU414mSV+HpI/3DWG6J\nEMyCgBYfDkDijRU2bQ267L87/2dhCPog8n3tte+zuUWN4A9fAOi5iEnsUwo6Z/Fi\nrHLwMSg2IYOwfmerx/LpyoGnw6anvSIxpMEWHlCX/3TK4ZBx35pTOWg5O/TzhShZ\nlWR++VaB6FZ648+pHvPOibP6NjBoqJ7DsMccc10taecfoer1EGlm8e4+ieyFHAjQ\naIdnXlG7xFx+UTWf3pU6kmtsL+mDYkrhEQCxSTwxuWWJNMakaxpper/UkQ8tlX1K\nhzG24tm2ahgE2qCwHQCn1PE=\n=i/bH\n-----END PGP SIGNATURE-----",
+        "payload": "tree 964941e4ce6cd818f19e7b90c2d494cea88f519a\nparent 853cce4cd9d1ae6711ab7304ca1d37d5365f7fed\nauthor Felix Yan <felixonmars@archlinux.org> 1670080550 +0000\ncommitter Felix Yan <felixonmars@archlinux.org> 1670080550 +0000\n\naccelerated-domains: remove 54hei.com\n"
+      }
+    },
+    "url": "https://api.github.com/repos/felixonmars/dnsmasq-china-list/commits/7eac56fbf3aaa036f7894f671657b5116993b15b",
+    "html_url": "https://github.com/felixonmars/dnsmasq-china-list/commit/7eac56fbf3aaa036f7894f671657b5116993b15b",
+    "comments_url": "https://api.github.com/repos/felixonmars/dnsmasq-china-list/commits/7eac56fbf3aaa036f7894f671657b5116993b15b/comments",
+    "author": {
+      "login": "felixonmars",
+      "id": 1006477,
+      "node_id": "MDQ6VXNlcjEwMDY0Nzc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1006477?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/felixonmars",
+      "html_url": "https://github.com/felixonmars",
+      "followers_url": "https://api.github.com/users/felixonmars/followers",
+      "following_url": "https://api.github.com/users/felixonmars/following{/other_user}",
+      "gists_url": "https://api.github.com/users/felixonmars/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/felixonmars/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/felixonmars/subscriptions",
+      "organizations_url": "https://api.github.com/users/felixonmars/orgs",
+      "repos_url": "https://api.github.com/users/felixonmars/repos",
+      "events_url": "https://api.github.com/users/felixonmars/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/felixonmars/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "felixonmars",
+      "id": 1006477,
+      "node_id": "MDQ6VXNlcjEwMDY0Nzc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1006477?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/felixonmars",
+      "html_url": "https://github.com/felixonmars",
+      "followers_url": "https://api.github.com/users/felixonmars/followers",
+      "following_url": "https://api.github.com/users/felixonmars/following{/other_user}",
+      "gists_url": "https://api.github.com/users/felixonmars/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/felixonmars/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/felixonmars/subscriptions",
+      "organizations_url": "https://api.github.com/users/felixonmars/orgs",
+      "repos_url": "https://api.github.com/users/felixonmars/repos",
+      "events_url": "https://api.github.com/users/felixonmars/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/felixonmars/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "853cce4cd9d1ae6711ab7304ca1d37d5365f7fed",
+        "url": "https://api.github.com/repos/felixonmars/dnsmasq-china-list/commits/853cce4cd9d1ae6711ab7304ca1d37d5365f7fed",
+        "html_url": "https://github.com/felixonmars/dnsmasq-china-list/commit/853cce4cd9d1ae6711ab7304ca1d37d5365f7fed"
+      }
+    ]
+  }
+]
