@@ -10,12 +10,38 @@ export interface HistoryEntry {
 	url: string;
 }
 
-export interface BrowserData {
+export interface BrowserEngine {
 
 	getHistories(): Promise<HistoryEntry[]>;
 }
 
-export class Chromium implements BrowserData {
+export class Safari implements BrowserEngine {
+
+	readonly directory: string;
+
+	constructor(directory: string) {
+		this.directory = directory;
+
+		if (!statSync(directory).isDirectory()) {
+			throw new Error(`${directory} is not a directory`);
+		}
+	}
+
+	toString() {
+		return `Safari - ${this.directory}`;
+	}
+
+	async getHistories() {
+		const db = await open({
+			filename: join(this.directory, "History.db"),
+			driver: sqlite3.Database,
+			mode: sqlite3.OPEN_READONLY,
+		});
+		return db.all<HistoryEntry[]>("SELECT id,url FROM history_items");
+	}
+}
+
+export class Chromium implements BrowserEngine {
 
 	readonly directory: string;
 
@@ -47,7 +73,7 @@ export class Chromium implements BrowserData {
 	}
 }
 
-export class Firefox implements BrowserData {
+export class Firefox implements BrowserEngine {
 
 	readonly directory: string;
 
@@ -128,6 +154,10 @@ export function findChrome() {
 	}
 }
 
+export function findSafari() {
+	return new Safari(join(env.HOME!, "Library", "Safari"));
+}
+
 function silence<T>(fn: () => T) {
 	try {
 		return fn();
@@ -137,6 +167,6 @@ function silence<T>(fn: () => T) {
 }
 
 export function findAllBrowsers() {
-	const browsers: Array<() => BrowserData> = [findFirefox, findEdge, findChrome];
-	return browsers.map(silence).filter(Boolean) as BrowserData[];
+	const browsers: Array<() => BrowserEngine> = [findFirefox, findEdge, findChrome, findSafari];
+	return browsers.map(silence).filter(Boolean) as BrowserEngine[];
 }
