@@ -1,3 +1,6 @@
 # These websites ban Chinese IP
 
+# https://beta.openai.com/docs/supported-countries
+openai.com
+
 www.tianshie.com
