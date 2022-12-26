@@ -20,8 +20,7 @@ export default async function (argv: ServeOptions, config: PACMakerConfig) {
 		console.info("PAC updated at " + new Date());
 	}
 
-	const loader = new HostnameListLoader(sources);
-	await loader.refresh();
+	const loader = await HostnameListLoader.create(sources);
 	await rebuildPACScript();
 	loader.on("update", rebuildPACScript);
 

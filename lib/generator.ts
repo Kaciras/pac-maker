@@ -66,15 +66,27 @@ export function buildPAC(rules: HostRules, fallback = "DIRECT") {
 
 /**
  * This class aggregate hostname sources.
+ *
+ * @example
+ * const loader = await HostnameListLoader.create({...});
+ * const rules = loader.getRules();
+ *
+ * // Watch for source updates.
+ * loader.on("update", rules => {});
  */
 export class HostnameListLoader extends EventEmitter {
+
+	static create(map: Record<string, HostnameSource[]>) {
+		const loader = new HostnameListLoader(map);
+		return loader.refresh().then(() => loader);
+	}
 
 	private readonly sources: HostnameSource[] = [];
 	private readonly proxies: string[] = [];
 
 	private lists!: string[][];
 
-	constructor(map: Record<string, HostnameSource[]>) {
+	private constructor(map: Record<string, HostnameSource[]>) {
 		super();
 		const { sources, proxies } = this;
 
@@ -84,31 +96,30 @@ export class HostnameListLoader extends EventEmitter {
 				sources.push(source);
 			}
 		}
+
+		this.on("newListener", this.onNewListener);
+		this.on("removeListener", this.onRemoveListener);
 	}
 
-	/**
-	 * Force reload hostnames from all sources, this method must be called
-	 * before others in HostnameListLoader.
-	 */
-	async refresh() {
-		const { sources } = this;
-
-		for (let i = 0; i < sources.length; i++) {
-			sources[i].watch(v => {
-				this.lists[i] = v;
-				this.emit("update");
-			});
+	onNewListener(event: string) {
+		if (event === "update" && this.listenerCount(event) === 0) {
+			for (let i = 0; i < this.sources.length; i++) {
+				this.sources[i].watch(v => {
+					this.lists[i] = v;
+					this.emit("update", this.getRules());
+				});
+			}
 		}
+	}
 
-		this.lists = await Promise.all(sources.map(s => s.getHostnames()));
+	onRemoveListener(event: string) {
+		if (event === "update" && this.listenerCount(event) === 0) {
+			this.sources.forEach(s => s.stopWatching());
+		}
 	}
 
 	getRules() {
 		const { proxies, lists } = this;
-
-		if (!lists) {
-			throw new Error("Please call refresh() first");
-		}
 
 		const rules: HostRules = {};
 		for (let i = 0; i < lists.length; i++) {
@@ -116,5 +127,12 @@ export class HostnameListLoader extends EventEmitter {
 			(rules[p] ??= []).push(...lists[i]);
 		}
 		return rules;
+	}
+
+	/**
+	 * Force reload hostnames from all sources.
+	 */
+	async refresh() {
+		this.lists = await Promise.all(this.sources.map(s => s.getHostnames()));
 	}
 }

@@ -81,8 +81,7 @@ export default async function (argv: AnalyzeOptions, config: PACMakerConfig) {
 		"Percentage": percentage(matches, hostSet),
 	})));
 
-	const loader = new HostnameListLoader(config.sources);
-	await loader.refresh();
+	const loader = await HostnameListLoader.create(config.sources);
 	const hostOfRules = Object.values(loader.getRules()).flat();
 
 	console.info("\nFinding visited hostnames of rules...");

@@ -30,8 +30,7 @@ async function diff(file: string, newRules: HostRules) {
 export default async function (argv: GenerateOptions, config: PACMakerConfig) {
 	const { path, fallback, sources } = config;
 
-	const loader = new HostnameListLoader(sources);
-	await loader.refresh();
+	const loader = await HostnameListLoader.create(sources);
 
 	async function rebuildPACScript() {
 		const rules = loader.getRules();
@@ -44,7 +43,7 @@ export default async function (argv: GenerateOptions, config: PACMakerConfig) {
 			detail += greenBright(` ${added}+`);
 			detail += redBright(`, ${removed}-.`);
 		} catch (e) {
-			// Old file is not exists or cannot parse
+			// Old file is not exists or cannot parse.
 		}
 
 		await writeFile(path, script);

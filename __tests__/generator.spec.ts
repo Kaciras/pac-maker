@@ -58,22 +58,13 @@ describe("buildPAC", () => {
 
 describe("HostnameListLoader", () => {
 
-	it("should throw when call method before initialized", () => {
-		const loader = new HostnameListLoader({
-			foo: [ofArray([])],
-		});
-		expect(() => loader.getRules()).toThrow("Please call refresh() first");
-	});
-
 	it("should allow empty sources", async () => {
-		const loader = new HostnameListLoader({});
-		await loader.refresh();
-
+		const loader = await HostnameListLoader.create({});
 		expect(loader.getRules()).toEqual({});
 	});
 
 	it("should load rules", async () => {
-		const loader = new HostnameListLoader({
+		const loader = await HostnameListLoader.create({
 			foo: [
 				ofArray(["example.com"]),
 			],
@@ -83,7 +74,6 @@ describe("HostnameListLoader", () => {
 			],
 		});
 
-		await loader.refresh();
 		const rules = loader.getRules();
 
 		expect(rules).toEqual({
@@ -94,8 +84,7 @@ describe("HostnameListLoader", () => {
 
 	it("should watch source updates", async () => {
 		const source = ofArray(["kaciras.com"]);
-		const loader = new HostnameListLoader({ foo: [source] });
-		await loader.refresh();
+		const loader = await HostnameListLoader.create({ foo: [source] });
 
 		const handler = jest.fn();
 		loader.on("update", handler);
@@ -106,18 +95,20 @@ describe("HostnameListLoader", () => {
 	});
 
 	it("should cache fetched results", async () => {
-		const source = ofArray(["foobar.com"]);
 		const noChange = ofArray(["kaciras.com"]);
-		const loader = new HostnameListLoader({
+		const source = ofArray(["foobar.com"]);
+		const loader = await HostnameListLoader.create({
 			foo: [source],
 			bar: [noChange],
 		});
 
-		await loader.refresh();
+		const handler = jest.fn();
+		loader.on("update", handler);
+
 		noChange.getHostnames = jest.fn<() => Promise<string[]>>();
 		source.update(["example.com"]);
 
-		expect(loader.getRules()).toEqual({
+		expect(handler.mock.calls[0][0]).toEqual({
 			foo: ["example.com"],
 			bar: ["kaciras.com"],
 		});
