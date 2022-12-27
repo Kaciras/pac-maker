@@ -1,0 +1,13 @@
+{
+	"routes": {
+		"HTTP [::1]:2080": [
+			"foo.bar"
+		],
+		"DIRECT": [
+			"kaciras.com"
+		]
+	},
+	"used": [
+		"foo.bar"
+	]
+}

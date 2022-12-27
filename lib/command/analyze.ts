@@ -7,7 +7,6 @@ import { PACMakerConfig } from "../config.js";
 
 interface AnalyzeOptions {
 	json?: string;
-	config?: string;
 }
 
 interface PACAnalyzeResult {

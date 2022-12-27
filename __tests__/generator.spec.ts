@@ -114,4 +114,16 @@ describe("HostnameListLoader", () => {
 		});
 		expect(noChange.getHostnames).not.toHaveBeenCalled();
 	});
+
+	it("should stop watching if no listeners", async () => {
+		const source = ofArray([]);
+		source.stopWatching = jest.fn();
+		const loader = await HostnameListLoader.create({ foo: [source] });
+
+		const handler = jest.fn();
+		loader.on("update", handler);
+		loader.off("update", handler);
+
+		expect(source.stopWatching).toHaveBeenCalled();
+	});
 });
