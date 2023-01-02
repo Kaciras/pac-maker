@@ -5,10 +5,10 @@ import { mkdirSync, readFileSync, rmSync } from "fs";
 import * as http from "http";
 import { connect } from "net";
 import * as https from "https";
+import { TlsOptions } from "tls";
 import { afterAll, afterEach, beforeEach } from "@jest/globals";
 import { root } from "../lib/utils.js";
 import { ofArray } from "../lib/source.js";
-import { TlsOptions } from "tls";
 
 export const mockTime = Date.UTC(2021, 5, 17);
 

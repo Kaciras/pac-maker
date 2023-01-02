@@ -212,12 +212,11 @@ class HostnameFileSource implements HostnameSource {
 
 export class MemorySource implements HostnameSource {
 
-	private listeners: ChangeHandler[];
+	private listeners: ChangeHandler[] = [];
 
 	private hostnames: string[];
 
 	constructor(hostnames: string[]) {
-		this.listeners = [];
 		this.hostnames = hostnames;
 	}
 
