@@ -27,6 +27,7 @@ specifiers:
   sqlite3: ^5.1.4
   typescript: ^4.9.4
   undici: ^5.14.0
+  wait-for-expect: ^3.0.2
   yargs: ^17.6.2
 
 dependencies:
@@ -59,6 +60,7 @@ devDependencies:
   jest: 29.3.1
   mockttp: 3.6.2
   typescript: 4.9.4
+  wait-for-expect: 3.0.2
 
 packages:
 
@@ -5827,6 +5829,10 @@ packages:
     dependencies:
       acorn: 8.8.1
       acorn-walk: 8.2.0
+    dev: true
+
+  /wait-for-expect/3.0.2:
+    resolution: {integrity: sha512-cfS1+DZxuav1aBYbaO/kE06EOS8yRw7qOFoD3XtjTkYvCvh3zUvNST8DXK/nPaeqIzIv3P3kL3lRJn8iwOiSag==}
     dev: true
 
   /walker/1.0.8:

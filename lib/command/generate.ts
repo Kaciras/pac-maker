@@ -47,7 +47,7 @@ export default async function (argv: GenerateOptions, config: PACMakerConfig) {
 		}
 
 		await writeFile(path, script);
-		console.log(`[${new Date()}] PAC updated.${detail}`);
+		console.info(`[${new Date()}] PAC updated.${detail}`);
 	}
 
 	await rebuildPACScript();

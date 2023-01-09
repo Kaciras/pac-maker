@@ -1,5 +1,5 @@
 import { isIP } from "net";
-import { expect } from "@jest/globals";
+import { expect, jest } from "@jest/globals";
 import { mockTime } from "./share.js";
 
 /**
@@ -8,6 +8,13 @@ import { mockTime } from "./share.js";
  * Don't use `jest.setSystemTime(mockTime)` as fake timers will break `fetch`.
  */
 process.env.MOCK_TIME = mockTime.toString();
+
+// We do assertion with console outputs for some tests.
+console.warn = jest.fn();
+console.info = jest.fn();
+console.error = jest.fn();
+console.debug = jest.fn();
+console.log = jest.fn();
 
 // https://stackoverflow.com/a/106223
 const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
