@@ -1,5 +1,6 @@
 import { isIP } from "net";
 import { expect, jest } from "@jest/globals";
+import chalk from "chalk";
 import { mockTime } from "./share.js";
 
 /**
@@ -15,6 +16,9 @@ console.info = jest.fn();
 console.error = jest.fn();
 console.debug = jest.fn();
 console.log = jest.fn();
+
+// Enable colors for CI.
+chalk.level = 2;
 
 // https://stackoverflow.com/a/106223
 const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;

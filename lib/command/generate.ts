@@ -40,8 +40,9 @@ export default async function (argv: GenerateOptions, config: PACMakerConfig) {
 		let detail = "";
 		try {
 			const { added, removed } = await diff(path, rules);
-			detail += greenBright(` ${added}+`);
-			detail += redBright(`, ${removed}-.`);
+			const p0 = greenBright(`${added}+`);
+			const p1 = redBright(`${removed}-`);
+			detail = ` ${p0}, ${p1}.`;
 		} catch (e) {
 			// Old file is not exists or cannot parse.
 		}

@@ -32,7 +32,7 @@ it("should log changed hostname count", async () => {
 	await generate({}, config);
 
 	const [message] = (console.info as any).mock.calls[0];
-	expect(message).toContain("[92m 2+[39m[91m, 1-.[39m");
+	expect(message).toContain("PAC updated. [92m2+[39m, [91m1-[39m.");
 });
 
 it("should rebuild when source have updates", async () => {
