@@ -1,4 +1,5 @@
 import { runInNewContext } from "vm";
+import { noop } from "@kaciras/utilities/node";
 import * as EnvFunctions from "./context.js";
 
 /**
@@ -61,18 +62,20 @@ export interface ParsedProxy {
 
 const blockRE = /^\s*(\w+)(?:\s+(([\w.]+|\[[\d:]+]):(\d+)))?\s*$/;
 
+function throwError(block: string) {
+	throw new Error(`"${block}" is not a valid proxy`);
+}
+
 /**
  * Parse the return value of `FindProxyForURL()`.
  *
  * @param value the proxy string
- * @param strict true to throw an error if the value contains invalid block,
+ * @param strict true to throw an error if the value contains invalid block.
  * 				 false to ignore them, just like browser.
  * @return parsed proxy description array
  */
 export function parseProxies(value: string, strict = false) {
-	const invalid = strict
-		? (v: string) => {throw new Error(`"${v}" is not a valid proxy`);}
-		: () => null;
+	const invalid = strict ? throwError : noop;
 
 	function parseBlock(block: string) {
 		const match = blockRE.exec(block);

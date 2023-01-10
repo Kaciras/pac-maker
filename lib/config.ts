@@ -40,7 +40,7 @@ export async function loadConfig(file: string, required = true) {
 		userConfig = (await import(url)).default;
 	} catch (e) {
 		if (required || (e.code !== "ERR_MODULE_NOT_FOUND" && e.code !== "MODULE_NOT_FOUND")) {
-			throw e;	// ↑ Why there are 2 different error code?
+			throw e;	// ↑ Why there are 2 different error codes?
 		}
 	}
 	return { ...defaultConfig, ...userConfig } as PACMakerConfig;
