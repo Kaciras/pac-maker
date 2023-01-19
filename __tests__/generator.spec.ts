@@ -2,6 +2,7 @@ import { describe, expect, it, jest } from "@jest/globals";
 import { buildPAC, HostnameListLoader } from "../lib/generator.js";
 import { ofArray } from "../lib/source.js";
 import { readFixture } from "./share.js";
+import { loadPAC } from "../lib/index.js";
 
 const stubPAC = readFixture("proxy-1.pac");
 
@@ -13,6 +14,17 @@ describe("buildPAC", () => {
 
 	it("should return PAC script", () => {
 		expect(buildPAC(ruleProxy1)).toBe(stubPAC);
+	});
+
+	it("should support match only subdomains", () => {
+		const pac = buildPAC({ "HTTP [::1]:80": ["*.foo.bar"] });
+		const { FindProxyForURL } = loadPAC(pac);
+
+		expect(FindProxyForURL("", "x.foo.bar")).toBe("HTTP [::1]:80");
+		expect(FindProxyForURL("", "y.foo.bar")).toBe("HTTP [::1]:80");
+
+		expect(FindProxyForURL("", "foo.bar")).toBe("DIRECT");
+		expect(FindProxyForURL("", "x.y.foo.bar")).toBe("DIRECT");
 	});
 
 	it("should throw error on rule conflict", () => {
