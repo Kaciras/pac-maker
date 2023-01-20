@@ -27,10 +27,26 @@ describe("buildPAC", () => {
 		expect(FindProxyForURL("", "x.y.foo.bar")).toBe("DIRECT");
 	});
 
+	it("should ignore routes which map to the fallback", () => {
+		const hostsMap = {
+			...ruleProxy1,
+			DIRECT: ["kaciras.com", "www.example.com"],
+		};
+		expect(buildPAC(hostsMap)).toBe(stubPAC);
+	});
+
+	it("should ignore covered subdomains", () => {
+		const hostsMap = {
+			...ruleProxy1,
+			"HTTP [::1]:2080": ["aa.foo.bar", "foo.bar", "bb.foo.bar"],
+		};
+		expect(buildPAC(hostsMap)).toBe(stubPAC);
+	});
+
 	it("should throw error on rule conflict", () => {
 		const rules = {
 			"HTTP [::1]:2080": ["foo.com"],
-			"DIRECT": ["foo.com"],
+			"SOCKS [::1]:108": ["foo.com"],
 		};
 		expect(() => buildPAC(rules)).toThrow("foo.com already exists");
 	});
