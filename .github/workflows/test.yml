@@ -17,6 +17,8 @@ jobs:
 
       - run: pnpm install
 
-      - run: pnpm run test
+      - run: pnpm run test -- --coverage
         env:
           NODE_OPTIONS: --experimental-vm-modules
+
+      - uses: codecov/codecov-action@v3
