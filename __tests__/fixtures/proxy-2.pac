@@ -22,6 +22,7 @@ globalThis.rules = {
 };
 
 function FindProxyForURL(url, host) {
+	let level = 0;
 	let pos = 0;
 
 	while (pos >= 0) {
@@ -29,7 +30,14 @@ function FindProxyForURL(url, host) {
 		if (i !== undefined) {
 			return proxies[i];
 		}
+		if (pos > 0 && level === 1) {
+			const i = rules["*." + host];
+			if (i !== undefined) {
+				return proxies[i];
+			}
+		}
 		pos = host.indexOf(".");
+		level += 1;
 		host = host.slice(pos + 1);
 	}
 

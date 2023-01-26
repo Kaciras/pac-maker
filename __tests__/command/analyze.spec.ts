@@ -8,9 +8,9 @@ const mockedBrowser = {
 	getHistories: jest.fn<any>(),
 };
 
-jest.unstable_mockModule("../lib/browser.js", () => ({
-	findAllBrowsers: () => [mockedBrowser],
-}));
+const findAllBrowsers = jest.fn(() => [mockedBrowser]);
+
+jest.unstable_mockModule("../lib/browser.js", () => ({ findAllBrowsers }));
 
 useTempDirectory(testDir);
 
@@ -28,4 +28,13 @@ it("should works", async () => {
 	await analyze({ json }, config);
 
 	expect(readFileSync(json, "utf8")).toBe(readFixture("matches.json"));
+});
+
+it('should works with no browsers', async () => {
+	findAllBrowsers.mockReturnValueOnce([]);
+
+	await analyze({}, getTestConfig());
+
+	const [message] = (console.info as any).mock.calls.at(-1);
+	expect(message).toContain("No browser found in your computer.");
 });
