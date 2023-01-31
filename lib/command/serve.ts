@@ -15,13 +15,13 @@ export default async function (argv: ServeOptions, config: PACMakerConfig) {
 
 	let script: string;
 
-	async function rebuildPACScript() {
+	function rebuildPACScript() {
 		script = buildPAC(loader.getRules(), fallback);
 		console.info("PAC updated at " + new Date());
 	}
 
 	const loader = await HostnameListLoader.create(sources);
-	await rebuildPACScript();
+	rebuildPACScript();
 	loader.on("update", rebuildPACScript);
 
 	const app = new Koa();

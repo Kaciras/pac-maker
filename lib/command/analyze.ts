@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "fs/promises";
+import { readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
 import { HostnameListLoader, HostRules } from "../generator.js";
 import { loadPAC } from "../loader.js";
@@ -66,7 +66,7 @@ export default async function (argv: AnalyzeOptions, config: PACMakerConfig) {
 
 	const hostSet = await getVisitedHosts(browsers);
 
-	const { FindProxyForURL } = loadPAC(await readFile(path, "utf8"));
+	const { FindProxyForURL } = loadPAC(readFileSync(path, "utf8"));
 	const routes: HostRules = {};
 	for (const host of hostSet) {
 		const route = FindProxyForURL("", host) || "DIRECT";
@@ -92,6 +92,6 @@ export default async function (argv: AnalyzeOptions, config: PACMakerConfig) {
 		used: Array.from(used),
 	};
 	const { json = "matches.json" } = argv;
-	await writeFile(json, JSON.stringify(result, null, "\t"));
+	writeFileSync(json, JSON.stringify(result, null, "\t"));
 	console.info(`\nResult is saved to ${resolve(json)}`);
 }
