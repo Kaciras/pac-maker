@@ -1,5 +1,4 @@
-import { readFileSync } from "fs";
-import { mkdir } from "fs/promises";
+import { mkdirSync, readFileSync } from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -15,7 +14,7 @@ export const root = dirname(dirname(fileURLToPath(import.meta.url)));
  * @param file The file's path
  */
 export function ensureDirectory(file: string) {
-	return mkdir(dirname(file), { recursive: true });
+	return mkdirSync(dirname(file), { recursive: true });
 }
 
 /**
