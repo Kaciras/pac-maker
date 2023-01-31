@@ -3,6 +3,7 @@
 [![npm package](https://img.shields.io/npm/v/pac-maker.svg)](https://npmjs.com/package/pac-maker)
 ![node-current](https://img.shields.io/node/v/pac-maker)
 [![Test](https://github.com/Kaciras/pac-maker/actions/workflows/test.yml/badge.svg)](https://github.com/Kaciras/pac-maker/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/Kaciras/pac-maker/branch/master/graph/badge.svg?token=2GKPQL8WS5)](https://codecov.io/gh/Kaciras/pac-maker)
 
 [Proxy Auto Configuration (PAC)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file)
 file generator & maintenance tool.
@@ -29,8 +30,8 @@ Performance:
 
 | file                                                   | Load time (ms) | Memory usage (MB) | FindProxyForURL (μs/op) |
 |--------------------------------------------------------|----------------|-------------------|-------------------------|
-| blacklist.pac                                          | 7.28           | 0.78              | 0.74                    |
-| whitelist.pac                                          | 69.48          | 6.09              | 1.35                    |
+| blacklist.pac                                          | 3.53           | 0.65              | 0.74                    |
+| whitelist.pac                                          | 35.72          | 6.06              | 1.77                    |
 | [gfwlist2pac](https://github.com/petronny/gfwlist2pac) | 4.22           | 0.20              | 3355.43                 |
 
 ## Install

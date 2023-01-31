@@ -1,8 +1,8 @@
 /*
- * Proxy Auto-Configuration file made by pac-maker v2.2.0
+ * Proxy Auto-Configuration file made by pac-maker v3.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2023-01-30T13:55:06.877Z
+ * Generated at: 2023-01-31T07:20:20.278Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
