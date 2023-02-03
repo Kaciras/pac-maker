@@ -1,4 +1,3 @@
-import { TlsOptions } from "tls";
 import { Agent, buildConnector, Dispatcher, ProxyAgent } from "undici";
 import { LRUCache } from "@kaciras/utilities/node";
 import { socksDispatcher } from "fetch-socks";
@@ -29,13 +28,13 @@ export interface PACDispatcherOptions extends Agent.Options {
 	 * When using HTTP tunnel proxy, specific the options to
 	 * connect to the proxy server.
 	 */
-	proxyTls?: TlsOptions & { servername?: string };
+	proxyTls?: buildConnector.BuildOptions;
 
 	/**
 	 * When using HTTP tunnel proxy, specific the options to
 	 * connect to the destination.
 	 */
-	requestTls?: TlsOptions & { servername?: string };
+	requestTls?: buildConnector.BuildOptions;
 }
 
 type AgentOptions = Omit<PACDispatcherOptions, "agentTTL">;
