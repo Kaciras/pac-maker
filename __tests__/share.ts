@@ -49,6 +49,14 @@ export function useArgvMock() {
 	};
 }
 
+export function useEnvMock() {
+	const backup = Object.assign({}, process.env);
+
+	afterEach(() => {
+		process.env = Object.assign({}, backup);
+	});
+}
+
 /**
  * Get the absolute path of the fixture file.
  *
