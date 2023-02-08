@@ -10,6 +10,7 @@ useEnvMock();
 const setArgv = useArgvMock();
 
 function assertMetrics(line: string, low: number, high: number) {
+	process.stdout.write(line + "\n");
 	const [, numbers] = /: ([0-9.]+) /.exec(line)!;
 	const actual = parseFloat(numbers);
 	expect(actual).toBeLessThanOrEqual(high);
