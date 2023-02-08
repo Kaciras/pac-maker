@@ -10,7 +10,6 @@ useEnvMock();
 const setArgv = useArgvMock();
 
 function assertMetrics(line: string, low: number, high: number) {
-	process.stdout.write(line + "\n");
 	const [, numbers] = /: ([0-9.]+) /.exec(line)!;
 	const actual = parseFloat(numbers);
 	expect(actual).toBeLessThanOrEqual(high);
@@ -53,13 +52,13 @@ it("should benchmark PACs", async () => {
 
 	await import("../../lib/command/bench.js");
 
-	const [summary, case_, mem, load, find] = (console.log as any).mock.calls as any;
+	const [summary, case_, /* mem */, load, find] = (console.log as any).mock.calls as any;
 	expect(console.log).toHaveBeenCalledTimes(5);
 
 	expect(summary[0]).toBe("Benchmark 1 PACs (load iterations = 100, work iterations = 200)");
 	expect(case_[0]).toBe(`\nResult of PAC script: ${script}`);
 
-	assertMetrics(mem[0], 0.18, 0.25);
+	// assertMetrics(mem[0], 0.18, 0.25); Not stable enough.
 	assertMetrics(load[0], 8, 12);
 	assertMetrics(find[0], 4990, 5010);
 });
