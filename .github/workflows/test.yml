@@ -20,6 +20,6 @@ jobs:
       # When use "pnpm run test", don't add "--".
       - run: pnpm test -- --coverage
         env:
-          NODE_OPTIONS: --experimental-vm-modules --expose_gc
+          NODE_OPTIONS: --experimental-vm-modules
 
       - uses: codecov/codecov-action@v3
