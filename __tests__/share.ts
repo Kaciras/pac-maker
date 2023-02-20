@@ -10,8 +10,6 @@ import { afterAll, afterEach, beforeEach } from "@jest/globals";
 import { root } from "../lib/utils.js";
 import { ofArray } from "../lib/source.js";
 
-export const mockTime = Date.UTC(2021, 5, 17);
-
 /**
  * The temporary directory to save test working data.
  */
@@ -49,7 +47,13 @@ export function useArgvMock() {
 	};
 }
 
-export function useEnvMock() {
+/**
+ * Capture `process.env` and restore it after each test.
+ *
+ * You also need to call `jest.resetModules()` first in tests
+ * if your code use `import { env } from "process"`.
+ */
+export function autoRestoreProcessEnv() {
 	const backup = Object.assign({}, process.env);
 
 	afterEach(() => {
@@ -97,7 +101,9 @@ export interface TunnelProxyServer extends http.Server {
 }
 
 /**
- * Create a simple HTTP tunnel proxy server. The code is derived from:
+ * Create a simple HTTP(S) tunnel proxy server.
+ *
+ * The code is derived from:
  * https://nodejs.org/dist/latest-v19.x/docs/api/http.html#event-connect
  */
 export function createTunnelProxy(tls?: TlsOptions) {

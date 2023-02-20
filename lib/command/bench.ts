@@ -12,9 +12,9 @@ declare function gc(): void;
 
 interface BenchOptions {
 	_: string[];
-	host: string;
-	workCount: number;
-	loadCount: number;
+	host?: string;
+	workCount?: number;
+	loadCount?: number;
 }
 
 /**

@@ -1,11 +1,11 @@
 import { EventEmitter } from "events";
 import { expect, it, jest } from "@jest/globals";
-import { fixturePath, useArgvMock, useEnvMock } from "../share.js";
+import { autoRestoreProcessEnv, fixturePath, useArgvMock } from "../share.js";
 
 const fork = jest.fn<any>(() => new EventEmitter());
 jest.unstable_mockModule("child_process", () => ({ fork }));
 
-useEnvMock();
+autoRestoreProcessEnv();
 
 const setArgv = useArgvMock();
 

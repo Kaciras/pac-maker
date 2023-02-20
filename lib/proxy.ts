@@ -112,7 +112,7 @@ export class PACDispatcher extends Dispatcher {
 		return agents.map(dispose);
 	}
 
-	dispatch(options: DispatchOptions, handler: DispatchHandlers) {
+	dispatch(options: DispatchOptions, handlers: DispatchHandlers) {
 		const { agentOptions, cache, findProxy } = this;
 		const { path, origin } = options;
 
@@ -128,7 +128,7 @@ export class PACDispatcher extends Dispatcher {
 			dispatchNext() {
 				const { done, value } = proxies.next();
 				if (done) {
-					handler.onError?.(new AggregateError(errors, "All proxies are failed"));
+					handlers.onError?.(new AggregateError(errors, "All proxies are failed"));
 					return false;
 				}
 				try {
@@ -149,6 +149,6 @@ export class PACDispatcher extends Dispatcher {
 			},
 		};
 
-		return Object.assign(Object.create(handler), extension).dispatchNext();
+		return Object.assign(Object.create(handlers), extension).dispatchNext();
 	}
 }

@@ -3,13 +3,13 @@ import { setFlagsFromString } from "v8";
 import { runInNewContext } from "vm";
 import { expect, jest } from "@jest/globals";
 import chalk from "chalk";
-import { mockTime } from "./share.js";
 
 /**
  * Ensure consistent time tag in generated PAC.
  *
  * Don't use `jest.setSystemTime(mockTime)` as fake timers will break `fetch`.
  */
+const mockTime = Date.UTC(2021, 5, 17);
 process.env.MOCK_TIME = mockTime.toString();
 
 // We do assertion with console outputs for some tests.

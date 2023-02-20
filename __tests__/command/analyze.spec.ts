@@ -30,7 +30,7 @@ it("should works", async () => {
 	expect(readFileSync(json, "utf8")).toBe(readFixture("matches.json"));
 });
 
-it('should works with no browsers', async () => {
+it("should works with no browsers", async () => {
 	findAllBrowsers.mockReturnValueOnce([]);
 
 	await analyze({}, getTestConfig());

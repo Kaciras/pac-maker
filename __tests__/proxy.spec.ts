@@ -268,7 +268,6 @@ it("should cleanup cached agents on destroy", async () => {
 		.reply(200, "__OK__");
 
 	await fetch("http://example.com", { dispatcher });
-
 	await dispatcher.destroy();
 
 	expect(mockSocksAgent.destroy).toHaveBeenCalledTimes(1);
