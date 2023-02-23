@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2023-01-31T07:20:20.278Z
+ * Generated at: 2023-02-23T12:12:09.804Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -173,6 +173,7 @@ globalThis.rules = {
 	"omni7.jp": 0,
 	"onapp.com": 0,
 	"ontrac.com": 0,
+	"openai.com": 0,
 	"pandora.com": 0,
 	"pandora.tv": 0,
 	"parkansky.com": 0,
@@ -3075,6 +3076,7 @@ globalThis.rules = {
 	"inside.com.tw": 0,
 	"insidevoa.com": 0,
 	"institut-tibetain.org": 0,
+	"interactivebrokers.com": 0,
 	"internet.org": 0,
 	"internetdefenseleague.org": 0,
 	"internetfreedom.org": 0,
@@ -4687,6 +4689,7 @@ globalThis.rules = {
 	"spike.com": 0,
 	"spotflux.com": 0,
 	"spring4u.info": 0,
+	"springwood.me": 0,
 	"sproutcore.com": 0,
 	"sproxy.info": 0,
 	"squirrelvpn.com": 0,
@@ -4908,6 +4911,7 @@ globalThis.rules = {
 	"theporndude.com": 0,
 	"theportalwiki.com": 0,
 	"theprint.in": 0,
+	"threadreaderapp.com": 0,
 	"thereallove.kr": 0,
 	"therock.net.nz": 0,
 	"thesaturdaypaper.com.au": 0,
@@ -5755,6 +5759,7 @@ globalThis.rules = {
 	"yomiuri.co.jp": 0,
 	"yong.hu": 0,
 	"yorkbbs.ca": 0,
+	"you.com": 0,
 	"youxu.info": 0,
 	"youjizz.com": 0,
 	"youmaker.com": 0,
@@ -5871,6 +5876,8 @@ globalThis.rules = {
 	"www.geeksforgeeks.org": 0,
 	"www.thoughtworks.com": 0,
 	"inty.news": 0,
+	"www.blocktempo.com": 0,
+	"newsapi.org": 0,
 	"www.utorrent.com": 0,
 	"gonglue.us": 0,
 	"gearvpn.com": 0,
@@ -5887,7 +5894,6 @@ globalThis.rules = {
 	"creativecommons.org": 0,
 	"greyli.com": 0,
 	"lain.bgm.tv": 0,
-	"openai.com": 0,
 	"www.tianshie.com": 0
 };
 
