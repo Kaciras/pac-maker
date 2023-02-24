@@ -1,5 +1,5 @@
 import { Agent, buildConnector, Dispatcher, ProxyAgent } from "undici";
-import { LRUCache } from "@kaciras/utilities/node";
+import { createInstance, LRUCache } from "@kaciras/utilities/node";
 import { socksDispatcher } from "fetch-socks";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
 
@@ -149,6 +149,6 @@ export class PACDispatcher extends Dispatcher {
 			},
 		};
 
-		return Object.assign(Object.create(handlers), extension).dispatchNext();
+		return createInstance(handlers, extension).dispatchNext();
 	}
 }
