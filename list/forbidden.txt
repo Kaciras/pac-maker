@@ -3,4 +3,5 @@
 # https://beta.openai.com/docs/supported-countries
 openai.com
 
+www.familyhandyman.com
 www.tianshie.com

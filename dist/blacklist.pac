@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2023-02-23T12:12:09.804Z
+ * Generated at: 2023-03-18T01:21:20.482Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1201,6 +1201,7 @@ globalThis.rules = {
 	"advanscene.com": 0,
 	"advertfan.com": 0,
 	"ae.org": 0,
+	"aei.org": 0,
 	"aenhancers.com": 0,
 	"af.mil": 0,
 	"afantibbs.com": 0,
@@ -5887,6 +5888,9 @@ globalThis.rules = {
 	"cn.telegram-store.com": 0,
 	"www.sqlitetutorial.net": 0,
 	"cms-twdigitalassets.com": 0,
+	"zhina.wiki": 0,
+	"wiki.rakusu.org": 0,
+	"www.javascripttutorial.net": 0,
 	"*.ghost.io": 0,
 	"sentry-cdn.com": 0,
 	"spring.io": 0,
@@ -5894,6 +5898,7 @@ globalThis.rules = {
 	"creativecommons.org": 0,
 	"greyli.com": 0,
 	"lain.bgm.tv": 0,
+	"www.familyhandyman.com": 0,
 	"www.tianshie.com": 0
 };
 

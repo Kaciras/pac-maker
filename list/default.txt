@@ -22,6 +22,9 @@ www.xinjiangpolicefiles.org
 cn.telegram-store.com
 www.sqlitetutorial.net
 cms-twdigitalassets.com
+zhina.wiki
+wiki.rakusu.org
+www.javascripttutorial.net
 
 # subdomains are blocked, but not itself.
 *.ghost.io
