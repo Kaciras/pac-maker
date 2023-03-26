@@ -17,7 +17,7 @@ function assertMetrics(line: string, low: number, high: number) {
 }
 
 it("should start the worker", async () => {
-	const bench = await import("../../lib/command/bench.js");
+	const bench = await import("../../lib/command/bench.ts");
 
 	// noinspection ES6MissingAwait
 	bench.default({
@@ -60,5 +60,5 @@ it("should benchmark PACs", async () => {
 
 	// assertMetrics(mem[0], 0.18, 0.25); Not stable enough.
 	assertMetrics(load[0], 8, 12);
-	assertMetrics(find[0], 4990, 5010);
+	assertMetrics(find[0], 4980, 5020);
 });

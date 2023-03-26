@@ -2,7 +2,8 @@ import { expect, it } from "@jest/globals";
 import { dnsResolve } from "../lib/context.js";
 
 it("should throw if argument is invalid", () => {
-	expect(() => dnsResolve(123 as any)).toThrow();
+	// @ts-expect-error
+	expect(() => dnsResolve(123)).toThrow();
 });
 
 it("should do DNS resolve synchronously", () => {
