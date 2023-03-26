@@ -19,5 +19,14 @@ export default {
 	testMatch: [
 		"<rootDir>/__tests__/**/*.spec.ts",
 	],
+	moduleNameMapper: {
+		/*
+		 * https://github.com/kulshekhar/ts-jest/issues/1057
+		 *
+		 * Undici has wasm modules named `llhttp.wasm` and it's interop file `llhttp.wasm.js`,
+		 * we need exclude them to avoid resolving failure.
+		 */
+		"^(\\.{1,2}/.*)(?<!\\.wasm)\\.js$": "$1",
+	},
 	moduleFileExtensions: ["ts", "js", "json", "node"],
 };
