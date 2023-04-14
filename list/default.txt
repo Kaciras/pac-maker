@@ -25,6 +25,8 @@ cms-twdigitalassets.com
 zhina.wiki
 wiki.rakusu.org
 www.javascripttutorial.net
+vitepress.dev
+axios-http.com
 
 # subdomains are blocked, but not itself.
 *.ghost.io

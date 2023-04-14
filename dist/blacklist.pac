@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2023-03-18T01:21:20.482Z
+ * Generated at: 2023-04-14T07:47:37.891Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -170,6 +170,7 @@ globalThis.rules = {
 	"s1.nudezz.com": 0,
 	"nusatrip.com": 0,
 	"nuuvem.com": 0,
+	"olehdtv.com": 0,
 	"omni7.jp": 0,
 	"onapp.com": 0,
 	"ontrac.com": 0,
@@ -767,6 +768,7 @@ globalThis.rules = {
 	"chromercise.com": 0,
 	"chromestatus.com": 0,
 	"chromium.org": 0,
+	"cloudfunctions.net": 0,
 	"com.google": 0,
 	"crbug.com": 0,
 	"creativelab5.com": 0,
@@ -1288,6 +1290,7 @@ globalThis.rules = {
 	"animecrazy.net": 0,
 	"aniscartujo.com": 0,
 	"anobii.com": 0,
+	"anonfiles.com": 0,
 	"anonymitynetwork.com": 0,
 	"anonymizer.com": 0,
 	"anonymouse.org": 0,
@@ -3131,7 +3134,7 @@ globalThis.rules = {
 	"isupportuyghurs.org": 0,
 	"itaboo.info": 0,
 	"italiatibet.org": 0,
-	"download.ithome.com.tw": 0,
+	"itemfix.com": 0,
 	"ithelp.ithome.com.tw": 0,
 	"itshidden.com": 0,
 	"itsky.it": 0,
@@ -3353,6 +3356,7 @@ globalThis.rules = {
 	"lausan.hk": 0,
 	"le-vpn.com": 0,
 	"leafyvpn.net": 0,
+	"ledger.com": 0,
 	"leeao.com.cn": 0,
 	"lefora.com": 0,
 	"left21.hk": 0,
@@ -5891,6 +5895,8 @@ globalThis.rules = {
 	"zhina.wiki": 0,
 	"wiki.rakusu.org": 0,
 	"www.javascripttutorial.net": 0,
+	"vitepress.dev": 0,
+	"axios-http.com": 0,
 	"*.ghost.io": 0,
 	"sentry-cdn.com": 0,
 	"spring.io": 0,
@@ -5898,6 +5904,7 @@ globalThis.rules = {
 	"creativecommons.org": 0,
 	"greyli.com": 0,
 	"lain.bgm.tv": 0,
+	"thght.works": 0,
 	"www.familyhandyman.com": 0,
 	"www.tianshie.com": 0
 };
