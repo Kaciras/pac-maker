@@ -9,6 +9,7 @@ export * from "./source.js";
 export * from "./generator.js";
 export * from "./proxy.js";
 export * from "./loader.js";
+export * from "./verify.js";
 
 export { PACMakerConfig };
 
