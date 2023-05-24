@@ -1,4 +1,8 @@
 import { BlockList, createConnection, IPVersion } from "net";
+import { resolve } from "dns/promises";
+import { fetch } from "undici";
+import { parseProxies } from "./loader.js";
+import { createAgent } from "./proxy.js";
 
 const blockedIPs = new BlockList();
 blockedIPs.addAddress("223.75.236.241"); // 反诈中心
@@ -6,6 +10,12 @@ blockedIPs.addAddress("127.0.0.1");
 
 const TIMEOUT = 3_000;
 const CONCURRENCY = 10;
+
+export const blockType = Object.freeze({
+	dns: Symbol("DNS cache pollution"),
+	tcp: Symbol("TCP resets"),
+	unavailable: Symbol("Can't access even with a proxy"),
+});
 
 async function connectTCP(host: string) {
 	const socket = createConnection({ host, port: 443 });
@@ -24,38 +34,46 @@ async function connectTCP(host: string) {
 	return connected && !blockedIPs.check(ip, family);
 }
 
-export async function verify(hosts: string[]) {
+const proxy = "SOCKS5 localhost:2080";
+const [p] = parseProxies(proxy);
+const dispatcher = createAgent(p);
+
+export function verify(hosts: string[]) {
 	const iterator = hosts[Symbol.iterator]();
+	const blocked: Record<string, symbol> = {};
 
-	const connected = [];
-	const blocked = [];
+	async function doVerify(host: string) {
+		const [ip] = await resolve(host);
+		if (blockedIPs.check(ip)) {
+			return blocked[host] = blockType.dns;
+		}
 
-	async function newWorker(): Promise<void> {
+		if (await connectTCP(host)) {
+			return;
+		}
+
+		try {
+			await fetch(`"https://${host}`, { dispatcher });
+			blocked[host] = blockType.tcp;
+		} catch {
+			blocked[host] = blockType.unavailable;
+		}
+	}
+
+	async function run(): Promise<void> {
 		const { value, done } = iterator.next();
 		if (done) {
 			return;
 		}
-		const host = value;
-		if (host[0] === "*") {
-			return await newWorker();
+		if (value[0] === "*") {
+			return run();
 		}
-
-		if (await connectTCP(host)) {
-			connected.push(host);
-			console.log(`${host} can be connected directly`);
-		} else {
-			blocked.push(host);
-			console.log(`${host} connect failed`);
-		}
-
-		return await newWorker();
+		return doVerify(value).then(run);
 	}
 
-	const tasks = [];
+	const workers = [];
 	for (let i = 0; i < CONCURRENCY; i++) {
-		tasks[i] = newWorker();
+		workers[i] = run();
 	}
-	await Promise.all(tasks);
-
-	console.log(`Completed, ${connected.length} hosts are not blocked`);
+	return Promise.all(workers).then(() => blocked);
 }
