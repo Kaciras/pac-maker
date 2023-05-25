@@ -30,6 +30,7 @@ let dnsLookupSync: (host: string, family: number) => string;
  * and returns it in the dot-separated format as a string.
  *
  * @param host hostname to resolve.
+ * @see https://nodejs.org/dist/latest-v19.x/docs/api/dns.html#dnslookuphostname-options-callback
  */
 export function dnsResolve(host: string) {
 	if (!dnsLookupSync) {

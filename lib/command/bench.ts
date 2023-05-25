@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 import { loadPAC } from "../loader.js";
 
 /**
- * This function is only available with node option --expose_gc.
+ * This function is only available with v8 flag --expose_gc.
  */
 declare function gc(): void;
 

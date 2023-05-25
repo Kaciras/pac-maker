@@ -39,6 +39,12 @@ export class HostBlockVerifier {
 		this.dispatcher = createAgent(parsed);
 	}
 
+	/**
+	 * Test if any hostname is blocked by your ISP.
+	 *
+	 * @param host The hostname to test.
+	 * @return One of `blockType` when it is blocked, otherwise `null`.
+	 */
 	async verify(host: string) {
 		const { dispatcher, blockedIPs, timeout } = this;
 
@@ -48,7 +54,7 @@ export class HostBlockVerifier {
 				return blockType.dns;
 			}
 			if (await connectTCP(host, timeout)) {
-				return;
+				return null;
 			}
 		} catch {
 			return blockType.unavailable;
@@ -71,7 +77,7 @@ export class HostBlockVerifier {
 			if (done) {
 				return;
 			}
-			if (value[0] === "*") {
+			if (value.charCodeAt(0) === 42 /* '*' */) {
 				return run();
 			}
 			return this.verify(value).then(run);

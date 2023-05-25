@@ -42,7 +42,7 @@ type AgentOptions = Omit<PACDispatcherOptions, "agentTTL">;
 /**
  * Create an undici `Agent` that dispatch requests to the proxy server.
  */
-function createAgent(proxy: ParsedProxy, options: AgentOptions = {}) {
+export function createAgent(proxy: ParsedProxy, options: AgentOptions = {}) {
 	const { protocol, host, hostname, port } = proxy;
 	switch (protocol) {
 		case "DIRECT":
@@ -120,7 +120,7 @@ export class PACDispatcher extends Dispatcher {
 		const proxies = parseProxies(p)[Symbol.iterator]();
 		const errors: Error[] = [];
 
-		const extension: PACDispatchHandlers = {
+		const agentSelector: PACDispatchHandlers = {
 			onError(error: Error) {
 				errors.push(error);
 				this.dispatchNext();
@@ -149,6 +149,6 @@ export class PACDispatcher extends Dispatcher {
 			},
 		};
 
-		return createInstance(handlers, extension).dispatchNext();
+		return createInstance(handlers, agentSelector).dispatchNext();
 	}
 }
