@@ -1,70 +1,85 @@
-import { BlockList, createConnection } from "net";
+import { BlockList } from "net";
 import { resolve } from "dns/promises";
-import { Dispatcher, fetch } from "undici";
+import { Agent, buildConnector, Dispatcher, fetch } from "undici";
 import { parseProxies } from "./loader.js";
 import { createAgent } from "./proxy.js";
 
+type Connector = buildConnector.connector;
+
 const gfwIPs = new BlockList();
 gfwIPs.addAddress("223.75.236.241"); // 反诈中心
-gfwIPs.addAddress("127.0.0.1");
+gfwIPs.addSubnet("0.0.0.0", 8);
+gfwIPs.addSubnet("127.0.0.0", 8);
 
-export const blockType = Object.freeze({
+export const BlockType = Object.freeze({
 	dns: Symbol("DNS cache pollution"),
 	tcp: Symbol("TCP resets"),
 	unavailable: Symbol("Can't access even with a proxy"),
 });
 
-function connectTCP(host: string, timeout: number) {
-	const socket = createConnection({ host, port: 443 });
-	socket.setTimeout(timeout);
+class HostBlockedError extends Error {
 
-	const task = new Promise(resolve => {
-		socket.on("connect", () => resolve(true));
-		socket.on("error", () => resolve(false));
-		socket.on("timeout", () => resolve(false));
-	});
+	readonly blockType: symbol;
 
-	return task.finally(() => socket.destroy());
+	constructor(type: symbol) {
+		super(type.description);
+		this.blockType = type;
+	}
+}
+
+function blockVerifyConnector(timeout: number, blockedIPs: BlockList): Connector {
+	const undiciConnect = buildConnector({ timeout });
+
+	return async (options, callback) => {
+		try {
+			const [ip] = await resolve(options.hostname);
+			if (blockedIPs.check(ip)) {
+				return callback(new HostBlockedError(BlockType.dns), null);
+			}
+			undiciConnect({ ...options, hostname: ip }, callback);
+		} catch {
+			return callback(new HostBlockedError(BlockType.dns), null);
+		}
+	};
 }
 
 export class HostBlockVerifier {
 
-	private readonly dispatcher: Dispatcher;
-	private readonly timeout = 3000;
-	private readonly blockedIPs: BlockList;
+	private readonly protocol: string;
+	private readonly direct: Dispatcher;
+	private readonly proxy: Dispatcher;
 
-	constructor(proxy: string, blockedIPs = gfwIPs) {
-		this.blockedIPs = blockedIPs;
-		const [parsed] = parseProxies(proxy);
-		this.dispatcher = createAgent(parsed);
+	constructor(proxy: string, protocol = "https", blockedIPs = gfwIPs) {
+		this.protocol = protocol;
+		this.direct = new Agent({
+			connect: blockVerifyConnector(3000, blockedIPs),
+		});
+		this.proxy = createAgent(parseProxies(proxy)[0]);
 	}
 
 	/**
 	 * Test if any hostname is blocked by your ISP.
 	 *
 	 * @param host The hostname to test.
-	 * @return One of `blockType` when it is blocked, otherwise `null`.
+	 * @return One of `blockType` when it is blocked, otherwise `undefined`.
 	 */
 	async verify(host: string) {
-		const { dispatcher, blockedIPs, timeout } = this;
+		const { protocol, direct, proxy } = this;
+		const url = `${protocol}://${host}`;
 
 		try {
-			const [ip] = await resolve(host);
-			if (blockedIPs.check(ip)) {
-				return blockType.dns;
+			await fetch(url, { dispatcher: direct });
+		} catch (e) {
+			try {
+				await fetch(url, { dispatcher: proxy });
+			} catch {
+				return BlockType.unavailable;
 			}
-			if (await connectTCP(host, timeout)) {
-				return null;
+			if (e.cause instanceof HostBlockedError) {
+				return e.cause.blockType;
+			} else {
+				return BlockType.unavailable;
 			}
-		} catch {
-			return blockType.unavailable;
-		}
-
-		try {
-			await fetch(`https://${host}`, { dispatcher });
-			return blockType.tcp;
-		} catch {
-			return blockType.unavailable;
 		}
 	}
 
@@ -72,15 +87,15 @@ export class HostBlockVerifier {
 		const iterator = hosts[Symbol.iterator]();
 		const blocked: Record<string, symbol> = {};
 
-		const run = async (): Promise<void> => {
-			const { value, done } = iterator.next();
-			if (done) {
-				return;
+		const run = async () => {
+			let { value, done } = iterator.next();
+			while (!done) {
+				const type = await this.verify(value);
+				if (type) {
+					blocked[value] = type;
+				}
+				({ value, done } = iterator.next());
 			}
-			if (value.charCodeAt(0) === 42 /* '*' */) {
-				return run();
-			}
-			return this.verify(value).then(run);
 		};
 
 		const workers = [];
