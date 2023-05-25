@@ -43,8 +43,8 @@ function blockVerifyConnector(timeout: number, blockedIPs: BlockList): Connector
 	};
 }
 
-async function connectHTTP(url: string, dispatcher: Dispatcher) {
-	await (await fetch(url, { dispatcher })).body!.cancel();
+function connectHTTP(url: string, dispatcher: Dispatcher) {
+	return fetch(url, { dispatcher, method: "HEAD" });
 }
 
 export interface BlockVerifyOptions {
@@ -99,10 +99,10 @@ export class HostBlockVerifier {
 		const url = `${protocol}://${host}`;
 
 		try {
-			await fetch(url, { dispatcher: direct });
+			await connectHTTP(url, direct);
 		} catch (e) {
 			try {
-				await fetch(url, { dispatcher: proxy });
+				await connectHTTP(url, proxy);
 			} catch {
 				return BlockType.unavailable;
 			}
