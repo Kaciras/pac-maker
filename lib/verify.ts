@@ -43,18 +43,49 @@ function blockVerifyConnector(timeout: number, blockedIPs: BlockList): Connector
 	};
 }
 
+async function connectHTTP(url: string, dispatcher: Dispatcher) {
+	await (await fetch(url, { dispatcher })).body!.cancel();
+}
+
+export interface BlockVerifyOptions {
+
+	/**
+	 * The protocol of the request, "http" of "https".
+	 *
+	 * @default "https"
+	 */
+	protocol?: string;
+
+	/**
+	 * The amount of time in milliseconds to wait for connection.
+	 *
+	 * @default 3000
+	 */
+	timeout?: number;
+
+	/**
+	 * List of IPs that be considered DNS pollution.
+	 *
+	 * @default built-in list.
+	 */
+	blockedIPs?: BlockList;
+}
+
 export class HostBlockVerifier {
 
 	private readonly protocol: string;
 	private readonly direct: Dispatcher;
 	private readonly proxy: Dispatcher;
 
-	constructor(proxy: string, protocol = "https", blockedIPs = gfwIPs) {
-		this.protocol = protocol;
-		this.direct = new Agent({
-			connect: blockVerifyConnector(3000, blockedIPs),
-		});
+	constructor(proxy: string, options: BlockVerifyOptions = {}) {
+		const { timeout = 3000, blockedIPs = gfwIPs } = options;
+
+		this.protocol = options.protocol ?? "https";
 		this.proxy = createAgent(parseProxies(proxy)[0]);
+		this.direct = new Agent({
+			headersTimeout: timeout,
+			connect: blockVerifyConnector(timeout, blockedIPs),
+		});
 	}
 
 	/**
@@ -75,11 +106,8 @@ export class HostBlockVerifier {
 			} catch {
 				return BlockType.unavailable;
 			}
-			if (e.cause instanceof HostBlockedError) {
-				return e.cause.blockType;
-			} else {
-				return BlockType.unavailable;
-			}
+			return e.cause instanceof HostBlockedError
+				? e.cause.blockType : BlockType.tcp;
 		}
 	}
 
