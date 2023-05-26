@@ -1,14 +1,9 @@
 # Hostnames that blocked from China but missing in gfwlist
 
 www.extrabux.com
-vercel.com
-static.rust-lang.org
-aka.ms
-zh.ifixit.com
 proton.me
 diygod.me
 www.geeksforgeeks.org
-www.thoughtworks.com
 inty.news
 www.blocktempo.com
 newsapi.org
@@ -25,7 +20,6 @@ cms-twdigitalassets.com
 zhina.wiki
 wiki.rakusu.org
 www.javascripttutorial.net
-vitepress.dev
 axios-http.com
 
 # subdomains are blocked, but not itself.

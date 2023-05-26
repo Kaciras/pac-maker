@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2023-04-14T07:47:37.891Z
+ * Generated at: 2023-05-26T10:13:36.940Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -781,6 +781,7 @@ globalThis.rules = {
 	"design.google": 0,
 	"digisfera.com": 0,
 	"dns.google": 0,
+	"hub.docker.com": 0,
 	"domains.google": 0,
 	"duck.com": 0,
 	"environment.google": 0,
@@ -4004,6 +4005,7 @@ globalThis.rules = {
 	"packetix.net": 0,
 	"pacopacomama.com": 0,
 	"padmanet.com": 0,
+	"page.link": 0,
 	"page2rss.com": 0,
 	"pagodabox.com": 0,
 	"palacemoon.com": 0,
@@ -4130,6 +4132,7 @@ globalThis.rules = {
 	"pobieramy.top": 0,
 	"podbean.com": 0,
 	"podictionary.com": 0,
+	"poe.com": 0,
 	"pokerstars.com": 0,
 	"pokerstars.net": 0,
 	"zh.pokerstrategy.com": 0,
@@ -5873,13 +5876,8 @@ globalThis.rules = {
 	"zyzc9.com": 0,
 	"zzcartoon.com": 0,
 	"www.extrabux.com": 0,
-	"vercel.com": 0,
-	"static.rust-lang.org": 0,
-	"aka.ms": 0,
-	"zh.ifixit.com": 0,
 	"diygod.me": 0,
 	"www.geeksforgeeks.org": 0,
-	"www.thoughtworks.com": 0,
 	"inty.news": 0,
 	"www.blocktempo.com": 0,
 	"newsapi.org": 0,
@@ -5895,7 +5893,6 @@ globalThis.rules = {
 	"zhina.wiki": 0,
 	"wiki.rakusu.org": 0,
 	"www.javascripttutorial.net": 0,
-	"vitepress.dev": 0,
 	"axios-http.com": 0,
 	"*.ghost.io": 0,
 	"sentry-cdn.com": 0,
