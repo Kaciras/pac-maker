@@ -14,7 +14,7 @@ gfwIPs.addSubnet("127.0.0.0", 8);
 export const BlockType = Object.freeze({
 	dns: Symbol("DNS cache pollution"),
 	tcp: Symbol("TCP resets"),
-	unavailable: Symbol("Can't access even with a proxy"),
+	unavailable: Symbol("Site unavailable"),
 });
 
 class HostBlockedError extends Error {
