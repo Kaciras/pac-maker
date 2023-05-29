@@ -2,6 +2,7 @@ import { BlockList, connect } from "net";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { buildConnector, MockAgent } from "undici";
+import { createAgent } from "../lib/index.js";
 
 const mockProxyAgent = new MockAgent();
 mockProxyAgent.disableNetConnect();
@@ -10,8 +11,9 @@ mockProxyAgent.get("https://example.com")
 	.reply(200, "Access OK").persist();
 
 const mockDNSResolve = jest.fn<any>();
-const mockCreateAgent = jest.fn<any>(() => mockProxyAgent);
 const mockConnect = jest.fn<buildConnector.connector>();
+const mockConnector = jest.fn<typeof buildConnector>(() => mockConnect);
+const mockCreateAgent = jest.fn<typeof createAgent>(() => mockProxyAgent);
 
 jest.unstable_mockModule("dns/promises", () => ({
 	resolve: mockDNSResolve,
@@ -19,7 +21,7 @@ jest.unstable_mockModule("dns/promises", () => ({
 
 jest.unstable_mockModule("undici", async () => ({
 	...jest.requireActual("undici") as any,
-	buildConnector: jest.fn(() => mockConnect),
+	buildConnector: mockConnector,
 }));
 
 jest.unstable_mockModule("../lib/proxy.js", () => ({
@@ -43,6 +45,14 @@ function setupMockConnect(success: boolean) {
 	}
 }
 
+it("should detect non-blocked hosts", async () => {
+	mockDNSResolve.mockResolvedValue(["11.22.33.44"]);
+	setupMockConnect(true);
+
+	const verifier = new HostBlockVerifier("HTTP [::1]:1080");
+	expect(await verifier.verify("example.com")).toBeUndefined();
+});
+
 it("should detect DNS pollution", async () => {
 	mockDNSResolve.mockResolvedValue(["127.0.0.1"]);
 
@@ -57,22 +67,44 @@ it("should detect DNS blocking", async () => {
 	expect(await verifier.verify("example.com")).toBe(BlockType.dns);
 });
 
+it("should support plain HTTP requests", async () => {
+	mockDNSResolve.mockResolvedValue(["127.0.0.1"]);
+
+	const verifier = new HostBlockVerifier("HTTP [::1]:1080", {
+		protocol: "http",
+	});
+	expect(await verifier.verify("example.com")).toBe(BlockType.unavailable);
+});
+
 it("should support custom IP black list", async () => {
 	mockDNSResolve.mockResolvedValue(["11.22.33.44"]);
 	const list = new BlockList();
 	list.addAddress("11.22.33.44");
 
-	const verifier = new HostBlockVerifier("HTTP [::1]:1080",{
+	const verifier = new HostBlockVerifier("HTTP [::1]:1080", {
 		blockedIPs: list,
 	});
 	expect(await verifier.verify("example.com")).toBe(BlockType.dns);
+});
+
+it("should support custom the timeout", async () => {
+	new HostBlockVerifier("HTTP [::1]:1080", {
+		timeout: 1234,
+	});
+	const [directOptions] = mockConnector.mock.calls[0];
+	const [,proxyOptions] = mockCreateAgent.mock.calls[0];
+
+	expect(directOptions!.timeout).toBe(1234);
+	expect(proxyOptions!.headersTimeout).toBe(1234);
 });
 
 it("should detect TCP reset", async () => {
 	mockDNSResolve.mockResolvedValue(["11.22.33.44"]);
 	setupMockConnect(false);
 	const verifier = new HostBlockVerifier("HTTP [::1]:1080");
+
 	expect(await verifier.verify("example.com")).toBe(BlockType.tcp);
+	expect(mockConnect.mock.calls[0][0].hostname).toBe("11.22.33.44");
 });
 
 it("should detect site down", async () => {
@@ -81,14 +113,6 @@ it("should detect site down", async () => {
 
 	const verifier = new HostBlockVerifier("HTTP [::1]:1080");
 	expect(await verifier.verify("foo.bar")).toBe(BlockType.unavailable);
-});
-
-it("should detect non-blocked hosts", async () => {
-	mockDNSResolve.mockResolvedValue(["11.22.33.44"]);
-	setupMockConnect(true);
-
-	const verifier = new HostBlockVerifier("HTTP [::1]:1080");
-	expect(await verifier.verify("example.com")).toBeUndefined();
 });
 
 it("should support batch verify", async () => {

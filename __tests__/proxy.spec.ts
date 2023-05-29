@@ -1,6 +1,7 @@
 import type { socksDispatcher } from "fetch-socks";
 import type { PACDispatcherOptions } from "../lib/proxy.js";
 import { AddressInfo } from "net";
+import * as tp from "timers/promises";
 import { afterEach, beforeEach, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { fetch, MockAgent } from "undici";
@@ -271,4 +272,20 @@ it("should cleanup cached agents on destroy", async () => {
 	await dispatcher.destroy();
 
 	expect(mockSocksAgent.destroy).toHaveBeenCalledTimes(1);
+});
+
+it("should expire cached agents", async () => {
+	const mockSocksAgent = mockSocks();
+	jest.spyOn(mockSocksAgent, "close");
+	mockSocksAgent.get("http://example.com")
+		.intercept({ path: "/" })
+		.reply(200, "__OK__");
+
+	const dispatcher = pac("SOCKS [::1]:1", {
+		agentTTL: 99,
+	});
+	await fetch("http://example.com", { dispatcher });
+
+	await tp.setTimeout(100);
+	expect(mockSocksAgent.close).toHaveBeenCalledTimes(1);
 });

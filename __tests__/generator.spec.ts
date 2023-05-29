@@ -113,10 +113,13 @@ describe("HostnameListLoader", () => {
 	it("should watch source updates", async () => {
 		const source = ofArray(["kaciras.com"]);
 		const loader = await HostnameListLoader.create({ foo: [source] });
-
 		const handler = jest.fn();
-		loader.on("update", handler);
 
+		loader.on("OTHER_EVENT", handler);
+		source.update(["example.com"]);
+		expect(handler).not.toHaveBeenCalled();
+
+		loader.on("update", handler);
 		source.update(["example.com"]);
 		expect(handler).toHaveBeenCalledTimes(1);
 		expect(loader.getRules()).toEqual({ foo: ["example.com"] });
@@ -149,9 +152,13 @@ describe("HostnameListLoader", () => {
 		const loader = await HostnameListLoader.create({ foo: [source] });
 
 		const handler = jest.fn();
+		loader.on("OTHER_EVENT", handler);
 		loader.on("update", handler);
-		loader.off("update", handler);
 
+		loader.off("OTHER_EVENT", handler);
+		expect(source.stopWatching).not.toHaveBeenCalled();
+
+		loader.off("update", handler);
 		expect(source.stopWatching).toHaveBeenCalled();
 	});
 });
