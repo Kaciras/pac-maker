@@ -11,19 +11,15 @@ gfwIPs.addAddress("223.75.236.241"); // 反诈中心
 gfwIPs.addSubnet("0.0.0.0", 8);
 gfwIPs.addSubnet("127.0.0.0", 8);
 
-export const BlockType = Object.freeze({
-	dns: Symbol("DNS cache pollution"),
-	tcp: Symbol("TCP resets"),
-	unavailable: Symbol("Site unavailable"),
-});
+export type BlockType = "DNS" | "TCP" | "Unavailable";
 
 class HostBlockedError extends Error {
 
-	readonly blockType: symbol;
+	readonly blockType: BlockType;
 
-	constructor(type: symbol) {
-		super(type.description);
-		this.blockType = type;
+	constructor(blockType: BlockType) {
+		super();
+		this.blockType = blockType;
 	}
 }
 
@@ -34,11 +30,11 @@ function blockVerifyConnector(timeout: number, blockedIPs: BlockList): Connector
 		try {
 			const [ip] = await resolve(options.hostname);
 			if (blockedIPs.check(ip)) {
-				return callback(new HostBlockedError(BlockType.dns), null);
+				return callback(new HostBlockedError("DNS"), null);
 			}
 			undiciConnect({ ...options, hostname: ip }, callback);
 		} catch {
-			return callback(new HostBlockedError(BlockType.dns), null);
+			return callback(new HostBlockedError("DNS"), null);
 		}
 	};
 }
@@ -96,7 +92,7 @@ export class HostBlockVerifier {
 	 * @param host The hostname to test.
 	 * @return One of `blockType` when it is blocked, otherwise `undefined`.
 	 */
-	async verify(host: string) {
+	async verify(host: string): Promise<BlockType | undefined> {
 		const { protocol, direct, proxy } = this;
 		const url = `${protocol}://${host}`;
 
@@ -106,16 +102,16 @@ export class HostBlockVerifier {
 			try {
 				await connectHTTP(url, proxy);
 			} catch {
-				return BlockType.unavailable;
+				return "Unavailable";
 			}
 			return e.cause instanceof HostBlockedError
-				? e.cause.blockType : BlockType.tcp;
+				? e.cause.blockType : "TCP";
 		}
 	}
 
 	verifyAll(hosts: string[], concurrency = 10) {
 		const iterator = hosts[Symbol.iterator]();
-		const blocked: Record<string, symbol> = {};
+		const blocked: Record<string, BlockType> = {};
 
 		const run = async () => {
 			let { value, done } = iterator.next();
