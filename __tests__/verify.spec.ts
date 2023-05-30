@@ -45,6 +45,10 @@ function setupMockConnect(success: boolean) {
 	}
 }
 
+it("should check the proxy string", () => {
+	expect(() => new HostBlockVerifier("HTTP [foo]:bar")).toThrow();
+});
+
 it("should detect non-blocked hosts", async () => {
 	mockDNSResolve.mockResolvedValue(["11.22.33.44"]);
 	setupMockConnect(true);

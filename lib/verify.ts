@@ -107,7 +107,7 @@ export class HostBlockVerifier {
 		const { timeout = 3000, blockedIPs = gfwIPs } = options;
 
 		this.protocol = options.protocol ?? "https";
-		this.proxy = createAgent(parseProxies(proxy)[0], {
+		this.proxy = createAgent(parseProxies(proxy, true)[0], {
 			headersTimeout: timeout,
 		});
 		this.direct = new Agent({
