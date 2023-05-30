@@ -6,12 +6,17 @@ import { createAgent } from "./proxy.js";
 
 type Connector = buildConnector.connector;
 
+/**
+ * - "DNS": DNS cache pollution or resolve timeout.
+ * - "TCP": Can't establish or keep the connection.
+ * - "Unavailable": Can't access the site even with a proxy.
+ */
+export type BlockType = "DNS" | "TCP" | "Unavailable";
+
 const gfwIPs = new BlockList();
 gfwIPs.addAddress("223.75.236.241"); // 反诈中心
 gfwIPs.addSubnet("0.0.0.0", 8);
 gfwIPs.addSubnet("127.0.0.0", 8);
-
-export type BlockType = "DNS" | "TCP" | "Unavailable";
 
 class HostBlockedError extends Error {
 
@@ -50,7 +55,7 @@ export interface BlockVerifyOptions {
 	 *
 	 * @default "https"
 	 */
-	protocol?: string;
+	protocol?: "http" | "https";
 
 	/**
 	 * The amount of time in milliseconds to wait for connection.
@@ -67,12 +72,37 @@ export interface BlockVerifyOptions {
 	blockedIPs?: BlockList;
 }
 
+/**
+ * A tool to check which hostnames are blocked by your ISP.
+ *
+ * This class is only support HTTP protocol, it cannot be used for
+ * hosts running non-HTTP services.
+ *
+ * @example
+ * const verifier = new HostBlockVerifier("SOCKS5 localhost:1080");
+ * const reason = await verifier.verify("google.com");
+ * if (reason === "DNS") {
+ * 	console.log("DNS cache pollution");
+ * } else if (reason === "TCP") {
+ * 	console.log("TCP blocking");
+ * } else if (reason === "Unavailable") {
+ * 	console.log("Site may be down");
+ * } else {
+ * 	console.log("The host is not blocked");
+ * }
+ */
 export class HostBlockVerifier {
 
 	private readonly protocol: string;
 	private readonly direct: Dispatcher;
 	private readonly proxy: Dispatcher;
 
+	/**
+	 * For accurate results, you need to provide an unblocked proxy.
+	 *
+	 * @param proxy the proxy string.
+	 * @param options more options.
+	 */
 	constructor(proxy: string, options: BlockVerifyOptions = {}) {
 		const { timeout = 3000, blockedIPs = gfwIPs } = options;
 
@@ -90,7 +120,7 @@ export class HostBlockVerifier {
 	 * Test if any hostname is blocked by your ISP.
 	 *
 	 * @param host The hostname to test.
-	 * @return One of `blockType` when it is blocked, otherwise `undefined`.
+	 * @return One of `BlockType` when it is blocked, otherwise `undefined`.
 	 */
 	async verify(host: string): Promise<BlockType | undefined> {
 		const { protocol, direct, proxy } = this;
@@ -124,7 +154,7 @@ export class HostBlockVerifier {
 			}
 		};
 
-		const workers = [];
+		const workers = new Array(concurrency);
 		for (let i = 0; i < concurrency; i++) {
 			workers[i] = run();
 		}

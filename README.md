@@ -215,6 +215,29 @@ output:
 ]
 ```
 
+### `HostBlockVerifier`
+
+A tool to check which hostnames are blocked by your ISP.
+
+This class is only support HTTP protocol, it cannot be used for
+hosts running non-HTTP services.
+
+```javascript
+import { HostBlockVerifier } from "pac-maker";
+
+const verifier = new HostBlockVerifier("SOCKS5 localhost:1080");
+const reason = await verifier.verify("google.com");
+if (reason === "DNS") {
+	console.log("DNS cache pollution");
+} else if (reason === "TCP") {
+	console.log("TCP blocking");
+} else if (reason === "Unavailable") {
+	console.log("Site may be down");
+} else {
+	console.log("The host is not blocked");
+}
+```
+
 ### `commands`
 
 All commands supported by `pac-maker` can also be called in JavaScript code.
