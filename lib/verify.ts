@@ -60,7 +60,7 @@ export interface BlockVerifyOptions {
 	/**
 	 * The amount of time in milliseconds to wait for connection.
 	 *
-	 * @default 3000
+	 * @default 10_000
 	 */
 	timeout?: number;
 
@@ -104,7 +104,7 @@ export class HostBlockVerifier {
 	 * @param options more options.
 	 */
 	constructor(proxy: string, options: BlockVerifyOptions = {}) {
-		const { timeout = 3000, blockedIPs = gfwIPs } = options;
+		const { timeout = 10_000, blockedIPs = gfwIPs } = options;
 
 		this.protocol = options.protocol ?? "https";
 		this.proxy = createAgent(parseProxies(proxy, true)[0], {
