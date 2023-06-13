@@ -126,10 +126,13 @@ it("should support batch verify", async () => {
 		async host => host === "qux" ? undefined : "DNS",
 	);
 
-	const task = verifier.verifyAll(["foo", "bar", "baz", "qux"], 2);
+	const hosts = ["foo", "bar", "baz", "qux"];
+	const task = verifier.verifyAll(hosts, 2);
 	expect(verifier.verify).toHaveBeenCalledTimes(2);
 
-	expect(await task).toStrictEqual({ foo: "DNS", bar: "DNS", baz: "DNS" });
+	const { input, blocked } = await task;
+	expect(input).toBe(hosts);
+	expect(blocked).toStrictEqual({ foo: "DNS", bar: "DNS", baz: "DNS" });
 });
 
 it("should print the result", () => {
