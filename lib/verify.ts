@@ -1,6 +1,7 @@
 import { BlockList } from "net";
 import { resolve } from "dns/promises";
 import { Agent, buildConnector, Dispatcher, fetch } from "undici";
+import chalk from "chalk";
 import { parseProxies } from "./loader.js";
 import { createAgent } from "./proxy.js";
 
@@ -12,6 +13,8 @@ type Connector = buildConnector.connector;
  * - "Unavailable": Can't access the site even with a proxy.
  */
 export type BlockType = "DNS" | "TCP" | "Unavailable";
+
+const { redBright, greenBright } = chalk;
 
 const gfwIPs = new BlockList();
 gfwIPs.addAddress("223.75.236.241"); // 反诈中心
@@ -200,16 +203,16 @@ export class HostsBlockInfo {
 
 		console.log(`${total} hosts, ${total - Unblocked.length} are blocked`);
 
-		console.log(`\nNot in blocking (${Unblocked.length}):`);
+		console.log(greenBright(`\nNot in blocking (${Unblocked.length}):`));
 		for (const h of Unblocked) console.log(h);
 
-		console.log(`\nDNS cache pollution (${DNS.length}):`);
+		console.log(redBright(`\nDNS cache pollution (${DNS.length}):`));
 		for (const h of DNS) console.log(h);
 
-		console.log(`\nTCP reset (${TCP.length}):`);
+		console.log(redBright(`\nTCP reset (${TCP.length}):`));
 		for (const h of TCP) console.log(h);
 
-		console.log(`\nCan't access event with a proxy (${Unavailable.length}):`);
+		console.log(redBright(`\nCan't access event with a proxy (${Unavailable.length}):`));
 		for (const h of Unavailable) console.log(h);
 	}
 }

@@ -2,8 +2,7 @@ import { BlockList, connect } from "net";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { buildConnector, MockAgent } from "undici";
-import { createAgent, HostsBlockInfo } from "../lib/index.js";
-import Mock = jest.Mock;
+import { createAgent } from "../lib/index.js";
 
 const mockProxyAgent = new MockAgent();
 mockProxyAgent.disableNetConnect();
@@ -29,7 +28,7 @@ jest.unstable_mockModule("../lib/proxy.js", () => ({
 	createAgent: mockCreateAgent,
 }));
 
-const { HostBlockVerifier } = await import("../lib/verify.js");
+const { HostBlockVerifier, HostsBlockInfo } = await import("../lib/verify.js");
 
 const httpServer = getLocal();
 await httpServer.forAnyRequest().thenReply(200);
@@ -141,25 +140,25 @@ it("should print the result", () => {
 		{ foo: "TCP", bar: "DNS", baz: "DNS" },
 	);
 	info.print();
-	const printed = (console.log as Mock<typeof console.log>)
+	const printed = (console.log as jest.Mock<typeof console.log>)
 		.mock.calls
 		.map(args => args[0])
 		.join("\n");
 
 	expect(printed).toMatchInlineSnapshot(`
 "4 hosts, 3 are blocked
-
-Not in blocking (1):
+[92m[39m
+[92mNot in blocking (1):[39m
 qux
-
-DNS cache pollution (2):
+[91m[39m
+[91mDNS cache pollution (2):[39m
 bar
 baz
-
-TCP reset (1):
+[91m[39m
+[91mTCP reset (1):[39m
 foo
-
-Can't access event with a proxy (0):"
+[91m[39m
+[91mCan't access event with a proxy (0):[39m"
 `);
 });
 
@@ -174,7 +173,7 @@ it("should able to group hosts by block type", () => {
 		DNS: ["bar", "baz"],
 		TCP: ["foo"],
 		Unavailable: [],
-		Unblocked: ["foo", "qux"],
+		Unblocked: ["qux"],
 	});
 	expect(info.groupByType()).toBe(grouped);
 });
