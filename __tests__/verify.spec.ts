@@ -2,7 +2,8 @@ import { BlockList, connect } from "net";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { buildConnector, MockAgent } from "undici";
-import { createAgent } from "../lib/index.js";
+import { createAgent, HostsBlockInfo } from "../lib/index.js";
+import Mock = jest.Mock;
 
 const mockProxyAgent = new MockAgent();
 mockProxyAgent.disableNetConnect();
@@ -129,4 +130,48 @@ it("should support batch verify", async () => {
 	expect(verifier.verify).toHaveBeenCalledTimes(2);
 
 	expect(await task).toStrictEqual({ foo: "DNS", bar: "DNS", baz: "DNS" });
+});
+
+it("should print the result", () => {
+	const info = new HostsBlockInfo(
+		["foo", "bar", "baz", "qux"],
+		{ foo: "TCP", bar: "DNS", baz: "DNS" },
+	);
+	info.print();
+	const printed = (console.log as Mock<typeof console.log>)
+		.mock.calls
+		.map(args => args[0])
+		.join("\n");
+
+	expect(printed).toMatchInlineSnapshot(`
+"4 hosts, 3 are blocked
+
+Not in blocking (1):
+qux
+
+DNS cache pollution (2):
+bar
+baz
+
+TCP reset (1):
+foo
+
+Can't access event with a proxy (0):"
+`);
+});
+
+it("should able to group hosts by block type", () => {
+	const info = new HostsBlockInfo(
+		["foo", "bar", "baz", "qux"],
+		{ foo: "TCP", bar: "DNS", baz: "DNS" },
+	);
+	const grouped = info.groupByType();
+
+	expect(grouped).toStrictEqual({
+		DNS: ["bar", "baz"],
+		TCP: ["foo"],
+		Unavailable: [],
+		Unblocked: ["foo", "qux"],
+	});
+	expect(info.groupByType()).toBe(grouped);
 });

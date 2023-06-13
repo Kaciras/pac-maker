@@ -161,3 +161,54 @@ export class HostBlockVerifier {
 		return Promise.all(workers).then(() => blocked);
 	}
 }
+
+type GroupedBlockResult = Record<BlockType | "Unblocked", string[]>;
+
+export class HostsBlockInfo {
+
+	readonly blocked: Record<string, BlockType>;
+	readonly input: string[];
+
+	private grouped?: GroupedBlockResult;
+
+	constructor(input: string[], blocked: Record<string, BlockType>) {
+		this.input = input;
+		this.blocked = blocked;
+	}
+
+	groupByType() {
+		const { blocked, input, grouped } = this;
+		if (grouped) {
+			return grouped;
+		}
+		const newGrouped: GroupedBlockResult = {
+			DNS: [],
+			TCP: [],
+			Unavailable: [],
+			Unblocked: [],
+		};
+		for (const h of input) {
+			newGrouped[blocked[h] ?? "Unblocked"].push(h);
+		}
+		return this.grouped = newGrouped;
+	}
+
+	print() {
+		const { Unblocked, DNS, TCP, Unavailable } = this.groupByType();
+		const total = this.input.length;
+
+		console.log(`${total} hosts, ${total - Unblocked.length} are blocked`);
+
+		console.log(`\nNot in blocking (${Unblocked.length}):`);
+		for (const h of Unblocked) console.log(h);
+
+		console.log(`\nDNS cache pollution (${DNS.length}):`);
+		for (const h of DNS) console.log(h);
+
+		console.log(`\nTCP reset (${TCP.length}):`);
+		for (const h of TCP) console.log(h);
+
+		console.log(`\nCan't access event with a proxy (${Unavailable.length}):`);
+		for (const h of Unavailable) console.log(h);
+	}
+}
