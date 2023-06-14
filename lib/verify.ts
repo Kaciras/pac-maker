@@ -1,7 +1,7 @@
 import { BlockList } from "net";
 import { resolve } from "dns/promises";
 import { Agent, buildConnector, Dispatcher, fetch } from "undici";
-import chalk from "chalk";
+import chalk, { ChalkInstance } from "chalk";
 import { parseProxies } from "./loader.js";
 import { createAgent } from "./proxy.js";
 
@@ -170,8 +170,11 @@ type GroupedBlockResult = Record<BlockType | "Unblocked", string[]>;
 
 export class HostsBlockInfo {
 
-	readonly blocked: Record<string, BlockType>;
+	/** The `hosts` argument passed to `verifyAll`. */
 	readonly input: string[];
+
+	/** Blocked hostnames with its type. */
+	readonly blocked: Record<string, BlockType>;
 
 	private grouped?: GroupedBlockResult;
 
@@ -201,18 +204,18 @@ export class HostsBlockInfo {
 		const { Unblocked, DNS, TCP, Unavailable } = this.groupByType();
 		const total = this.input.length;
 
-		console.log(`${total} hosts, ${total - Unblocked.length} are blocked`);
+		console.log(`Checked ${total} hosts, ${total - Unblocked.length} are blocked.`);
+		this.pg(Unblocked, greenBright, "Not in blocking");
+		this.pg(DNS, redBright, "DNS cache pollution");
+		this.pg(TCP, redBright, "TCP reset");
+		this.pg(Unavailable, redBright, "Can't access event with a proxy");
+	}
 
-		console.log(greenBright(`\nNot in blocking (${Unblocked.length}):`));
-		for (const h of Unblocked) console.log(h);
-
-		console.log(redBright(`\nDNS cache pollution (${DNS.length}):`));
-		for (const h of DNS) console.log(h);
-
-		console.log(redBright(`\nTCP reset (${TCP.length}):`));
-		for (const h of TCP) console.log(h);
-
-		console.log(redBright(`\nCan't access event with a proxy (${Unavailable.length}):`));
-		for (const h of Unavailable) console.log(h);
+	private pg(hosts: string[], color: ChalkInstance, type: string) {
+		if (hosts.length > 0) {
+			console.log();
+			console.log(color(`${type} (${hosts.length}):`));
+			for (const hostname of hosts) console.log(hostname);
+		}
 	}
 }

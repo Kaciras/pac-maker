@@ -146,19 +146,17 @@ it("should print the result", () => {
 		.join("\n");
 
 	expect(printed).toMatchInlineSnapshot(`
-"4 hosts, 3 are blocked
-[92m[39m
+"Checked 4 hosts, 3 are blocked.
+
 [92mNot in blocking (1):[39m
 qux
-[91m[39m
+
 [91mDNS cache pollution (2):[39m
 bar
 baz
-[91m[39m
+
 [91mTCP reset (1):[39m
-foo
-[91m[39m
-[91mCan't access event with a proxy (0):[39m"
+foo"
 `);
 });
 

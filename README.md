@@ -225,7 +225,14 @@ hosts running non-HTTP services.
 ```javascript
 import { HostBlockVerifier } from "pac-maker";
 
+const hosts = ["google.com", "github.com" /* ... */];
 const verifier = new HostBlockVerifier("SOCKS5 localhost:1080");
+(await verifier.verify(hosts)).print();
+```
+
+Test a single hostname and return block type:
+
+```javascript
 const reason = await verifier.verify("google.com");
 if (reason === "DNS") {
 	console.log("DNS cache pollution");
