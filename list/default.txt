@@ -15,11 +15,12 @@ www.charliebbs.com
 www.xinjiangpolicefiles.org
 cn.telegram-store.com
 www.sqlitetutorial.net
-cms-twdigitalassets.com
 zhina.wiki
 wiki.rakusu.org
 www.javascripttutorial.net
 axios-http.com
+bootstrapcdn.com
+pomf2.lain.la
 
 # subdomains are blocked, but not itself.
 *.ghost.io
