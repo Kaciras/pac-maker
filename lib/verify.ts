@@ -98,25 +98,27 @@ export class HostBlockVerifier {
 
 	private readonly protocol: string;
 	private readonly direct: Dispatcher;
-	private readonly proxy: Dispatcher;
+	private readonly proxy?: Dispatcher;
 
 	/**
-	 * For accurate results, you need to provide an unblocked proxy.
+	 * For accurate results, you can provide an unblocked proxy at the first
+	 * parameter to detect site down, if it is null this phase will be skipped.
 	 *
 	 * @param proxy the proxy string.
 	 * @param options more options.
 	 */
-	constructor(proxy: string, options: BlockVerifyOptions = {}) {
+	constructor(proxy: string | null, options: BlockVerifyOptions = {}) {
 		const { timeout = 10_000, blockedIPs = gfwIPs } = options;
 
 		this.protocol = options.protocol ?? "https";
-		this.proxy = createAgent(parseProxies(proxy, true)[0], {
-			headersTimeout: timeout,
-		});
 		this.direct = new Agent({
 			headersTimeout: timeout,
 			connect: blockVerifyConnector(timeout, blockedIPs),
 		});
+		if (proxy) {
+			const parsed = parseProxies(proxy, true)[0];
+			this.proxy = createAgent(parsed, { headersTimeout: timeout });
+		}
 	}
 
 	/**
@@ -132,10 +134,12 @@ export class HostBlockVerifier {
 		try {
 			await connectHTTP(url, direct);
 		} catch (e) {
-			try {
-				await connectHTTP(url, proxy);
-			} catch {
-				return "Unavailable";
+			if (proxy) {
+				try {
+					await connectHTTP(url, proxy);
+				} catch {
+					return "Unavailable";
+				}
 			}
 			return e.cause instanceof HostBlockedError
 				? e.cause.blockType : "TCP";

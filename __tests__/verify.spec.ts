@@ -96,7 +96,7 @@ it("should support custom the timeout", async () => {
 		timeout: 1234,
 	});
 	const [directOptions] = mockConnector.mock.calls[0];
-	const [,proxyOptions] = mockCreateAgent.mock.calls[0];
+	const [, proxyOptions] = mockCreateAgent.mock.calls[0];
 
 	expect(directOptions!.timeout).toBe(1234);
 	expect(proxyOptions!.headersTimeout).toBe(1234);
@@ -114,9 +114,17 @@ it("should detect TCP reset", async () => {
 it("should detect site down", async () => {
 	mockDNSResolve.mockResolvedValue(["11.22.33.44"]);
 	setupMockConnect(false);
-
 	const verifier = new HostBlockVerifier("HTTP [::1]:1080");
+
 	expect(await verifier.verify("foo.bar")).toBe("Unavailable");
+});
+
+it("should skip site down detection if no proxy specified", async () => {
+	mockDNSResolve.mockResolvedValue(["11.22.33.44"]);
+	setupMockConnect(false);
+	const verifier = new HostBlockVerifier(null);
+
+	expect(await verifier.verify("foo.bar")).toBe("TCP");
 });
 
 it("should support batch verify", async () => {
