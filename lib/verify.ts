@@ -83,16 +83,7 @@ export interface BlockVerifyOptions {
  *
  * @example
  * const verifier = new HostBlockVerifier("SOCKS5 localhost:1080");
- * const reason = await verifier.verify("google.com");
- * if (reason === "DNS") {
- * 	console.log("DNS cache pollution");
- * } else if (reason === "TCP") {
- * 	console.log("TCP blocking");
- * } else if (reason === "Unavailable") {
- * 	console.log("Site may be down");
- * } else {
- * 	console.log("The host is not blocked");
- * }
+ * (await verifier.verifyAll(["google.com"])).print();
  */
 export class HostBlockVerifier {
 
@@ -123,6 +114,18 @@ export class HostBlockVerifier {
 
 	/**
 	 * Test if any hostname is blocked by your ISP.
+	 *
+	 * @example
+	 * const reason = await verifier.verify("google.com");
+	 * if (reason === "DNS") {
+	 * 	console.log("DNS cache pollution");
+	 * } else if (reason === "TCP") {
+	 * 	console.log("TCP blocking");
+	 * } else if (reason === "Unavailable") {
+	 * 	console.log("Site may be down");
+	 * } else {
+	 * 	console.log("The host is not blocked");
+	 * }
 	 *
 	 * @param host The hostname to test.
 	 * @return One of `BlockType` when it is blocked, otherwise `undefined`.

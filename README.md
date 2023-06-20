@@ -227,7 +227,7 @@ import { HostBlockVerifier } from "pac-maker";
 
 const hosts = ["google.com", "github.com" /* ... */];
 const verifier = new HostBlockVerifier("SOCKS5 localhost:1080");
-(await verifier.verify(hosts)).print();
+(await verifier.verifyAll(hosts)).print();
 ```
 
 Test a single hostname and return block type:
