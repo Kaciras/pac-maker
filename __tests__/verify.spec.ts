@@ -163,7 +163,7 @@ it("should print the result", () => {
 		.join("\n");
 
 	expect(printed).toMatchInlineSnapshot(`
-"Checked 4 hosts, 3 are blocked.
+"Checked 4 hosts, 3 (75%) are blocked.
 
 [92mNot in blocking (1):[39m
 qux

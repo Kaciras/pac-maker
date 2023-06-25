@@ -192,6 +192,10 @@ export class HostsBlockInfo {
 		this.blocked = blocked;
 	}
 
+	/**
+	 * Group hosts with its block type, unblocked hosts are
+	 * also included with key "Unblocked".
+	 */
 	groupByType() {
 		const { blocked, input, grouped } = this;
 		if (grouped) {
@@ -212,8 +216,10 @@ export class HostsBlockInfo {
 	print() {
 		const { Unblocked, DNS, TCP, Unavailable } = this.groupByType();
 		const total = this.input.length;
+		const blocked = total - Unblocked.length;
+		const p = (blocked / total * 100).toFixed();
 
-		console.log(`Checked ${total} hosts, ${total - Unblocked.length} are blocked.`);
+		console.log(`Checked ${total} hosts, ${blocked} (${p}%) are blocked.`);
 		this.pg(Unblocked, greenBright, "Not in blocking");
 		this.pg(DNS, redBright, "DNS cache pollution");
 		this.pg(TCP, redBright, "TCP reset");
