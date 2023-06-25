@@ -1,5 +1,5 @@
 /*
- * Proxy Auto-Configuration file made by pac-maker v3.1.0
+ * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
  * Generated at: 2023-06-14T01:37:19.189Z
