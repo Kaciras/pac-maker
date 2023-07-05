@@ -20,7 +20,9 @@ wiki.rakusu.org
 www.javascripttutorial.net
 axios-http.com
 bootstrapcdn.com
-pomf2.lain.la
+pnpm.io
+mirror.xyz
+s3.bmp.ovh
 
 # subdomains are blocked, but not itself.
 *.ghost.io
