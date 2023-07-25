@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2023-07-05T01:41:49.339Z
+ * Generated at: 2023-07-25T14:54:51.576Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -235,6 +235,7 @@ globalThis.rules = {
 	"wowhead.com": 0,
 	"vod.wwe.com": 0,
 	"xfinity.com": 0,
+	"xiaomi.eu": 0,
 	"youwin.com": 0,
 	"ytn.co.kr": 0,
 	"zattoo.com": 0,
@@ -2693,6 +2694,7 @@ globalThis.rules = {
 	"greenpeace.com.tw": 0,
 	"greenvpn.net": 0,
 	"greenvpn.org": 0,
+	"grindr.com": 0,
 	"grotty-monday.com": 0,
 	"gs-discuss.com": 0,
 	"gsearch.media": 0,
@@ -3052,6 +3054,7 @@ globalThis.rules = {
 	"imb.org": 0,
 	"imdb.com": 0,
 	"img.ly": 0,
+	"imgasd.com": 0,
 	"imgur.com": 0,
 	"imkev.com": 0,
 	"immoral.jp": 0,
@@ -5896,6 +5899,7 @@ globalThis.rules = {
 	"pnpm.io": 0,
 	"mirror.xyz": 0,
 	"s3.bmp.ovh": 0,
+	"saucenao.com": 0,
 	"*.ghost.io": 0,
 	"creativecommons.org": 0,
 	"thght.works": 0,

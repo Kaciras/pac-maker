@@ -23,6 +23,7 @@ bootstrapcdn.com
 pnpm.io
 mirror.xyz
 s3.bmp.ovh
+saucenao.com
 
 # subdomains are blocked, but not itself.
 *.ghost.io
