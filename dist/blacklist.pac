@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2023-08-24T06:18:05.435Z
+ * Generated at: 2023-09-19T02:22:59.392Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -675,7 +675,6 @@ globalThis.rules = {
 	"yourtrap.com": 0,
 	"zyns.com": 0,
 	"zzux.com": 0,
-	"pages.dev": 0,
 	"d1b183sg0nvnuh.cloudfront.net": 0,
 	"d1c37gjwa26taa.cloudfront.net": 0,
 	"d3c33hcgiwev3.cloudfront.net": 0,
@@ -932,7 +931,6 @@ globalThis.rules = {
 	"thinkwithgoogle.com": 0,
 	"tiltbrush.com": 0,
 	"translate.goog": 0,
-	"translate.google": 0,
 	"tv.google": 0,
 	"urchin.com": 0,
 	"waveprotocol.org": 0,
@@ -990,6 +988,7 @@ globalThis.rules = {
 	"vine.co": 0,
 	"gov.taipei": 0,
 	"gov.tw": 0,
+	"li.taipei": 0,
 	"teco-hk.org": 0,
 	"teco-mo.org": 0,
 	"kinmen.org.tw": 0,
@@ -1144,7 +1143,6 @@ globalThis.rules = {
 	"6parknews.com": 0,
 	"7capture.com": 0,
 	"7cow.com": 0,
-	"7-zip.org": 0,
 	"8-d.com": 0,
 	"85cc.net": 0,
 	"85cc.us": 0,
@@ -1838,7 +1836,7 @@ globalThis.rules = {
 	"civiliangunner.com": 0,
 	"civilmedia.tw": 0,
 	"psiphon.civisec.org": 0,
-	"vpn.cjb.net": 0,
+	"civitai.com": 0,
 	"ck101.com": 0,
 	"clarionproject.org": 0,
 	"classicalguitarblog.net": 0,
@@ -2640,6 +2638,7 @@ globalThis.rules = {
 	"goagent.biz": 0,
 	"goagentplus.com": 0,
 	"gobet.cc": 0,
+	"godaddy.com": 0,
 	"godfootsteps.org": 0,
 	"godns.work": 0,
 	"godsdirectcontact.co.uk": 0,
@@ -3647,6 +3646,7 @@ globalThis.rules = {
 	"moon.fm": 0,
 	"moonbbs.com": 0,
 	"moptt.tw": 0,
+	"monica.im": 0,
 	"monitorchina.org": 0,
 	"monocloud.me": 0,
 	"bbs.morbell.com": 0,
