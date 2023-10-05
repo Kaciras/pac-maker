@@ -17,11 +17,12 @@ export type BlockType = "DNS" | "TCP" | "Unavailable";
 const { redBright, greenBright } = chalk;
 
 const gfwIPs = new BlockList();
-gfwIPs.addAddress("223.75.236.241"); // 湖北反诈中心
+gfwIPs.addSubnet("127.0.0.0", 8);
+gfwIPs.addSubnet("0.0.0.0", 8);
+gfwIPs.addAddress("106.74.25.198");	// 内蒙古反诈中心
 gfwIPs.addAddress("124.236.16.201"); // 河北反诈中心
 gfwIPs.addAddress("182.43.124.6");	// 贵州反诈中心
-gfwIPs.addSubnet("0.0.0.0", 8);
-gfwIPs.addSubnet("127.0.0.0", 8);
+gfwIPs.addAddress("223.75.236.241"); // 湖北反诈中心
 
 class HostBlockedError extends Error {
 

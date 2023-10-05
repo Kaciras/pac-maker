@@ -14,16 +14,13 @@ www.spring-plus.net
 www.charliebbs.com
 www.xinjiangpolicefiles.org
 cn.telegram-store.com
-www.sqlitetutorial.net
 zhina.wiki
 wiki.rakusu.org
-www.javascripttutorial.net
 axios-http.com
 bootstrapcdn.com
-pnpm.io
 mirror.xyz
 s3.bmp.ovh
-saucenao.com
+www.svgrepo.com
 
 # subdomains are blocked, but not itself.
 *.ghost.io
