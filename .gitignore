@@ -20,7 +20,8 @@ coverage/
 *.d.ts
 /lib/**/*.js
 /bin/*.js
-/__tests__/*.js
+/__tests__/**/*.js
+!/__tests__/fixtures/*.js
 
 # stryker temp files
 /stryker-tmp

@@ -141,8 +141,6 @@ node bin/pac-maker.js serve [--config=<file>] [--host=<host>] [--port=<port>]
 
 pac-maker exports some useful functions that allows you to play with PAC inside your own JavaScript program.
 
-This package is pure ESM, It cannot be `require()`'d from CommonJS.
-
 ### `PACDispatcher`
 
 The [undici](https://github.com/nodejs/undici) dispatcher that dispatch requests based on rule described by the PAC. 
