@@ -153,8 +153,12 @@ it("should support batch verify", async () => {
 
 it("should print the result", () => {
 	const info = new HostsBlockInfo(
-		["foo", "bar", "baz", "qux"],
-		{ foo: "TCP", bar: "DNS", baz: "DNS" },
+		["foo", "bar", "baz", "qux", "quux"],
+		{
+			foo: "TCP",
+			bar: "DNS", baz: "DNS",
+			qux: "Unavailable",
+		},
 	);
 	info.print();
 	const printed = (console.log as jest.Mock<typeof console.log>)
@@ -163,12 +167,39 @@ it("should print the result", () => {
 		.join("\n");
 
 	expect(printed).toMatchInlineSnapshot(`
-"Checked 4 hosts, 3 (75%) are blocked.
+"Checked 5 hosts, 4 (80%) are blocked.
 
 [92mNot in blocking (1):[39m
-qux
+quux
 
 [91mDNS cache pollution (2):[39m
+bar
+baz
+
+[91mTCP reset (1):[39m
+foo
+
+[91mCan't access event with a proxy (1):[39m
+qux"
+`);
+});
+
+
+it("should not print group with 0 hosts", () => {
+	const info = new HostsBlockInfo(
+		["foo", "bar", "baz"],
+		{ foo: "TCP" },
+	);
+	info.print();
+	const printed = (console.log as jest.Mock<typeof console.log>)
+		.mock.calls
+		.map(args => args[0])
+		.join("\n");
+
+	expect(printed).toMatchInlineSnapshot(`
+"Checked 3 hosts, 1 (33%) are blocked.
+
+[92mNot in blocking (2):[39m
 bar
 baz
 
@@ -176,6 +207,7 @@ baz
 foo"
 `);
 });
+
 
 it("should able to group hosts by block type", () => {
 	const info = new HostsBlockInfo(

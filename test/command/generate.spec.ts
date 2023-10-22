@@ -20,6 +20,9 @@ it("should generate PAC file", async () => {
 	config.path = join(testDir, "deep", "path", "proxy.pac");
 
 	await generate({}, config);
+
+	const [message] = (console.info as any).mock.calls[0];
+	expect(message).toContain("PAC updated.");
 	expect(readFileSync(config.path, "utf8")).toBe(stubPAC1);
 });
 
@@ -37,7 +40,7 @@ it("should log changed hostname count", async () => {
 
 it("should rebuild when source have updates", async () => {
 	const config = getTestConfig();
-	generate({ watch: true }, config).then();
+	await generate({ watch: true }, config).then();
 	await waitForCalledNth(console.info, 2);
 
 	config.sources["HTTP [::1]:2080"][0].update(["kaciras.com", "foo.bar"]);

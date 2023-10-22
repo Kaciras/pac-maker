@@ -167,9 +167,9 @@ export class HostBlockVerifier {
 			}
 		};
 
-		const workers = new Array(concurrency);
+		const workers = [];
 		for (let i = 0; i < concurrency; i++) {
-			workers[i] = run();
+			workers.push(run());
 		}
 		return Promise.all(workers)
 			.then(() => new HostsBlockInfo(hosts, blocked));

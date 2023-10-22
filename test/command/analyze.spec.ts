@@ -22,6 +22,7 @@ it("should works", async () => {
 	const json = join(testDir, "test.json");
 
 	mockedBrowser.getHistories.mockResolvedValue([
+		{ url: "file:/foo/bar.html" },
 		{ url: "http://foo.bar/path" },
 		{ url: "http://kaciras.com" },
 	]);

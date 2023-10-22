@@ -23,19 +23,33 @@ function waitForUpdate() {
 	return new Promise(resolve => source.watch(resolve));
 }
 
+function mockForTimeout() {
+	const callback = jest.fn();
+	jest.useFakeTimers();
+
+	async function expectTimeout(ms: number) {
+		await jest.advanceTimersByTimeAsync(ms - 1);
+		expect(callback).not.toHaveBeenCalled();
+
+		await jest.advanceTimersByTimeAsync(1);
+		expect(callback).toHaveBeenCalled();
+	}
+
+	return { callback, expectTimeout };
+}
+
 describe("gfwlist", () => {
 	const dispatcher = new MockAgent();
 
 	dispatcher.get("https://raw.githubusercontent.com")
 		.intercept({ path: "/gfwlist/gfwlist/master/gfwlist.txt" })
-		.reply(200, readFixture("gfwlist.txt"))
-		.persist();
+		.reply(200, readFixture("gfwlist.txt")).persist();
 
+	afterEach(() => void jest.useRealTimers());
 	afterAll(() => dispatcher.close());
 
 	it("should check parameter", () => {
-		expect(() => gfwlist({ period: 0 }))
-			.toThrow("Period cannot be zero or negative");
+		expect(() => gfwlist({ period: 0 })).toThrow("Period cannot be zero or negative");
 	});
 
 	it("should get hostnames", async () => {
@@ -46,6 +60,32 @@ describe("gfwlist", () => {
 			expect(item).toBeHostname();
 		}
 		expect(hostnames).toHaveLength(7055);
+	});
+
+	it("should pull for source changes", () => {
+		const mock = mockForTimeout();
+
+		source = gfwlist();
+		source.getHostnames = () => {
+			(source as any).lastModified = new Date();
+			return Promise.resolve([]);
+		};
+		source.watch(mock.callback);
+
+		return mock.expectTimeout(21600_000);
+	});
+
+	it("should support set period", () => {
+		const mock = mockForTimeout();
+
+		source = gfwlist({ period: 8964 });
+		source.getHostnames = () => {
+			(source as any).lastModified = new Date();
+			return Promise.resolve([]);
+		};
+		source.watch(mock.callback);
+
+		return mock.expectTimeout(8964_000);
 	});
 
 	it("should not trigger update if no changes", async () => {
@@ -82,7 +122,7 @@ describe("DnsmasqLists", () => {
 		expect(hostnames).toContain("baidupcs.com");
 	});
 
-	it("should check for updates",async () => {
+	it("should check for updates", async () => {
 		const listener = jest.fn();
 		source = new DnsmasqLists("accelerated-domains", { dispatcher });
 		source.watch(listener);

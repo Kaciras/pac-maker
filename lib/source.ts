@@ -1,6 +1,7 @@
+import { readFile } from "fs/promises";
 import { basename, join } from "path";
 import { FSWatcher, watch } from "fs";
-import { readFile } from "fs/promises";
+import { Awaitable } from "@kaciras/utilities/node";
 import { Dispatcher, fetch } from "undici";
 import { root } from "./utils.js";
 
@@ -29,7 +30,7 @@ abstract class RemoteSource implements HostnameSource {
 	private readonly period: number;
 
 	private listeners: ChangeHandler[] = [];
-	private timer?: NodeJS.Timer;
+	private timer?: ReturnType<typeof setInterval>;
 
 	protected lastModified = new Date(0);
 
@@ -42,9 +43,7 @@ abstract class RemoteSource implements HostnameSource {
 
 	abstract getHostnames(): Promise<string[]>;
 
-	getLastModified(): Promise<Date | undefined> {
-		return Promise.resolve(undefined);
-	}
+	getLastModified(): Awaitable<Date | void> {}
 
 	watch(handler: ChangeHandler) {
 		const { timer, period, checkUpdate } = this;
