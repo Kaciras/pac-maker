@@ -2,7 +2,7 @@ import type { socksDispatcher } from "fetch-socks";
 import type { PACDispatcherOptions } from "../lib/proxy.js";
 import { AddressInfo } from "net";
 import * as tp from "timers/promises";
-import { afterEach, beforeEach, expect, it, jest } from "@jest/globals";
+import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { fetch, MockAgent } from "undici";
 import { createTunnelProxy, readFixture } from "./share.js";
@@ -35,8 +35,8 @@ const tlsTunnelProxy = await createTunnelProxy({
 });
 
 const httpServer = getLocal();
-beforeEach(() => httpServer.start());
-afterEach(() => httpServer.stop());
+beforeAll(() => httpServer.start());
+afterAll(() => httpServer.stop());
 
 const secureServer = getLocal({
 	https: {
@@ -44,8 +44,8 @@ const secureServer = getLocal({
 		certPath: "test/fixtures/localhost.pem",
 	},
 });
-beforeEach(() => secureServer.start());
-afterEach(() => secureServer.stop());
+beforeAll(() => secureServer.start());
+afterAll(() => secureServer.stop());
 
 /**
  * Assert the fetching failed by all proxies failed with errors.
