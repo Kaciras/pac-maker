@@ -1,6 +1,6 @@
 export default {
 	setupFilesAfterEnv: [
-		"<rootDir>/__tests__/setup-jest.ts",
+		"<rootDir>/test/setup-jest.ts",
 	],
 	transform: {
 		"^.+\\.ts$": ["@swc/jest"],
@@ -17,7 +17,7 @@ export default {
 	coverageDirectory: "coverage",
 	coverageProvider: "v8",
 	testMatch: [
-		"<rootDir>/__tests__/**/*.spec.ts",
+		"<rootDir>/test/**/*.spec.ts",
 	],
 	moduleNameMapper: {
 		/*

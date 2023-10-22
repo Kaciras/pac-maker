@@ -40,8 +40,8 @@ afterEach(() => httpServer.stop());
 
 const secureServer = getLocal({
 	https: {
-		keyPath: "__tests__/fixtures/localhost.pvk",
-		certPath: "__tests__/fixtures/localhost.pem",
+		keyPath: "test/fixtures/localhost.pvk",
+		certPath: "test/fixtures/localhost.pem",
 	},
 });
 beforeEach(() => secureServer.start());

@@ -67,7 +67,7 @@ export function autoRestoreProcessEnv() {
  * @param filename file name
  */
 export function fixturePath(filename: string) {
-	return join(root, "__tests__/fixtures", filename);
+	return join(root, "test/fixtures", filename);
 }
 
 /**
