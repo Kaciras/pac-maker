@@ -59,6 +59,6 @@ it("should benchmark PACs", async () => {
 	expect(case_[0]).toBe(`\nResult of PAC script: ${script}`);
 
 	// assertMetrics(mem[0], 0.18, 0.25); Not stable enough.
-	assertMetrics(load[0], 7.5, 13);
-	assertMetrics(find[0], 4980, 5020);
+	assertMetrics(load[0], 9.5, 13);
+	assertMetrics(find[0], 4995, 5025);
 });
