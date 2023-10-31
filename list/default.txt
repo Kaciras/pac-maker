@@ -20,7 +20,7 @@ axios-http.com
 bootstrapcdn.com
 mirror.xyz
 s3.bmp.ovh
-www.svgrepo.com
+pomf2.lain.la
 
 # subdomains are blocked, but not itself.
 *.ghost.io
