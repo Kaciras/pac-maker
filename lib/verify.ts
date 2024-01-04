@@ -2,6 +2,7 @@ import { BlockList } from "net";
 import { resolve } from "dns/promises";
 import { Agent, buildConnector, Dispatcher, fetch } from "undici";
 import chalk, { ChalkInstance } from "chalk";
+import { SingleBar } from "cli-progress";
 import { parseProxies } from "./loader.js";
 import { createAgent } from "./proxy.js";
 
@@ -153,6 +154,7 @@ export class HostBlockVerifier {
 	}
 
 	verifyAll(hosts: string[], concurrency = 10) {
+		const progress = new SingleBar({});
 		const iterator = hosts[Symbol.iterator]();
 		const blocked: Record<string, BlockType> = {};
 
@@ -163,16 +165,19 @@ export class HostBlockVerifier {
 				if (type) {
 					blocked[value] = type;
 				}
+				progress.increment();
 				({ value, done } = iterator.next());
 			}
 		};
 
+		progress.start(hosts.length, 0);
 		const workers = [];
 		for (let i = 0; i < concurrency; i++) {
 			workers.push(run());
 		}
 		return Promise.all(workers)
-			.then(() => new HostsBlockInfo(hosts, blocked));
+			.then(() => new HostsBlockInfo(hosts, blocked))
+			.finally(() => progress.stop());
 	}
 }
 
