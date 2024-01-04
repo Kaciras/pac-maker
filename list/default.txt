@@ -19,7 +19,6 @@ wiki.rakusu.org
 axios-http.com
 bootstrapcdn.com
 mirror.xyz
-s3.bmp.ovh
 pomf2.lain.la
 
 # subdomains are blocked, but not itself.
