@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import yargs, { Argv } from "yargs";
-import { loadConfig, PACMakerConfig } from "../lib/config.js";
-import { commands } from "../lib/index.js";
+import { loadConfig, PACMakerConfig } from "./config.js";
+import { commands } from "./index.js";
 
 type Command = (argv: any, config: PACMakerConfig) => Promise<unknown>;
 

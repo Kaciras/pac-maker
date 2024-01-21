@@ -1,6 +1,6 @@
 import { expect, it, jest } from "@jest/globals";
-import { fixturePath, useArgvMock } from "../share.js";
-import * as indexModule from "../../lib/index.js";
+import { fixturePath, useArgvMock } from "./share.js";
+import * as indexModule from "../lib/index.js";
 
 const testCmd = jest.fn();
 
@@ -14,7 +14,7 @@ const setArgv = useArgvMock();
 function run(...args: string[]) {
 	jest.resetModules();
 	setArgv(...args);
-	return import("../../bin/pac-maker.js");
+	return import("../lib/cli.js");
 }
 
 it("should fail with unknown command", () => {

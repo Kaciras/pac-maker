@@ -97,7 +97,7 @@ There are some built-in sources in pac-maker:
 Generate a PAC file:
 
 ```shell
-node bin/pac-maker.js generate [--config=<path>] [--watch]
+pac-maker generate [--config=<path>] [--watch]
 ```
 
 * `--watch` After the initial build, pac-maker will continue to watch for updates in any of the sources.
@@ -107,7 +107,7 @@ node bin/pac-maker.js generate [--config=<path>] [--watch]
 Find what hosts will be proxied by the PAC in browser history, support Chrome, Firefox, and Edge:
 
 ```shell
-node bin/pac-maker.js analyze [--config=<path>] [--json=<path>]
+pac-maker analyze [--config=<path>] [--json=<path>]
 ```
 
 * `--json` Save matched rules to this file, default is `matches.json`.
@@ -117,7 +117,7 @@ node bin/pac-maker.js analyze [--config=<path>] [--json=<path>]
 Benchmark PAC files, show load time, memory usage, and `FindProxyForURL` performance.
 
 ```shell
-node bin/pac-maker.js bench <path/to/file.pac> [morefiles...] [--host=example.com] [--loadCount=<number>] [--workCount=<number>]
+pac-maker bench <path/to/file.pac> [morefiles...] [--host=example.com] [--loadCount=<number>] [--workCount=<number>]
 ```
 
 * `--host` The `host` parameter passed to `FindProxyForURL`, default is "www.google.com".
@@ -129,7 +129,7 @@ node bin/pac-maker.js bench <path/to/file.pac> [morefiles...] [--host=example.co
 Serve the PAC file with http, and update when source have changes:
 
 ```shell
-node bin/pac-maker.js serve [--config=<file>] [--host=<host>] [--port=<port>]
+pac-maker serve [--config=<file>] [--host=<host>] [--port=<port>]
 ```
 
 * `--host` By default, the server will accept connections from all addresses, It is possible to listen to just one

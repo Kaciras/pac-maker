@@ -21,11 +21,13 @@
 	"type": "module",
 	"files": [
 		"lib/**/*.{js,d.ts}",
-		"bin/**/*.{js,d.ts}",
 		"list",
 		"template"
 	],
-	"types": "lib/index.ts",
+	"bin": {
+		"pac-maker": "lib/cli.js"
+	},
+	"types": "lib/index.d.ts",
 	"main": "lib/index.js",
 	"scripts": {
 		"lint": "eslint --fix .",
