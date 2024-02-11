@@ -15,11 +15,11 @@ www.charliebbs.com
 www.xinjiangpolicefiles.org
 cn.telegram-store.com
 zhina.wiki
-wiki.rakusu.org
 axios-http.com
 bootstrapcdn.com
 mirror.xyz
 pomf2.lain.la
+trustwallet.com
 
 # subdomains are blocked, but not itself.
 *.ghost.io
