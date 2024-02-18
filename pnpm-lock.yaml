@@ -85,6 +85,9 @@ devDependencies:
   eslint:
     specifier: ^8.56.0
     version: 8.56.0
+  expect:
+    specifier: ^29.7.0
+    version: 29.7.0
   jest:
     specifier: ^29.7.0
     version: 29.7.0

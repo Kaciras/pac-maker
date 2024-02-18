@@ -36,6 +36,19 @@ setFlagsFromString("--no-expose-gc");
 // https://stackoverflow.com/a/106223
 const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
 
+declare module "expect" {
+
+	// noinspection JSUnusedGlobalSymbols
+	interface Matchers<R> {
+		toBeHostname(): R;
+	}
+
+	// noinspection JSUnusedGlobalSymbols
+	interface AsymmetricMatchers {
+		toBeHostname(): void;
+	}
+}
+
 expect.extend({
 	toBeHostname(received: string) {
 		if (isIP(received) || hostname.test(received)) {
