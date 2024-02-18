@@ -13,6 +13,6 @@
 		"allowSyntheticDefaultImports": true,
 
 		// For tests
-		"allowImportingTsExtensions": true,
+		"allowImportingTsExtensions": true
 	}
 }

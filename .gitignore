@@ -1,7 +1,4 @@
 .DS_Store
-.env
-env/
-build/
 .idea/
 *.iml
 .vs/
@@ -19,7 +16,6 @@ coverage/
 *.js.map
 *.d.ts
 /lib/**/*.js
-/bin/*.js
 /test/**/*.js
 !/test/fixtures/*.js
 
