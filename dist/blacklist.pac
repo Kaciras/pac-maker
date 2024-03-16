@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-02-11T13:40:38.519Z
+ * Generated at: 2024-03-16T10:35:23.441Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -2981,6 +2981,7 @@ globalThis.rules = {
 	"huhangfei.com": 0,
 	"huiyi.in": 0,
 	"hulkshare.com": 0,
+	"humanparty.me": 0,
 	"humanrightspressawards.org": 0,
 	"hung-ya.com": 0,
 	"hungerstrikeforaids.org": 0,
@@ -4904,6 +4905,7 @@ globalThis.rules = {
 	"telecomspace.com": 0,
 	"telegraph.co.uk": 0,
 	"tenacy.com": 0,
+	"tenor.com": 0,
 	"tenzinpalmo.com": 0,
 	"tew.org": 0,
 	"tfiflve.com": 0,
@@ -5915,6 +5917,7 @@ globalThis.rules = {
 	"mirror.xyz": 0,
 	"pomf2.lain.la": 0,
 	"trustwallet.com": 0,
+	"vikacg.com": 0,
 	"*.ghost.io": 0,
 	"creativecommons.org": 0,
 	"thght.works": 0,
