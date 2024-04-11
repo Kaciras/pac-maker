@@ -21,6 +21,7 @@ mirror.xyz
 pomf2.lain.la
 trustwallet.com
 vikacg.com
+herokuapp.com
 
 # subdomains are blocked, but not itself.
 *.ghost.io

@@ -3,6 +3,8 @@
 # https://beta.openai.com/docs/supported-countries
 openai.com
 
+5ch.net
+2ch.sc
 www.familyhandyman.com
 www.tianshie.com
 sanctioned-suicide.net

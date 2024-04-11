@@ -3,5 +3,6 @@
 hostloc.com
 creativecommons.org
 thght.works
+obsproject.com
 
 *.sentry-cdn.com

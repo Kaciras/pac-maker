@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-03-16T10:35:23.441Z
+ * Generated at: 2024-04-11T01:26:04.321Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -41,11 +41,13 @@ globalThis.rules = {
 	"casinobellini.com": 0,
 	"centauro.com.br": 0,
 	"chobit.cc": 0,
+	"ciciai.com": 0,
 	"clearsurance.com": 0,
 	"images.comico.tw": 0,
 	"static.comico.tw": 0,
 	"counter.social": 0,
 	"costco.com": 0,
+	"coze.com": 0,
 	"crossfire.co.kr": 0,
 	"crunchyroll.com": 0,
 	"d2pass.com": 0,
@@ -1345,6 +1347,7 @@ globalThis.rules = {
 	"archive.fo": 0,
 	"archive.is": 0,
 	"archive.li": 0,
+	"archive.md": 0,
 	"archive.org": 0,
 	"archive.ph": 0,
 	"archive.today": 0,
@@ -1635,6 +1638,7 @@ globalThis.rules = {
 	"c-spanvideo.org": 0,
 	"c-est-simple.com": 0,
 	"c100tibet.org": 0,
+	"cableav.tv": 0,
 	"cablegatesearch.net": 0,
 	"cachinese.com": 0,
 	"cacnw.com": 0,
@@ -2167,6 +2171,7 @@ globalThis.rules = {
 	"easyca.ca": 0,
 	"easypic.com": 0,
 	"fnc.ebc.net.tw": 0,
+	"news.ebc.net.tw": 0,
 	"ebony-beauty.com": 0,
 	"ebookbrowse.com": 0,
 	"ebookee.com": 0,
@@ -2267,6 +2272,7 @@ globalThis.rules = {
 	"eurekavpt.com": 0,
 	"euronews.com": 0,
 	"eeas.europa.eu": 0,
+	"apps.evozi.com": 0,
 	"evschool.net": 0,
 	"exblog.jp": 0,
 	"blog.exblog.co.jp": 0,
@@ -5918,10 +5924,14 @@ globalThis.rules = {
 	"pomf2.lain.la": 0,
 	"trustwallet.com": 0,
 	"vikacg.com": 0,
+	"herokuapp.com": 0,
 	"*.ghost.io": 0,
 	"creativecommons.org": 0,
 	"thght.works": 0,
+	"obsproject.com": 0,
 	"*.sentry-cdn.com": 0,
+	"5ch.net": 0,
+	"2ch.sc": 0,
 	"www.familyhandyman.com": 0,
 	"www.tianshie.com": 0,
 	"sanctioned-suicide.net": 0
