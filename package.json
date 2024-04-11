@@ -36,7 +36,7 @@
 		"compile": "tsc"
 	},
 	"dependencies": {
-		"@kaciras/deasync": "^1.0.3",
+		"@kaciras/deasync": "^1.0.4",
 		"@kaciras/utilities": "^0.12.4",
 		"@koa/cors": "^5.0.0",
 		"chalk": "^5.3.0",
@@ -46,28 +46,28 @@
 		"koa": "^2.15.2",
 		"sqlite": "^5.1.1",
 		"sqlite3": "5.1.7",
-		"undici": "^6.11.1",
+		"undici": "^6.12.0",
 		"yargs": "^17.7.2"
 	},
 	"devDependencies": {
 		"@jest/globals": "^29.7.0",
-		"@kaciras/eslint-config-core": "^2.6.4",
-		"@kaciras/eslint-config-jest": "^2.6.4",
-		"@kaciras/eslint-config-typescript": "^2.6.4",
+		"@kaciras/eslint-config-core": "^3.0.1",
+		"@kaciras/eslint-config-jest": "^3.0.1",
+		"@kaciras/eslint-config-typescript": "^3.0.1",
 		"@stryker-mutator/core": "^8.2.6",
 		"@stryker-mutator/jest-runner": "^8.2.6",
-		"@swc/core": "^1.4.11",
+		"@swc/core": "^1.4.13",
 		"@swc/jest": "^0.2.36",
 		"@types/cli-progress": "^3.11.5",
 		"@types/ini": "^4.1.0",
 		"@types/koa": "^2.15.0",
 		"@types/koa__cors": "^5.0.0",
 		"@types/yargs": "^17.0.32",
-		"eslint": "^8.57.0",
+		"eslint": "^9.0.0",
 		"expect": "^29.7.0",
 		"jest": "^29.7.0",
 		"mockttp": "^3.10.2",
-		"typescript": "^5.4.3",
+		"typescript": "^5.4.5",
 		"wait-for-expect": "^3.0.2"
 	}
 }

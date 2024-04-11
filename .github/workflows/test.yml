@@ -13,13 +13,14 @@ jobs:
         with:
           node-version: latest
 
-      - run: npm i -g pnpm
-
-      - run: pnpm install
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: true
 
       # When use "pnpm run test", don't add "--".
       - run: pnpm test -- --coverage
         env:
           NODE_OPTIONS: --experimental-vm-modules
 
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
