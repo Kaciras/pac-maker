@@ -22,6 +22,8 @@ pomf2.lain.la
 trustwallet.com
 vikacg.com
 herokuapp.com
+singlelogin.re
+zlibrary-global.se
 
 # subdomains are blocked, but not itself.
 *.ghost.io

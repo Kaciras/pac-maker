@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-04-11T01:26:04.321Z
+ * Generated at: 2024-05-01T04:13:56.493Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -240,6 +240,7 @@ globalThis.rules = {
 	"xiaomi.eu": 0,
 	"youwin.com": 0,
 	"ytn.co.kr": 0,
+	"zamimg.com": 0,
 	"zattoo.com": 0,
 	"zim.vn": 0,
 	"zozotown.com": 0,
@@ -446,10 +447,12 @@ globalThis.rules = {
 	"dragonex.io": 0,
 	"ebtcbank.com": 0,
 	"etherdelta.com": 0,
+	"ethermine.org": 0,
 	"etherscan.io": 0,
 	"exmo.com": 0,
 	"exrates.me": 0,
 	"exx.com": 0,
+	"f2pool.com": 0,
 	"fatbtc.com": 0,
 	"ftx.com": 0,
 	"gate.io": 0,
@@ -2957,6 +2960,7 @@ globalThis.rules = {
 	"hrcchina.org": 0,
 	"hrea.org": 0,
 	"hrichina.org": 0,
+	"hrntt.org": 0,
 	"hrtsea.com": 0,
 	"hrw.org": 0,
 	"hrweb.org": 0,
@@ -3023,7 +3027,7 @@ globalThis.rules = {
 	"cn.ibtimes.com": 0,
 	"ibvpn.com": 0,
 	"icams.com": 0,
-	"blogs.icerocket.com": 0,
+	"icedrive.net": 0,
 	"icij.org": 0,
 	"icl-fi.org": 0,
 	"icoco.com": 0,
@@ -3267,6 +3271,7 @@ globalThis.rules = {
 	"juyuange.org": 0,
 	"juziyue.com": 0,
 	"jwmusic.org": 0,
+	"cdn.jwplayer.com": 0,
 	"jyxf.net": 0,
 	"k-doujin.net": 0,
 	"ka-wai.com": 0,
@@ -4200,6 +4205,7 @@ globalThis.rules = {
 	"postadult.com": 0,
 	"postimg.org": 0,
 	"potvpn.com": 0,
+	"pourquoi.tw": 0,
 	"powercx.com": 0,
 	"powerphoto.org": 0,
 	"www.powerpointninja.com": 0,
@@ -4415,6 +4421,7 @@ globalThis.rules = {
 	"roodo.com": 0,
 	"rosechina.net": 0,
 	"rotten.com": 0,
+	"rou.video": 0,
 	"rsf.org": 0,
 	"rsf-chinese.org": 0,
 	"rsgamen.org": 0,
@@ -5925,6 +5932,8 @@ globalThis.rules = {
 	"trustwallet.com": 0,
 	"vikacg.com": 0,
 	"herokuapp.com": 0,
+	"singlelogin.re": 0,
+	"zlibrary-global.se": 0,
 	"*.ghost.io": 0,
 	"creativecommons.org": 0,
 	"thght.works": 0,
