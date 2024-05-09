@@ -1,18 +1,15 @@
 {
+	"include": ["lib"],
 	"compilerOptions": {
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleResolution": "NodeNext",
 		"lib": ["ESNext"],
-		"declaration": true,
-		"sourceMap": true,
 		"strict": true,
 		"resolveJsonModule": true,
-		"useUnknownInCatchVariables": false,
 		"skipLibCheck": true,
-		"allowSyntheticDefaultImports": true,
-
-		// For tests
-		"allowImportingTsExtensions": true
+		"sourceMap": true,
+		"declaration": true,
+		"useUnknownInCatchVariables": false,
 	}
 }
