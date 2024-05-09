@@ -22,17 +22,17 @@
  * Modifications copyright (C) 2021 Kaciras <kaciras@protonmail.com>
  */
 import { isIPv4 } from "net";
-import dns from "dns";
+import * as dns from "dns";
 import { deasync } from "@kaciras/deasync";
 
 let dnsLookupSync: (host: string, family: number) => string;
 
 /**
- * Resolves the given DNS hostname into an IP address,
- * and returns it in the dot-separated format as a string.
+ * Resolves the given DNS hostname into an IP address, and returns it
+ * in the dot-separated format as a string.
  *
  * @param host hostname to resolve.
- * @see https://nodejs.org/dist/latest-v19.x/docs/api/dns.html#dnslookuphostname-options-callback
+ * @see https://nodejs.org/docs/latest/api/dns.html#dnslookuphostname-options-callback
  */
 export function dnsResolve(host: string) {
 	if (!dnsLookupSync) {
@@ -334,11 +334,11 @@ export function timeRange(...argv: any[]) {
 	} else if (argc === 2) {
 		return ((argv[0] <= hour) && (hour <= argv[1]));
 	} else {
+		// noinspection FallThroughInSwitchStatementJS
 		switch (argc) {
 			case 6:
 				date1.setSeconds(argv[2]);
 				date2.setSeconds(argv[5]);
-			// eslint-disable-next-line no-fallthrough
 			case 4:
 				date1.setHours(argv[0]);
 				date1.setMinutes(argv[1]);

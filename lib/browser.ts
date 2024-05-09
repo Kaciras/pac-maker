@@ -1,8 +1,8 @@
 import { env, platform } from "process";
 import { join } from "path";
 import { existsSync, readFileSync, statSync } from "fs";
-import ini from "ini";
-import sqlite3 from "sqlite3";
+import * as ini from "ini";
+import * as sqlite from "sqlite3";
 import { open } from "sqlite";
 
 export interface HistoryEntry {
@@ -34,8 +34,8 @@ export class Safari implements BrowserEngine {
 	async getHistories() {
 		const db = await open({
 			filename: join(this.directory, "History.db"),
-			driver: sqlite3.Database,
-			mode: sqlite3.OPEN_READONLY,
+			driver: sqlite.Database,
+			mode: sqlite.OPEN_READONLY,
 		});
 		return db.all<HistoryEntry[]>("SELECT id,url FROM history_items");
 	}
@@ -65,8 +65,8 @@ export class Chromium implements BrowserEngine {
 		}
 		const db = await open({
 			filename: join(profile, "History"),
-			driver: sqlite3.Database,
-			mode: sqlite3.OPEN_READONLY,
+			driver: sqlite.Database,
+			mode: sqlite.OPEN_READONLY,
 		});
 		const id = afterBy ? afterBy.id : 0;
 		return db.all<HistoryEntry[]>("SELECT id,url FROM urls WHERE id > ?", id);
@@ -92,8 +92,8 @@ export class Firefox implements BrowserEngine {
 	async getHistories(afterBy?: HistoryEntry) {
 		const db = await open({
 			filename: join(this.directory, "places.sqlite"),
-			driver: sqlite3.Database,
-			mode: sqlite3.OPEN_READONLY,
+			driver: sqlite.Database,
+			mode: sqlite.OPEN_READONLY,
 		});
 		const id = afterBy ? afterBy.id : 0;
 		return db.all<HistoryEntry[]>("SELECT id,url FROM moz_places WHERE id > ?", id);
