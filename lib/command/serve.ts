@@ -1,5 +1,4 @@
-import Koa from "koa";
-import cors from "@koa/cors";
+import { createServer } from "http";
 import { buildPAC, HostnameListLoader } from "../generator.js";
 import { PACMakerConfig } from "../config.js";
 
@@ -8,6 +7,11 @@ interface ServeOptions {
 	port?: number;
 	config?: string;
 }
+
+const headers = {
+	"Content-Type": "application/x-ns-proxy-autoconfig",
+	"Access-Control-Allow-Origin": "*",
+};
 
 export default async function (argv: ServeOptions, config: PACMakerConfig) {
 	const { host, port = 7568 } = argv;
@@ -24,13 +28,11 @@ export default async function (argv: ServeOptions, config: PACMakerConfig) {
 	rebuildPACScript();
 	loader.on("update", rebuildPACScript);
 
-	const app = new Koa();
-	app.on("error", err => console.error(err));
-	app.use(cors());
-	app.use(ctx => {
-		ctx.type = "application/x-ns-proxy-autoconfig";
-		ctx.body = script;
+	const app = createServer((_, response) => {
+		response.writeHead(200, headers).end(script);
 	});
+	app.on("error", err => console.error(err));
+
 	return app.listen(port, host, () => {
 		console.info(`server started, http://localhost:${port}/proxy.pac`);
 	});
