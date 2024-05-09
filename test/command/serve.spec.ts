@@ -25,7 +25,8 @@ it("should serve PAC file with HTTP", async () => {
 
 	expect(code).toBe(stubPAC);
 	expect(response.status).toBe(200);
-	expect(response.headers.get("content-type")).toBe("application/x-ns-proxy-autoconfig");
+	expect(response.headers.get("Content-Type")).toBe("application/x-ns-proxy-autoconfig");
+	expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
 });
 
 it("should rebuild when source have updates", async () => {

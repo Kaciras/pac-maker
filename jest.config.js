@@ -8,11 +8,10 @@ export default {
 	extensionsToTreatAsEsm: [".ts"],
 	clearMocks: true,
 	collectCoverageFrom: [
-		"bin/*.ts",
-		"lib/**/*.ts",
+		"src/**/*.ts",
 
 		// We don't test third party code.
-		"!lib/context.ts",
+		"!src/context.ts",
 	],
 	coverageDirectory: "coverage",
 	coverageProvider: "v8",

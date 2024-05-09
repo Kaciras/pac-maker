@@ -3,7 +3,7 @@ import typescript from "@kaciras/eslint-config-typescript";
 import jest from "@kaciras/eslint-config-jest";
 
 export default [
-	{ ignores: ["**/*.js", "!*.js", "!template/*.js"] },
+	{ ignores: ["{lib,coverage}/**", "test/fixtures/**"] },
 	...core,
 	...typescript,
 	{

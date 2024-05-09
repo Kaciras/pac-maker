@@ -30,7 +30,7 @@
 	"types": "lib/index.d.ts",
 	"main": "lib/index.js",
 	"scripts": {
-		"lint": "eslint --fix .",
+		"lint": "eslint --fix",
 		"test": "jest",
 		"test:mutation": "stryker run",
 		"compile": "tsc"

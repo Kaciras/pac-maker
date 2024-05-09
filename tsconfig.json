@@ -2,7 +2,7 @@
 	"include": ["src"],
 	"compilerOptions": {
 		"target": "ESNext",
-		"module": "ESNext",
+		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"lib": ["ESNext"],
 		"strict": true,
