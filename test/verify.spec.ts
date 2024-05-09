@@ -2,7 +2,7 @@ import { BlockList, connect } from "net";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { buildConnector, MockAgent } from "undici";
-import { createAgent } from "../lib/index.js";
+import { createAgent } from "../src/index.js";
 
 const mockConnect = jest.fn<buildConnector.connector>();
 const mockConnector = jest.fn<typeof buildConnector>(() => mockConnect);
@@ -27,11 +27,11 @@ jest.unstable_mockModule("undici", async () => ({
 	buildConnector: mockConnector,
 }));
 
-jest.unstable_mockModule("../lib/proxy.js", () => ({
+jest.unstable_mockModule("../src/proxy.js", () => ({
 	createAgent: mockCreateAgent,
 }));
 
-const { HostBlockVerifier, HostsBlockInfo } = await import("../lib/verify.js");
+const { HostBlockVerifier, HostsBlockInfo } = await import("../src/verify.js");
 
 const httpServer = getLocal();
 await httpServer.forAnyRequest().thenReply(200);

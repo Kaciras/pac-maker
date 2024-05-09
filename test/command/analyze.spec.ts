@@ -10,11 +10,11 @@ const mockedBrowser = {
 
 const findAllBrowsers = jest.fn(() => [mockedBrowser]);
 
-jest.unstable_mockModule("../lib/browser.js", () => ({ findAllBrowsers }));
+jest.unstable_mockModule("../src/browser.js", () => ({ findAllBrowsers }));
 
 useTempDirectory(testDir);
 
-const { default: analyze } = await import("../../lib/command/analyze.js");
+const { default: analyze } = await import("../../src/command/analyze.js");
 
 it("should works", async () => {
 	const config = getTestConfig();

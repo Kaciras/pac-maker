@@ -3,7 +3,7 @@ import { join } from "path";
 import { expect, it } from "@jest/globals";
 import waitFor from "wait-for-expect";
 import { fixturePath, getTestConfig, readFixture, testDir, useTempDirectory } from "../share.js";
-import generate from "../../lib/command/generate.js";
+import generate from "../../src/command/generate.js";
 
 const stubPAC1 = readFixture("proxy-1.pac");
 const stubPAC2 = readFixture("proxy-2.pac");

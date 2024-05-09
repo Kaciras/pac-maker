@@ -11,7 +11,7 @@ import {
 	HostnameSource,
 	MemorySource,
 	ofArray,
-} from "../lib/source.js";
+} from "../src/source.js";
 import { fixturePath, readFixture, testDir, useTempDirectory } from "./share.js";
 
 // Used to stop watch progress to ensure program exit.

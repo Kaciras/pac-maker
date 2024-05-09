@@ -1,10 +1,10 @@
 import { expect, it, jest } from "@jest/globals";
 import { fixturePath, useArgvMock } from "./share.js";
-import * as indexModule from "../lib/index.js";
+import * as indexModule from "../src/index.js";
 
 const testCmd = jest.fn();
 
-jest.unstable_mockModule("../lib/index.js", () => ({
+jest.unstable_mockModule("../src/index.js", () => ({
 	...indexModule,
 	commands: { testCmd },
 }));
@@ -14,7 +14,7 @@ const setArgv = useArgvMock();
 function run(...args: string[]) {
 	jest.resetModules();
 	setArgv(...args);
-	return import("../lib/cli.js");
+	return import("../src/cli.js");
 }
 
 it("should fail with unknown command", () => {

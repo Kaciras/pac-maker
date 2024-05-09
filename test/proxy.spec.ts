@@ -1,5 +1,5 @@
 import type { socksDispatcher } from "fetch-socks";
-import type { PACDispatcherOptions } from "../lib/proxy.js";
+import type { PACDispatcherOptions } from "../src/proxy.js";
 import { AddressInfo } from "net";
 import * as tp from "timers/promises";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
@@ -21,7 +21,7 @@ jest.mock("fetch-socks", () => ({
 }));
 
 // Dynamic import is required for mocking an ES Modules.
-const { PACDispatcher } = await import("../lib/proxy.js");
+const { PACDispatcher } = await import("../src/proxy.js");
 
 function pac(proxy: string | null, options?: PACDispatcherOptions) {
 	return new PACDispatcher(() => proxy, options);

@@ -13,11 +13,7 @@ coverage/
 *,cover
 
 # Generated files
-*.js.map
-*.d.ts
-/lib/**/*.js
-/test/**/*.js
-!/test/fixtures/*.js
+/lib/
 
 # stryker temp files
 /stryker-tmp

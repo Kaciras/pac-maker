@@ -1,5 +1,5 @@
 import { expect, it } from "@jest/globals";
-import { dnsResolve } from "../lib/context.js";
+import { dnsResolve } from "../src/context.js";
 
 it("should throw if argument is invalid", () => {
 	// @ts-expect-error

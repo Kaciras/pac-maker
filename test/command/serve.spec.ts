@@ -3,7 +3,7 @@ import * as http from "http";
 import { afterEach, expect, it } from "@jest/globals";
 import { fetch } from "undici";
 import { getTestConfig, readFixture, testDir, useTempDirectory } from "../share.js";
-import serve from "../../lib/command/serve.js";
+import serve from "../../src/command/serve.js";
 
 const stubPAC = readFixture("proxy-1.pac");
 const stubPAC2 = readFixture("proxy-2.pac");

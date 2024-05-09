@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 import { readFixture } from "./share.js";
-import { BuiltinPAC, loadPAC, ParsedProxy, parseProxies } from "../lib/loader.js";
+import { BuiltinPAC, loadPAC, ParsedProxy, parseProxies } from "../src/loader.js";
 
 const stubPAC = readFixture("proxy-1.pac");
 

@@ -17,7 +17,7 @@ function assertMetrics(line: string, low: number, high: number) {
 }
 
 it("should start the worker", async () => {
-	const bench = await import("../../lib/command/bench.ts");
+	const bench = await import("../../src/command/bench.ts");
 
 	// noinspection ES6MissingAwait
 	bench.default({
@@ -50,7 +50,7 @@ it("should benchmark PACs", async () => {
 	process.env.WORK_COUNT = "200";
 	process.env.HOST = "www.google.com";
 
-	await import("../../lib/command/bench.js");
+	await import("../../src/command/bench.js");
 
 	const [summary, case_, /* mem */, load, find] = (console.log as any).mock.calls as any;
 	expect(console.log).toHaveBeenCalledTimes(5);
