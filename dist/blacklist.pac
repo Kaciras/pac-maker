@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-05-01T04:13:56.493Z
+ * Generated at: 2024-05-17T04:42:28.830Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1745,6 +1745,7 @@ globalThis.rules = {
 	"changsa.net": 0,
 	"channelnewsasia.com": 0,
 	"chapm25.com": 0,
+	"chatgpt.com": 0,
 	"chaturbate.com": 0,
 	"chuang-yen.org": 0,
 	"checkgfw.com": 0,
@@ -5912,6 +5913,7 @@ globalThis.rules = {
 	"zynaima.com": 0,
 	"zyzc9.com": 0,
 	"zzcartoon.com": 0,
+	"x.com": 0,
 	"www.extrabux.com": 0,
 	"diygod.me": 0,
 	"inty.news": 0,

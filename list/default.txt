@@ -1,5 +1,6 @@
 # Hostnames that blocked from China but missing in gfwlist
 
+x.com
 www.extrabux.com
 proton.me
 diygod.me
