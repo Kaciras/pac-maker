@@ -11,9 +11,10 @@ file generator & maintenance tool.
 Features:
 
 * [Generate PAC files from various hostname sources](#generate-pac-files).
-* [Load a PAC file and use it to proxy requests](#PACDispatcher).
+* [Load a PAC file in Node](#loadpac).
 * [Serve the PAC with http and watch for source change](#serve).
 * [Show what hosts in your browser history will be proxied by the PAC](#analyze).
+* [Proxy Node's `fetch` with PAC](#pacdispatcher)
 
 # Usage
 
@@ -53,28 +54,28 @@ config file should export a configuration object:
 import { builtinList, gfwlist, ofArray } from "pac-maker";
 
 export default {
-	/**
-	 * Location of the generated PAC file, default is "proxy.pac".
-	 */
-	path: "proxy.pac",
+    /**
+     * Location of the generated PAC file, default is "proxy.pac".
+     */
+    path: "proxy.pac",
 
-	/**
-	 * Fallback route when no rule matching in `sources`, default is "DIRECT".
-	 */
-	fallback: "DIRECT",
+    /**
+     * Fallback route when no rule matching in `sources`, default is "DIRECT".
+     */
+    fallback: "DIRECT",
 
-	/**
-	 * Proxy source map, the key is a proxy sorting, value is an array of HostnameSource.
-	 * pac-maker will get hostnames from all sources and route them to the corresponding key.
-	 */
-	sources: {
-		"SOCKS5 localhost:2080": [
-			gfwlist(),
-			builtinList("default"),
-			builtinList("forbidden"),
-			ofArray(["google.com"]),
-		],
-	},
+    /**
+     * Proxy source map, the key is a proxy sorting, value is an array of HostnameSource.
+     * pac-maker will get hostnames from all sources and route them to the corresponding key.
+     */
+    sources: {
+        "SOCKS5 localhost:2080": [
+            gfwlist(),
+            builtinList("default"),
+            builtinList("forbidden"),
+            ofArray(["google.com"]),
+        ],
+    },
 };
 ```
 
@@ -174,8 +175,8 @@ import { writeFileSync } from "fs";
 import { buildPAC } from "pac-maker";
 
 const rules = {
-	"HTTP 192.168.0.1:80": ["foo.com", "bar.com"],
-	"SOCKS5 localhost:1080": ["example.com"],
+    "HTTP 192.168.0.1:80": ["foo.com", "bar.com"],
+    "SOCKS5 localhost:1080": ["example.com"],
 };
 
 writeFileSync("proxy.pac", buildPAC(rules));
@@ -233,13 +234,13 @@ Test a single hostname and return block type:
 ```javascript
 const reason = await verifier.verify("google.com");
 if (reason === "DNS") {
-	console.log("DNS cache pollution");
+    console.log("DNS cache pollution");
 } else if (reason === "TCP") {
-	console.log("TCP blocking");
+    console.log("TCP blocking");
 } else if (reason === "Unavailable") {
-	console.log("Site may be down");
+    console.log("Site may be down");
 } else {
-	console.log("The host is not blocked");
+    console.log("The host is not blocked");
 }
 ```
 
