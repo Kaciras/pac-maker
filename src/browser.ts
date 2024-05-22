@@ -2,7 +2,7 @@ import { env, platform } from "process";
 import { join } from "path";
 import { existsSync, readFileSync, statSync } from "fs";
 import * as ini from "ini";
-import * as sqlite from "sqlite3";
+import sqlite from "sqlite3";
 import { open } from "sqlite";
 
 export interface HistoryEntry {
