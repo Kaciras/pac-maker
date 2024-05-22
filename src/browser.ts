@@ -2,8 +2,7 @@ import { env, platform } from "process";
 import { join } from "path";
 import { existsSync, readFileSync, statSync } from "fs";
 import * as ini from "ini";
-import sqlite from "sqlite3";
-import { open } from "sqlite";
+import Database from "better-sqlite3";
 
 export interface HistoryEntry {
 	id: number;
@@ -12,7 +11,7 @@ export interface HistoryEntry {
 
 export interface BrowserEngine {
 
-	getHistories(): Promise<HistoryEntry[]>;
+	getHistories(): HistoryEntry[];
 }
 
 export class Safari implements BrowserEngine {
@@ -31,13 +30,11 @@ export class Safari implements BrowserEngine {
 		return `Safari - ${this.directory}`;
 	}
 
-	async getHistories() {
-		const db = await open({
-			filename: join(this.directory, "History.db"),
-			driver: sqlite.Database,
-			mode: sqlite.OPEN_READONLY,
+	getHistories() {
+		const db = new Database(join(this.directory, "History.db"), {
+			readonly: true,
 		});
-		return db.all<HistoryEntry[]>("SELECT id,url FROM history_items");
+		return db.prepare<[], HistoryEntry>("SELECT id,url FROM history_items").all();
 	}
 }
 
@@ -57,19 +54,16 @@ export class Chromium implements BrowserEngine {
 		return `Chromium - ${this.directory}`;
 	}
 
-	async getHistories(afterBy?: HistoryEntry) {
+	getHistories() {
 		let profile = join(this.directory, "Default");
 		if (!existsSync(profile)) {
 			const state = JSON.parse(readFileSync(join(this.directory, "Local State"), "utf8"));
 			profile = join(this.directory, state.profile.last_used);
 		}
-		const db = await open({
-			filename: join(profile, "History"),
-			driver: sqlite.Database,
-			mode: sqlite.OPEN_READONLY,
+		const db = new Database(join(profile, "History"), {
+			readonly: true,
 		});
-		const id = afterBy ? afterBy.id : 0;
-		return db.all<HistoryEntry[]>("SELECT id,url FROM urls WHERE id > ?", id);
+		return db.prepare<[], HistoryEntry>("SELECT id,url FROM urls").all();
 	}
 }
 
@@ -89,14 +83,11 @@ export class Firefox implements BrowserEngine {
 		return `Firefox - ${this.directory}`;
 	}
 
-	async getHistories(afterBy?: HistoryEntry) {
-		const db = await open({
-			filename: join(this.directory, "places.sqlite"),
-			driver: sqlite.Database,
-			mode: sqlite.OPEN_READONLY,
+	getHistories() {
+		const db = new Database(join(this.directory, "places.sqlite"), {
+			readonly: true,
 		});
-		const id = afterBy ? afterBy.id : 0;
-		return db.all<HistoryEntry[]>("SELECT id,url FROM moz_places WHERE id > ?", id);
+		return db.prepare<[], HistoryEntry>("SELECT id,url FROM moz_places").all();
 	}
 }
 

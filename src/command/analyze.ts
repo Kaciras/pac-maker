@@ -23,8 +23,8 @@ interface PACAnalyzeResult {
 	routes: HostRules;
 }
 
-async function getVisitedHosts(browsers: BrowserEngine[]) {
-	return (await Promise.all(browsers.map(b => b.getHistories())))
+function getVisitedHosts(browsers: BrowserEngine[]) {
+	return browsers.map(b => b.getHistories())
 		.flatMap(e => e.map(h => h.url))
 		.filter(url => /^https?:/.test(url))
 		.map(url => new URL(url).hostname)
@@ -64,7 +64,7 @@ export default async function (argv: AnalyzeOptions, config: PACMakerConfig) {
 		return console.info("No browser found in your computer.");
 	}
 
-	const hostSet = await getVisitedHosts(browsers);
+	const hostSet = getVisitedHosts(browsers);
 
 	const { FindProxyForURL } = loadPAC(readFileSync(path, "utf8"));
 	const routes: HostRules = {};

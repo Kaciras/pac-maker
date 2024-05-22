@@ -3,6 +3,7 @@
 *.iml
 .vs/
 .vscode
+.esbench-tmp/
 node_modules/
 debug.[jt]s
 
