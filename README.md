@@ -152,9 +152,6 @@ It is designed to be used with the built-in `fetch` function. To proxy the reque
 import { readFileSync } from "fs";
 import { PACDispatcher } from "pac-maker";
 
-// Only needed if your Node < 18.1.0
-// import { fetch } from "undici";
-
 const pac = readFileSync("proxy.pac", "utf8");
 const dispatcher = new PACDispatcher(pac);
 
