@@ -19,7 +19,7 @@ const default_: PACMakerConfig = {
 const argv = (yargs(process.argv.slice(2)) as Argv<BaseOptions>).parseSync();
 const [name] = argv._;
 
-const config = await importCWD(argv.config, "pac.config.js");
+const config = await importCWD(argv.config, ["pac.config.js"]);
 
 const commandFn = (commands as Record<string, Command>)[name];
 if (commandFn) {

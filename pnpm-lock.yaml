@@ -24,8 +24,8 @@ importers:
         specifier: ^3.12.0
         version: 3.12.0
       esbench:
-        specifier: ^0.2.4
-        version: 0.2.4(@swc/core@1.5.7)(typescript@5.4.5)
+        specifier: ^0.3.0
+        version: 0.3.0(@swc/core@1.5.7)(typescript@5.4.5)
       fetch-socks:
         specifier: ^1.3.0
         version: 1.3.0
@@ -529,6 +529,9 @@ packages:
 
   '@kaciras/utilities@0.13.1':
     resolution: {integrity: sha512-TByAq7P7R/0hWaAxfAiLCnYCiChRmCGH5hAGDYuLmfAmremrOKQHSqqK06fIRXUXHePvOQpQwz+uMfBFXjkLVA==}
+
+  '@kaciras/utilities@1.0.0':
+    resolution: {integrity: sha512-uyL9aZmApb8czJ0vBYdVSdWEpd/WqsIsrAzreU0wTQ6SDRHCSXxaqwyUIR7SkZeueeD3C0aIbcwn6r3R/TeqUg==}
 
   '@ljharb/through@2.3.13':
     resolution: {integrity: sha512-/gKJun8NNiWGZJkGzI/Ragc53cOdcLNdzjLaIa+GEjguQs0ulsurx8WN0jijdK9yPqDvziX995sMRLyLt1uZMQ==}
@@ -1357,8 +1360,8 @@ packages:
     resolution: {integrity: sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==}
     engines: {node: '>= 0.4'}
 
-  esbench@0.2.4:
-    resolution: {integrity: sha512-jCJaIxen0rfEzgjTFJgC8akafHM5md81yefkaHf3BhymVCYWNS7Tv1OhFdyrSl7+yRBHBND5ae2M5cKva+HR6w==}
+  esbench@0.3.0:
+    resolution: {integrity: sha512-crgSeGPIscQPyp/dxxPyvgxQRKc1fUz92lhGa+PiUogOFeR+LnTUc5/CTKHqaCB4bvohZgrqKae3RwYwtZV05A==}
     hasBin: true
     peerDependencies:
       rollup: ^4.17.2
@@ -3706,6 +3709,8 @@ snapshots:
 
   '@kaciras/utilities@0.13.1': {}
 
+  '@kaciras/utilities@1.0.0': {}
+
   '@ljharb/through@2.3.13':
     dependencies:
       call-bind: 1.0.7
@@ -4639,9 +4644,9 @@ snapshots:
 
   es-errors@1.3.0: {}
 
-  esbench@0.2.4(@swc/core@1.5.7)(typescript@5.4.5):
+  esbench@0.3.0(@swc/core@1.5.7)(typescript@5.4.5):
     dependencies:
-      '@kaciras/utilities': 0.13.1
+      '@kaciras/utilities': 1.0.0
       chalk: 5.3.0
       fast-glob: 3.3.2
       markdown-table: 3.0.3
