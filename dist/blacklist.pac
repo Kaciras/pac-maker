@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-05-17T04:42:28.830Z
+ * Generated at: 2024-06-03T09:28:18.666Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1001,6 +1001,7 @@ globalThis.rules = {
 	"twitter.com": 0,
 	"twitter.jp": 0,
 	"vine.co": 0,
+	"x.com": 0,
 	"gov.taipei": 0,
 	"gov.tw": 0,
 	"li.taipei": 0,
@@ -4141,6 +4142,7 @@ globalThis.rules = {
 	"piposay.com": 0,
 	"piraattilahti.org": 0,
 	"piring.com": 0,
+	"pixeldrain.com": 0,
 	"pixelqi.com": 0,
 	"css.pixnet.in": 0,
 	"pixnet.net": 0,
@@ -4291,6 +4293,7 @@ globalThis.rules = {
 	"pythonhackers.com": 0,
 	"ss.pythonic.life": 0,
 	"qanote.com": 0,
+	"qbittorrent.org": 0,
 	"qgirl.com.tw": 0,
 	"qianbai.tw": 0,
 	"qiandao.today": 0,
@@ -5796,7 +5799,6 @@ globalThis.rules = {
 	"yingsuoss.com": 0,
 	"yipub.com": 0,
 	"yinlei.org": 0,
-	"yiyechat.com": 0,
 	"yizhihongxing.com": 0,
 	"yobt.com": 0,
 	"yobt.tv": 0,
@@ -5834,13 +5836,13 @@ globalThis.rules = {
 	"yuanzhengtang.org": 0,
 	"yulghun.com": 0,
 	"yunchao.net": 0,
-	"yuntipub.com": 0,
 	"yuvutu.com": 0,
 	"yvesgeleyn.com": 0,
 	"ywpw.com": 0,
 	"yx51.net": 0,
 	"yyii.org": 0,
 	"yyjlymb.xyz": 0,
+	"yysub.net": 0,
 	"yzzk.com": 0,
 	"z-lib.org": 0,
 	"zacebook.com": 0,
@@ -5913,7 +5915,6 @@ globalThis.rules = {
 	"zynaima.com": 0,
 	"zyzc9.com": 0,
 	"zzcartoon.com": 0,
-	"x.com": 0,
 	"www.extrabux.com": 0,
 	"diygod.me": 0,
 	"inty.news": 0,
@@ -5945,6 +5946,7 @@ globalThis.rules = {
 	"2ch.sc": 0,
 	"www.familyhandyman.com": 0,
 	"www.tianshie.com": 0,
+	"tianshi.info": 0,
 	"sanctioned-suicide.net": 0
 };
 
