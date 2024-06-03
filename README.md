@@ -122,8 +122,7 @@ pac-maker bench <path/to/file.pac> [morefiles...] [--host=example.com] [--loadCo
 ```
 
 * `--host` The `host` parameter passed to `FindProxyForURL`, default is "www.google.com".
-* `--loadCount` Number of load iterations to do, default is 100.
-* `--workCount` Number of work iterations to do, default is 1000.
+* `--iterations` Time or the number of load iterations to platform, default is "1s".
 
 ### `serve`
 

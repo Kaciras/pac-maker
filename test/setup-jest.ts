@@ -1,7 +1,7 @@
 import { isIP } from "net";
 import { expect, jest } from "@jest/globals";
 import chalk from "chalk";
-import { exposeGC } from "../src/command/bench.js";
+import { exposeGC } from "../src/utils.ts";
 
 /**
  * Ensure consistent time tag in generated PAC.
@@ -20,7 +20,6 @@ console.log = jest.fn();
 
 // Enable colors for CI.
 chalk.level = 2;
-
 
 exposeGC();
 

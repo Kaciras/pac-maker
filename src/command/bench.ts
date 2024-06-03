@@ -1,33 +1,18 @@
 import { readFileSync } from "fs";
 import { memoryUsage } from "process";
-import { setFlagsFromString } from "v8";
-import { runInNewContext } from "vm";
 import { ExecutionTimeMeasurement, Profiler, runSuite, SummaryTable } from "esbench";
 import { loadPAC } from "../loader.js";
+import { exposeGC } from "../utils.js";
 
 /**
  * This function is only available with v8 flag --expose_gc.
  */
 declare function gc(): void;
 
-/*
- * Expose gc() function to global without any Node arguments.
- * Because --expose-gc cannot be passed through NODE_OPTIONS.
- *
- * Inspired by https://github.com/legraphista/expose-gc, The project
- * missing undo for changed flags, so we implemented it ourselves.
- */
-export function exposeGC() {
-	setFlagsFromString("--expose_gc");
-	global.gc = runInNewContext("gc");
-	setFlagsFromString("--no-expose-gc");
-}
-
 interface BenchOptions {
 	_: string[];
 	host?: string;
-	workCount?: number;
-	loadCount?: number;
+	iterations?: number;
 }
 
 function getHeapUsageMB() {
@@ -66,18 +51,24 @@ const pacProfiler: Profiler = {
 	},
 };
 
+declare module "esbench" {
+	interface BenchmarkSuite {
+		host: string;
+	}
+}
+
 export default async function (options: BenchOptions) {
-	const { _, host = "www.google.com", workCount = 1000, loadCount = 100 } = options;
+	const { _, host = "www.google.com", iterations } = options;
 	exposeGC();
 
 	const results = await runSuite({
-		profilers: [memoryUsageProfiler, pacProfiler],
 		host,
+		profilers: [memoryUsageProfiler, pacProfiler],
 		params: {
 			file: _.slice(1),
 		},
 		timing: {
-
+			iterations,
 		},
 		setup(scene) {
 			const code = readFileSync(scene.params.file, "utf8");
@@ -85,6 +76,7 @@ export default async function (options: BenchOptions) {
 		},
 	});
 
+	const table = SummaryTable.from([results], undefined, { stdDev: false });
 	console.log();
-	console.log(SummaryTable.from([results]).format({ flexUnit: true }).toMarkdown());
+	console.log(table.format({ flexUnit: true }).toMarkdown());
 }
