@@ -48,20 +48,6 @@ export function useArgvMock() {
 }
 
 /**
- * Capture `process.env` and restore it after each test.
- *
- * You also need to call `jest.resetModules()` first in tests
- * if your code use `import { env } from "process"`.
- */
-export function autoRestoreProcessEnv() {
-	const backup = Object.assign({}, process.env);
-
-	afterEach(() => {
-		process.env = Object.assign({}, backup);
-	});
-}
-
-/**
  * Get the absolute path of the fixture file.
  *
  * @param filename file name

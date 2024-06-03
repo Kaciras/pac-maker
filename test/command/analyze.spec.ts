@@ -21,7 +21,7 @@ it("should works", async () => {
 	config.path = fixturePath("proxy-1.pac");
 	const json = join(testDir, "test.json");
 
-	mockedBrowser.getHistories.mockResolvedValue([
+	mockedBrowser.getHistories.mockReturnValue([
 		{ url: "file:/foo/bar.html" },
 		{ url: "http://foo.bar/path" },
 		{ url: "http://kaciras.com" },
