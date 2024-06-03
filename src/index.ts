@@ -1,5 +1,3 @@
-import type { PACMakerConfig } from "./config.js";
-
 import analyze from "./command/analyze.js";
 import bench from "./command/bench.js";
 import generate from "./command/generate.js";
@@ -11,6 +9,6 @@ export * from "./proxy.js";
 export * from "./loader.js";
 export * from "./verify.js";
 
-export { PACMakerConfig };
+export type { PACMakerConfig } from "./loader.js";
 
 export const commands = { analyze, bench, serve, generate };

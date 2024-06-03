@@ -1,6 +1,8 @@
 import { createServer } from "http";
 import { buildPAC, HostnameListLoader } from "../generator.js";
-import { PACMakerConfig } from "../config.js";
+
+
+import { PACMakerConfig } from "../loader.js";
 
 interface ServeOptions {
 	host?: string;

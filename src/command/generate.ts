@@ -1,9 +1,8 @@
 import { readFileSync, writeFileSync } from "fs";
 import chalk from "chalk";
-import { PACMakerConfig } from "../config.js";
 import { buildPAC, HostnameListLoader } from "../generator.js";
 import { ensureDirectory } from "../utils.js";
-import { BuiltinPAC, loadPAC } from "../loader.js";
+import { BuiltinPAC, loadPAC, PACMakerConfig } from "../loader.js";
 
 const { redBright, greenBright } = chalk;
 
