@@ -56,7 +56,6 @@ function connectHTTP(url: string, dispatcher: Dispatcher) {
 }
 
 export interface BlockVerifyOptions {
-
 	/**
 	 * The protocol of the request, "http" of "https".
 	 *

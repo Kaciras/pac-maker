@@ -9,7 +9,6 @@ interface AnalyzeOptions {
 }
 
 interface PACAnalyzeResult {
-
 	/**
 	 * Hostnames from `config.sources` that you visited with browsers.
 	 */

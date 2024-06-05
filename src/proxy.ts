@@ -7,7 +7,6 @@ type DispatchHandlers = Dispatcher.DispatchHandlers;
 type DispatchOptions = Dispatcher.DispatchOptions;
 
 export interface PACDispatcherOptions extends Agent.Options {
-
 	/**
 	 * TLS upgrade options, see:
 	 * https://undici.nodejs.org/#/docs/api/Client?id=parameter-connectoptions

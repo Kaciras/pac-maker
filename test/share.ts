@@ -83,7 +83,6 @@ export function getTestConfig() {
 }
 
 export interface TunnelProxyServer extends http.Server {
-
 	/**
 	 * The latest connect request to the server, used for assertion.
 	 */
@@ -108,7 +107,7 @@ export function createTunnelProxy(tls?: TlsOptions) {
 		const { port, hostname } = new URL(`http://${req.url}`);
 		proxy.proxyReq = req;
 
-		// @ts-ignore Pass a string to port is ok.
+		// @ts-expect-error Pass a string to port is ok.
 		const serverSocket = connect(port, hostname, () => {
 			socket.write("HTTP/1.1 200\r\n\r\n");
 			serverSocket.write(head);

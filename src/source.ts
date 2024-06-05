@@ -8,7 +8,6 @@ import { root } from "./utils.js";
 export type ChangeHandler = (newValues: string[]) => void;
 
 export interface HostnameSource {
-
 	/**
 	 * Watch for changes on the source.
 	 */

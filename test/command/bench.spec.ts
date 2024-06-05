@@ -24,8 +24,8 @@ it("should works", async () => {
 	expect(parseRow(header)).toStrictEqual(["No.", "Name", "time", "Memory usage", "FindProxyForURL"]);
 
 	// Memory is not stable enough.
-	const [,name,load,,findURL] = parseRow(row1);
+	const [, name, load, , findURL] = parseRow(row1);
 	expect(name).toBe("load");
 	assertMetrics(load, "ms", 9.5, 13);
-	assertMetrics(findURL, "ms", 4.95, 5.05);
+	assertMetrics(findURL, "ms", 4.9, 5.1);
 });

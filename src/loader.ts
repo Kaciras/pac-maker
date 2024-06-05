@@ -43,7 +43,6 @@ export interface PACGlobals {
  * The PAC generated with internal template(template/default.js) exposes those members.
  */
 export interface BuiltinPAC extends PACGlobals {
-
 	/**
 	 * If no rule matched, this value will be returned from FindProxyForURL().
 	 *

@@ -9,6 +9,4 @@ export * from "./proxy.js";
 export * from "./loader.js";
 export * from "./verify.js";
 
-export type { PACMakerConfig } from "./loader.js";
-
 export const commands = { analyze, bench, serve, generate };
