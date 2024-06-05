@@ -6,7 +6,7 @@ import * as http from "http";
 import { connect } from "net";
 import * as https from "https";
 import { TlsOptions } from "tls";
-import { afterAll, afterEach, beforeEach } from "@jest/globals";
+import { afterAll, afterEach, beforeAll, beforeEach } from "@jest/globals";
 import { root } from "../src/utils.js";
 import { ofArray } from "../src/source.js";
 
@@ -29,14 +29,18 @@ export function useTempDirectory(path: string) {
 	});
 }
 
+/*
+ * Jest's `argv` have no meaning for the test, and they will be
+ * set in each case, so there is no need to reset them every case.
+ */
 export function useArgvMock() {
 	let backup: string[];
 
-	beforeEach(() => {
+	beforeAll(() => {
 		backup = [...argv];
 	});
 
-	afterEach(() => {
+	beforeAll(() => {
 		argv.length = 0;
 		argv.push(...backup);
 	});
