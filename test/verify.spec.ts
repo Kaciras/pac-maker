@@ -161,7 +161,7 @@ it("should print the result", () => {
 		},
 	);
 	info.print();
-	const printed = (console.log as jest.Mock<typeof console.log>)
+	const printed = jest.mocked(console.log)
 		.mock.calls
 		.map(args => args[0])
 		.join("\n");
@@ -184,14 +184,13 @@ qux"
 `);
 });
 
-
 it("should not print group with 0 hosts", () => {
 	const info = new HostsBlockInfo(
 		["foo", "bar", "baz"],
 		{ foo: "TCP" },
 	);
 	info.print();
-	const printed = (console.log as jest.Mock<typeof console.log>)
+	const printed = jest.mocked(console.log)
 		.mock.calls
 		.map(args => args[0])
 		.join("\n");
