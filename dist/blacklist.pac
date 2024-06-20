@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-06-03T09:28:18.666Z
+ * Generated at: 2024-06-20T02:32:56.732Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1337,6 +1337,7 @@ globalThis.rules = {
 	"apkmonk.com": 0,
 	"apkplz.com": 0,
 	"apkpure.com": 0,
+	"apkpure.net": 0,
 	"aplusvpn.com": 0,
 	"appbrain.com": 0,
 	"appdownloader.net": 0,
@@ -2048,6 +2049,7 @@ globalThis.rules = {
 	"deviantart.net": 0,
 	"devio.us": 0,
 	"devpn.com": 0,
+	"devv.ai": 0,
 	"dfas.mil": 0,
 	"dfn.org": 0,
 	"dharmakara.net": 0,
@@ -3415,6 +3417,7 @@ globalThis.rules = {
 	"lianyue.net": 0,
 	"liaowangxizang.net": 0,
 	"liberal.org.hk": 0,
+	"libertysculpturepark.com": 0,
 	"libertytimes.com.tw": 0,
 	"blogs.libraryinformationtechnology.com": 0,
 	"libredd.it": 0,
@@ -3452,7 +3455,6 @@ globalThis.rules = {
 	"livedoor.jp": 0,
 	"liveleak.com": 0,
 	"livemint.com": 0,
-	"livestation.com": 0,
 	"livestream.com": 0,
 	"livingonline.us": 0,
 	"livingstream.com": 0,
@@ -3460,7 +3462,7 @@ globalThis.rules = {
 	"liwangyang.com": 0,
 	"lizhizhuangbi.com": 0,
 	"lkcn.net": 0,
-	"llss.me": 0,
+	"chat.lmsys.org": 0,
 	"lncn.org": 0,
 	"load.to": 0,
 	"lobsangwangyal.com": 0,
@@ -4323,9 +4325,9 @@ globalThis.rules = {
 	"nemesis2.qx.net": 0,
 	"qxbbs.org": 0,
 	"r0.ru": 0,
-	"ra.gg": 0,
-	"radicalparty.org": 0,
+	"radio-canada.ca": 0,
 	"rael.org": 0,
+	"radicalparty.org": 0,
 	"radio.garden": 0,
 	"radioaustralia.net.au": 0,
 	"radiohilight.net": 0,
@@ -4854,6 +4856,7 @@ globalThis.rules = {
 	"tahr.org.tw": 0,
 	"taipeisociety.org": 0,
 	"taipeitimes.com": 0,
+	"taisounds.com": 0,
 	"taiwanbible.com": 0,
 	"taiwancon.com": 0,
 	"taiwandaily.net": 0,
@@ -5670,6 +5673,7 @@ globalThis.rules = {
 	"wqyd.org": 0,
 	"wrchina.org": 0,
 	"wretch.cc": 0,
+	"writesonic.com": 0,
 	"wsj.com": 0,
 	"wsj.net": 0,
 	"wsjhk.com": 0,
@@ -5947,7 +5951,8 @@ globalThis.rules = {
 	"www.familyhandyman.com": 0,
 	"www.tianshie.com": 0,
 	"tianshi.info": 0,
-	"sanctioned-suicide.net": 0
+	"sanctioned-suicide.net": 0,
+	"genspark.ai": 0
 };
 
 function FindProxyForURL(url, host) {
