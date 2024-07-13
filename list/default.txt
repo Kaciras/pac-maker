@@ -26,5 +26,7 @@ herokuapp.com
 singlelogin.re
 zlibrary-global.se
 
+cloud.dify.ai
+
 # subdomains are blocked, but not itself.
 *.ghost.io

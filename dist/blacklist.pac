@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-06-20T02:32:56.732Z
+ * Generated at: 2024-07-13T10:46:11.002Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -5952,6 +5952,8 @@ globalThis.rules = {
 	"www.tianshie.com": 0,
 	"tianshi.info": 0,
 	"sanctioned-suicide.net": 0,
+	"cloud.dify.ai": 0,
+	"claude.ai": 0,
 	"genspark.ai": 0
 };
 
