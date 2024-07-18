@@ -21,11 +21,10 @@ it("should works", async () => {
 
 	const [table] = (console.log as any).mock.calls.at(-1);
 	const [header, , row1] = table.split("\n") as string[];
-	expect(parseRow(header)).toStrictEqual(["No.", "Name", "time", "Memory usage", "FindProxyForURL"]);
+	expect(parseRow(header)).toStrictEqual(["No.", "time", "Memory usage", "FindProxyForURL"]);
 
 	// Memory is not stable enough.
-	const [, name, load, , findURL] = parseRow(row1);
-	expect(name).toBe("load");
+	const [, load, , findURL] = parseRow(row1);
 	assertMetrics(load, "ms", 9.5, 13);
 	assertMetrics(findURL, "ms", 4.9, 5.1);
 });
