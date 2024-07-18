@@ -1,8 +1,7 @@
 import { setFlagsFromString } from "v8";
 import { runInNewContext } from "vm";
 import { mkdirSync, readFileSync } from "fs";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 /*
  * Expose gc() function to global without any Node arguments.
@@ -20,7 +19,7 @@ export function exposeGC() {
 /**
  * Path of the pac-maker root directory.
  */
-export const root = dirname(dirname(fileURLToPath(import.meta.url)));
+export const root = dirname(import.meta.dirname);
 
 /**
  * Ensures that the file can be created, If the directory that the file located
@@ -36,12 +35,11 @@ export function ensureDirectory(file: string) {
  * Import a JSON file as module from project root directory.
  *
  * Currently, JSON module is experimental:
- * https://nodejs.org/api/esm.html#esm_no_json_module_loading
+ * https://nodejs.org/api/esm.html#json-modules
  *
  * @param file file to import
  * @return imported json module
  */
 export function importJson(file: string) {
-	const url = new URL(file, import.meta.url);
-	return JSON.parse(readFileSync(url, "utf8"));
+	return JSON.parse(readFileSync(join(root, file), "utf8"));
 }

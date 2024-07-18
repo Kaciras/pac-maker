@@ -73,7 +73,7 @@ export function buildPAC(map: HostRules, fallback = "DIRECT") {
 }
 
 function interpolate(table: Record<string, number>, proxies: string[], fallback: string) {
-	const packageJson = importJson("../package.json");
+	const packageJson = importJson("package.json");
 
 	const replacements: Record<string, string> = {
 		VERSION: packageJson.version,
