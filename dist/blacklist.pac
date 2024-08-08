@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-07-13T10:46:11.002Z
+ * Generated at: 2024-08-08T01:33:22.199Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -22,6 +22,7 @@ globalThis.rules = {
 	"altrec.com": 0,
 	"angela-merkel.de": 0,
 	"angola.org": 0,
+	"anthropic.com": 0,
 	"apartmentratings.com": 0,
 	"apartments.com": 0,
 	"arena.taipei": 0,
@@ -42,6 +43,7 @@ globalThis.rules = {
 	"centauro.com.br": 0,
 	"chobit.cc": 0,
 	"ciciai.com": 0,
+	"claude.ai": 0,
 	"clearsurance.com": 0,
 	"images.comico.tw": 0,
 	"static.comico.tw": 0,
@@ -425,6 +427,7 @@ globalThis.rules = {
 	"bithumb.com": 0,
 	"bitinka.com.ar": 0,
 	"bitmex.com": 0,
+	"bnbstatic.com": 0,
 	"btc98.com": 0,
 	"btcbank.bank": 0,
 	"btctrade.im": 0,
@@ -1412,6 +1415,7 @@ globalThis.rules = {
 	"axureformac.com": 0,
 	"azerbaycan.tv": 0,
 	"azerimix.com": 0,
+	"azirevpn.com": 0,
 	"b-ok.cc": 0,
 	"forum.baby-kingdom.com": 0,
 	"babylonbee.com": 0,
@@ -1872,6 +1876,7 @@ globalThis.rules = {
 	"cloudflare-ipfs.com": 0,
 	"club1069.com": 0,
 	"clubhouseapi.com": 0,
+	"cmegroup.com": 0,
 	"cmi.org.tw": 0,
 	"www.cmoinc.org": 0,
 	"cmp.hku.hk": 0,
@@ -3077,6 +3082,7 @@ globalThis.rules = {
 	"imageab.com": 0,
 	"imagefap.com": 0,
 	"imageflea.com": 0,
+	"imageglass.org": 0,
 	"imageshack.us": 0,
 	"imagevenue.com": 0,
 	"imagezilla.net": 0,
@@ -3179,6 +3185,7 @@ globalThis.rules = {
 	"ivacy.com": 0,
 	"iverycd.com": 0,
 	"ivpn.net": 0,
+	"iwara.tv": 0,
 	"ixquick.com": 0,
 	"ixxx.com": 0,
 	"iyouport.com": 0,
@@ -4109,6 +4116,7 @@ globalThis.rules = {
 	"percy.in": 0,
 	"perfectgirls.net": 0,
 	"perfect-privacy.com": 0,
+	"perplexity.ai": 0,
 	"persecutionblog.com": 0,
 	"persiankitty.com": 0,
 	"phapluan.org": 0,
@@ -5074,6 +5082,7 @@ globalThis.rules = {
 	"tibetswiss.ch": 0,
 	"tibettelegraph.com": 0,
 	"tibettimes.net": 0,
+	"tibettruth.com": 0,
 	"tibetwrites.org": 0,
 	"ticket.com.tw": 0,
 	"tigervpn.com": 0,
@@ -5941,6 +5950,7 @@ globalThis.rules = {
 	"herokuapp.com": 0,
 	"singlelogin.re": 0,
 	"zlibrary-global.se": 0,
+	"cloud.dify.ai": 0,
 	"*.ghost.io": 0,
 	"creativecommons.org": 0,
 	"thght.works": 0,
@@ -5952,8 +5962,7 @@ globalThis.rules = {
 	"www.tianshie.com": 0,
 	"tianshi.info": 0,
 	"sanctioned-suicide.net": 0,
-	"cloud.dify.ai": 0,
-	"claude.ai": 0,
+	"unwrap.ai": 0,
 	"genspark.ai": 0
 };
 
