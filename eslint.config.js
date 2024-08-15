@@ -8,7 +8,7 @@ export default [
 	...typescript,
 	{
 		rules: {
-			"kaciras/import-group-sort": "warn",
+			"kaciras/import-specifier-order": "warn",
 		},
 	},
 	...jest.map(config => ({
