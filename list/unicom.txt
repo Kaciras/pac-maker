@@ -4,5 +4,7 @@ hostloc.com
 creativecommons.org
 thght.works
 obsproject.com
+englishxyz.com
+riscv.builders
 
 *.sentry-cdn.com

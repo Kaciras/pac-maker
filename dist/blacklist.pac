@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v3.2.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-08-08T01:33:22.199Z
+ * Generated at: 2024-08-28T06:11:19.952Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -4790,6 +4790,7 @@ globalThis.rules = {
 	"storm.mg": 0,
 	"stoptibetcrisis.net": 0,
 	"storify.com": 0,
+	"storj.io": 0,
 	"stormmediagroup.com": 0,
 	"stoweboyd.com": 0,
 	"straitstimes.com": 0,
@@ -5385,8 +5386,8 @@ globalThis.rules = {
 	"us.to": 0,
 	"usacn.com": 0,
 	"usaip.eu": 0,
-	"dalailama.usc.edu": 0,
 	"uscnpm.org": 0,
+	"uscardforum.com": 0,
 	"usma.edu": 0,
 	"usocctn.com": 0,
 	"ustibetcommittee.org": 0,
@@ -5950,11 +5951,15 @@ globalThis.rules = {
 	"herokuapp.com": 0,
 	"singlelogin.re": 0,
 	"zlibrary-global.se": 0,
+	"hath.network": 0,
+	"www.1point3acres.com": 0,
 	"cloud.dify.ai": 0,
 	"*.ghost.io": 0,
 	"creativecommons.org": 0,
 	"thght.works": 0,
 	"obsproject.com": 0,
+	"englishxyz.com": 0,
+	"riscv.builders": 0,
 	"*.sentry-cdn.com": 0,
 	"5ch.net": 0,
 	"2ch.sc": 0,
@@ -5962,6 +5967,7 @@ globalThis.rules = {
 	"www.tianshie.com": 0,
 	"tianshi.info": 0,
 	"sanctioned-suicide.net": 0,
+	"www.healthline.com": 0,
 	"unwrap.ai": 0,
 	"genspark.ai": 0
 };
