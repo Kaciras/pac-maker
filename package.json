@@ -1,6 +1,6 @@
 {
 	"name": "pac-maker",
-	"version": "3.2.0",
+	"version": "4.0.0",
 	"description": "Proxy Auto-Configuration (PAC) file generator & loader, support proxy Node's `fetch` with PAC",
 	"author": "Kaciras <Kaciras@protonmail.com>",
 	"license": "MIT",
@@ -16,7 +16,7 @@
 		"undici"
 	],
 	"engines": {
-		"node": ">=20"
+		"node": ">=22"
 	},
 	"type": "module",
 	"files": [
