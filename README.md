@@ -1,9 +1,9 @@
 # pac-maker
 
-[![npm package](https://img.shields.io/npm/v/pac-maker.svg)](https://npmjs.com/package/pac-maker)
-![node-current](https://img.shields.io/node/v/pac-maker)
-[![Test](https://github.com/Kaciras/pac-maker/actions/workflows/test.yml/badge.svg)](https://github.com/Kaciras/pac-maker/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/Kaciras/pac-maker/branch/master/graph/badge.svg?token=2GKPQL8WS5)](https://codecov.io/gh/Kaciras/pac-maker)
+[![npm package](https://img.shields.io/npm/v/pac-maker.svg?style=flat-square)](https://npmjs.com/package/pac-maker)
+![node-current](https://img.shields.io/node/v/pac-maker?style=flat-square)
+[![Test](https://img.shields.io/github/actions/workflow/status/Kaciras/pac-maker/test.yml?style=flat-square)](https://github.com/Kaciras/pac-maker/actions/workflows/test.yml)
+[![codecov](https://img.shields.io/codecov/c/github/Kaciras/pac-maker?style=flat-square)](https://codecov.io/gh/Kaciras/pac-maker)
 
 [Proxy Auto Configuration (PAC)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file)
 file generator & maintenance tool.
@@ -214,8 +214,7 @@ output:
 
 A tool to check which hostnames are blocked by your ISP.
 
-This class is only support HTTP protocol, it cannot be used for
-hosts running non-HTTP services.
+This class is only support HTTP protocol, it cannot be used for hosts running non-HTTP services.
 
 ```javascript
 import { HostBlockVerifier } from "pac-maker";
