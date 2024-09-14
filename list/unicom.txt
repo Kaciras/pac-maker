@@ -6,5 +6,7 @@ thght.works
 obsproject.com
 englishxyz.com
 riscv.builders
+bitbucket.org
+gofile.io
 
 *.sentry-cdn.com
