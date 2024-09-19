@@ -1,8 +1,8 @@
 import { readFileSync } from "fs";
 import { memoryUsage } from "process";
+import { exposeGC } from "@kaciras/utilities/node";
 import { ExecutionTimeMeasurement, Profiler, runSuite, SummaryTable } from "esbench";
 import { loadPAC } from "../loader.js";
-import { exposeGC } from "../utils.js";
 
 /**
  * This function is only available with v8 flag --expose_gc.
@@ -47,7 +47,8 @@ const pacProfiler: Profiler = {
 
 		const newCase = case_.derive(false, () => FindProxyForURL("", host));
 		const measurement = new ExecutionTimeMeasurement(ctx, newCase, timing);
-		metrics.FindProxyForURL = await measurement.run();
+		await measurement.run();
+		metrics.FindProxyForURL = measurement.values;
 	},
 };
 

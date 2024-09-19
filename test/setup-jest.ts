@@ -1,7 +1,7 @@
 import { isIP } from "net";
 import { expect, jest } from "@jest/globals";
 import chalk from "chalk";
-import { exposeGC } from "../src/utils.ts";
+import { exposeGC } from "@kaciras/utilities/node";
 
 /**
  * Ensure consistent time tag in generated PAC.

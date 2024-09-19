@@ -1,20 +1,5 @@
-import { setFlagsFromString } from "v8";
-import { runInNewContext } from "vm";
 import { mkdirSync, readFileSync } from "fs";
 import { dirname, join } from "path";
-
-/*
- * Expose gc() function to global without any Node arguments.
- * Because --expose-gc cannot be passed through NODE_OPTIONS.
- *
- * Inspired by https://github.com/legraphista/expose-gc, The project
- * missing undo for changed flags, so we implemented it ourselves.
- */
-export function exposeGC() {
-	setFlagsFromString("--expose_gc");
-	global.gc = runInNewContext("gc");
-	setFlagsFromString("--no-expose-gc");
-}
 
 /**
  * Path of the pac-maker root directory.
