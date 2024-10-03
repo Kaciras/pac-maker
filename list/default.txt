@@ -1,6 +1,5 @@
 # Hostnames that blocked from China but missing in gfwlist
 
-x.com
 www.extrabux.com
 proton.me
 diygod.me
@@ -25,7 +24,14 @@ www.1point3acres.com
 hsex.men
 nodejs.org
 
+lantern.io
+vyprvpn.com
+
 cloud.dify.ai
+
+cosplaytele.com
+www.hentaiclub.net
+www.v2ph.com
 
 # subdomains are blocked, but not itself.
 *.ghost.io

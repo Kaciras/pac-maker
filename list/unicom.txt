@@ -1,4 +1,4 @@
-# Blocked by China Unicom
+# Blocked by my ISP
 
 hostloc.com
 creativecommons.org
@@ -8,5 +8,6 @@ englishxyz.com
 riscv.builders
 bitbucket.org
 gofile.io
+npmjs.com
 
 *.sentry-cdn.com

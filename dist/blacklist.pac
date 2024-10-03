@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v4.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-09-14T03:27:29.939Z
+ * Generated at: 2024-10-03T02:04:55.623Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -915,6 +915,7 @@ globalThis.rules = {
 	"on2.com": 0,
 	"opensource.google": 0,
 	"panoramio.com": 0,
+	"passwords.google": 0,
 	"picasaweb.com": 0,
 	"pki.goog": 0,
 	"plus.codes": 0,
@@ -5946,8 +5947,15 @@ globalThis.rules = {
 	"www.1point3acres.com": 0,
 	"hsex.men": 0,
 	"nodejs.org": 0,
+	"lantern.io": 0,
+	"vyprvpn.com": 0,
 	"cloud.dify.ai": 0,
+	"cosplaytele.com": 0,
+	"www.hentaiclub.net": 0,
+	"www.v2ph.com": 0,
 	"*.ghost.io": 0,
+	"*.hath.network": 0,
+	"*.herokuapp.com": 0,
 	"creativecommons.org": 0,
 	"thght.works": 0,
 	"obsproject.com": 0,
@@ -5955,6 +5963,7 @@ globalThis.rules = {
 	"riscv.builders": 0,
 	"bitbucket.org": 0,
 	"gofile.io": 0,
+	"npmjs.com": 0,
 	"*.sentry-cdn.com": 0,
 	"5ch.net": 0,
 	"2ch.sc": 0,
