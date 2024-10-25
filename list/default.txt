@@ -19,10 +19,11 @@ mirror.xyz
 pomf2.lain.la
 trustwallet.com
 vikacg.com
+www.ggbases.com
 singlelogin.re
 www.1point3acres.com
 hsex.men
-nodejs.org
+coindesk.com
 
 lantern.io
 vyprvpn.com
@@ -32,6 +33,7 @@ cloud.dify.ai
 cosplaytele.com
 www.hentaiclub.net
 www.v2ph.com
+hsex.icu
 
 # subdomains are blocked, but not itself.
 *.ghost.io

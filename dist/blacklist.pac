@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v4.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-10-03T02:04:55.623Z
+ * Generated at: 2024-10-25T11:59:42.988Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -720,6 +720,7 @@ globalThis.rules = {
 	"f8.com": 0,
 	"facebook.br": 0,
 	"facebook.com": 0,
+	"facebook.de": 0,
 	"facebook.design": 0,
 	"connect.facebook.net": 0,
 	"facebook.hu": 0,
@@ -737,6 +738,7 @@ globalThis.rules = {
 	"instagram.com": 0,
 	"m.me": 0,
 	"messenger.com": 0,
+	"meta.com": 0,
 	"oculus.com": 0,
 	"oculuscdn.com": 0,
 	"rocksdb.org": 0,
@@ -5134,6 +5136,7 @@ globalThis.rules = {
 	"torrentproject.se": 0,
 	"torrenty.org": 0,
 	"torrentz.eu": 0,
+	"tortoisesvn.net": 0,
 	"torvpn.com": 0,
 	"totalvpn.com": 0,
 	"toutiaoabc.com": 0,
@@ -5943,16 +5946,18 @@ globalThis.rules = {
 	"pomf2.lain.la": 0,
 	"trustwallet.com": 0,
 	"vikacg.com": 0,
+	"www.ggbases.com": 0,
 	"singlelogin.re": 0,
 	"www.1point3acres.com": 0,
 	"hsex.men": 0,
-	"nodejs.org": 0,
+	"coindesk.com": 0,
 	"lantern.io": 0,
 	"vyprvpn.com": 0,
 	"cloud.dify.ai": 0,
 	"cosplaytele.com": 0,
 	"www.hentaiclub.net": 0,
 	"www.v2ph.com": 0,
+	"hsex.icu": 0,
 	"*.ghost.io": 0,
 	"*.hath.network": 0,
 	"*.herokuapp.com": 0,
