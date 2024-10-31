@@ -36,7 +36,7 @@
 		"compile": "tsc"
 	},
 	"dependencies": {
-		"@kaciras/deasync": "^1.0.4",
+		"@kaciras/deasync": "^1.1.0",
 		"@kaciras/utilities": "^1.0.4",
 		"better-sqlite3": "^11.5.0",
 		"chalk": "^5.3.0",
@@ -54,8 +54,8 @@
 		"@kaciras/eslint-config-typescript": "^3.2.0",
 		"@stryker-mutator/core": "^8.6.0",
 		"@stryker-mutator/jest-runner": "^8.6.0",
-		"@swc/core": "1.7.39",
-		"@swc/jest": "^0.2.36",
+		"@swc/core": "1.7.40",
+		"@swc/jest": "^0.2.37",
 		"@types/better-sqlite3": "^7.6.11",
 		"@types/cli-progress": "^3.11.6",
 		"@types/ini": "^4.1.1",
