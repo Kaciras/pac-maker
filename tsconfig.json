@@ -1,11 +1,14 @@
 {
-	"include": ["src"],
+	"references": [{
+		"path": "./tsconfig.test.json",
+	}],
+	"include": ["src/**/*.ts"],
 	"compilerOptions": {
-		"target": "ESNext",
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
-		"strict": true,
+		"target": "ESNext",
 		"resolveJsonModule": true,
+		"strict": true,
 		"skipLibCheck": true,
 		"outDir": "lib",
 		"sourceMap": true,

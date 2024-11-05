@@ -27,5 +27,5 @@ export default {
 		 */
 		"^(\\.{1,2}/.*)(?<!\\.wasm)\\.js$": "$1",
 	},
-	moduleFileExtensions: ["ts", "js", "json", "node"],
+	moduleFileExtensions: ["ts", "js", "json"],
 };
