@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v4.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-10-25T11:59:42.988Z
+ * Generated at: 2024-11-11T02:32:36.739Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -229,7 +229,6 @@ globalThis.rules = {
 	"vevo.com": 0,
 	"vip-enterprise.com": 0,
 	"viu.tv": 0,
-	"vmpsoft.com": 0,
 	"ecsm.vs.com": 0,
 	"wanz-factory.com": 0,
 	"ssl.webpack.de": 0,
@@ -5975,7 +5974,10 @@ globalThis.rules = {
 	"www.familyhandyman.com": 0,
 	"www.tianshie.com": 0,
 	"tianshi.info": 0,
+	"rpg.blue": 0,
 	"sanctioned-suicide.net": 0,
+	"hackforums.net": 0,
+	"img.picui.cn": 0,
 	"www.healthline.com": 0,
 	"miiskin.com": 0,
 	"unwrap.ai": 0,

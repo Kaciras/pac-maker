@@ -1,0 +1,3 @@
+# These hosts can be connected directly from China
+
+vmpsoft.com

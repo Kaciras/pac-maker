@@ -14,5 +14,8 @@ export default {
 			builtinList("unicom"),
 			builtinList("forbidden"),
 		],
+		"DIRECT": [
+			builtinList("no-proxy"),
+		],
 	},
 };
