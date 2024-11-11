@@ -25,16 +25,18 @@ export function buildPAC(map: HostRules, fallback = "DIRECT") {
 
 	for (const [k, v] of Object.entries(map)) {
 		if (k === fallback) {
-			continue;
-		}
-		const i = proxies.push(k) - 1;
-
-		for (const hostname of v) {
-			const j = routeTable[hostname];
-			if (j === undefined) {
-				routeTable[hostname] = i;
-			} else if (j !== i) {
-				throw new Error(hostname + " already exists");
+			for (const hostname of v) {
+				delete routeTable[hostname];
+			}
+		} else {
+			const i = proxies.push(k) - 1;
+			for (const hostname of v) {
+				const j = routeTable[hostname];
+				if (j === undefined) {
+					routeTable[hostname] = i;
+				} else if (j !== i) {
+					throw new Error(hostname + " already exists");
+				}
 			}
 		}
 	}

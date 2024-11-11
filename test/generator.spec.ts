@@ -30,6 +30,7 @@ describe("buildPAC", () => {
 	it("should ignore routes which map to the fallback", () => {
 		const hostsMap = {
 			...ruleProxy1,
+			"HTTP [::1]:2080": ["foo.bar", "kaciras.com"],
 			DIRECT: ["kaciras.com", "www.example.com"],
 		};
 		expect(buildPAC(hostsMap)).toBe(stubPAC);
