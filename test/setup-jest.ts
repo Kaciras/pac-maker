@@ -1,4 +1,4 @@
-import { isIP } from "net";
+import { isIP } from "node:net";
 import { expect, jest } from "@jest/globals";
 import chalk from "chalk";
 import { exposeGC } from "@kaciras/utilities/node";

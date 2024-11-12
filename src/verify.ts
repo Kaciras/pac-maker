@@ -1,5 +1,5 @@
-import { BlockList } from "net";
-import { resolve } from "dns/promises";
+import { BlockList } from "node:net";
+import { resolve } from "node:dns/promises";
 import { Agent, buildConnector, Dispatcher, fetch } from "undici";
 import chalk, { ChalkInstance } from "chalk";
 import { SingleBar } from "cli-progress";

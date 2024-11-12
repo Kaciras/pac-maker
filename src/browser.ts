@@ -1,6 +1,6 @@
-import { env, platform } from "process";
-import { join } from "path";
-import { existsSync, readFileSync, statSync } from "fs";
+import { env, platform } from "node:process";
+import { join } from "node:path";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import * as ini from "ini";
 import Database from "better-sqlite3";
 

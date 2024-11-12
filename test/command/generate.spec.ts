@@ -1,5 +1,5 @@
-import { copyFileSync, readFileSync } from "fs";
-import { join } from "path";
+import { copyFileSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { expect, it } from "@jest/globals";
 import waitFor from "wait-for-expect";
 import { fixturePath, getTestConfig, readFixture, testDir, useTempDirectory } from "../share.js";

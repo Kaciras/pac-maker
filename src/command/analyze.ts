@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync } from "fs";
-import { resolve } from "path";
+import { readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { HostnameListLoader, HostRules } from "../generator.js";
 import { loadPAC, PACMakerConfig } from "../loader.js";
 import { BrowserEngine, findAllBrowsers } from "../browser.js";

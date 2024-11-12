@@ -1,7 +1,7 @@
 import type { socksDispatcher } from "fetch-socks";
 import type { PACDispatcherOptions } from "../src/proxy.js";
-import { AddressInfo } from "net";
-import * as tp from "timers/promises";
+import { AddressInfo } from "node:net";
+import * as tp from "node:timers/promises";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { fetch, MockAgent } from "undici";

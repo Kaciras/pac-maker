@@ -1,6 +1,6 @@
-import { appendFileSync, writeFileSync } from "fs";
-import { join } from "path";
-import { setTimeout } from "timers/promises";
+import { appendFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { setTimeout } from "node:timers/promises";
 import { MockAgent } from "undici";
 import { afterAll, afterEach, describe, expect, it, jest } from "@jest/globals";
 import {

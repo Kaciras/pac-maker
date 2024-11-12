@@ -9,6 +9,7 @@ export default [
 	{
 		rules: {
 			"kaciras/import-specifier-order": "warn",
+			"kaciras/import-node-prefix": "error",
 		},
 	},
 	...jest.map(config => ({

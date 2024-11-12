@@ -1,5 +1,5 @@
-import { readFileSync } from "fs";
-import { memoryUsage } from "process";
+import { readFileSync } from "node:fs";
+import { memoryUsage } from "node:process";
 import { exposeGC } from "@kaciras/utilities/node";
 import { ExecutionTimeMeasurement, Profiler, runSuite, SummaryTable } from "esbench";
 import { loadPAC } from "../loader.js";

@@ -70,6 +70,9 @@ interface PACDispatchHandlers extends DispatchHandlers {
 
 /**
  * The undici dispatcher that dispatch requests based on rule described by the PAC.
+ *
+ * Does not yet support Bun:
+ * https://github.com/oven-sh/bun/issues/4474
  */
 export class PACDispatcher extends Dispatcher {
 

@@ -1,5 +1,5 @@
-import { mkdirSync, readFileSync } from "fs";
-import { dirname, join } from "path";
+import { mkdirSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 
 /**
  * Path of the pac-maker root directory.

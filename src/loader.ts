@@ -1,4 +1,4 @@
-import { runInNewContext } from "vm";
+import { runInNewContext } from "node:vm";
 import { noop } from "@kaciras/utilities/node";
 import * as EnvFunctions from "./context.js";
 import { HostnameSource } from "./source.js";

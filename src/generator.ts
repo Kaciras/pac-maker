@@ -1,6 +1,6 @@
-import { readFileSync } from "fs";
-import { join } from "path";
-import { EventEmitter } from "events";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { EventEmitter } from "node:events";
 import { importJson, root } from "./utils.js";
 import { HostnameSource } from "./source.js";
 import { BuiltinPAC, loadPAC } from "./loader.js";

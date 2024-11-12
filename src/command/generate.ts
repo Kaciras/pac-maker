@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import chalk from "chalk";
 import { buildPAC, HostnameListLoader } from "../generator.js";
 import { ensureDirectory } from "../utils.js";

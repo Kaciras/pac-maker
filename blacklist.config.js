@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync } from "node:fs";
 import { builtinList, gfwlist, PACDispatcher } from "./lib/index.js";
 
 const pac = readFileSync("dist/blacklist.pac", "utf8");

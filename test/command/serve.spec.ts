@@ -1,5 +1,5 @@
-import { setTimeout } from "timers/promises";
-import * as http from "http";
+import { setTimeout } from "node:timers/promises";
+import * as http from "node:http";
 import { afterEach, expect, it } from "@jest/globals";
 import { fetch } from "undici";
 import { getTestConfig, readFixture, testDir, useTempDirectory } from "../share.js";

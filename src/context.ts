@@ -21,8 +21,8 @@
  *
  * Modifications copyright (C) 2021 Kaciras <kaciras@protonmail.com>
  */
-import { isIPv4 } from "net";
-import * as dns from "dns";
+import { isIPv4 } from "node:net";
+import * as dns from "node:dns";
 import { deasync } from "@kaciras/deasync";
 
 let dnsLookupSync: (host: string, family: number) => string;

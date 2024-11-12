@@ -1,4 +1,4 @@
-import { BlockList, connect } from "net";
+import { BlockList, connect } from "node:net";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { buildConnector, MockAgent } from "undici";

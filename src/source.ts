@@ -1,6 +1,6 @@
-import { readFile } from "fs/promises";
-import { basename, join } from "path";
-import { FSWatcher, watch } from "fs";
+import { readFile } from "node:fs/promises";
+import { basename, join } from "node:path";
+import { FSWatcher, watch } from "node:fs";
 import { Awaitable } from "@kaciras/utilities/node";
 import { Dispatcher, fetch } from "undici";
 import { root } from "./utils.js";
