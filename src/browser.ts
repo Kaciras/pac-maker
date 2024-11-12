@@ -2,7 +2,25 @@ import { env, platform } from "node:process";
 import { join } from "node:path";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import * as ini from "ini";
-import Database from "better-sqlite3";
+
+let Driver: undefined | typeof import("better-sqlite3");
+
+try {
+	Driver = (await import("node:sqlite")).DatabaseSync as any;
+} catch {
+	try {
+		Driver = (await import("better-sqlite3")).default;
+	} catch {
+		// Do not throw any errors until it is used.
+	}
+}
+
+function openSqlite(file: string) {
+	if (Driver === undefined) {
+		throw new Error("No Sqlite driver, please install better-sqlite3 or enable Node builtin sqlite module");
+	}
+	return new Driver(file, { readonly: true });
+}
 
 export interface HistoryEntry {
 	id: number;
@@ -31,9 +49,7 @@ export class Safari implements BrowserEngine {
 	}
 
 	getHistories() {
-		const db = new Database(join(this.directory, "History.db"), {
-			readonly: true,
-		});
+		const db = openSqlite(join(this.directory, "History.db"));
 		return db.prepare<[], HistoryEntry>("SELECT id,url FROM history_items").all();
 	}
 }
@@ -60,9 +76,7 @@ export class Chromium implements BrowserEngine {
 			const state = JSON.parse(readFileSync(join(this.directory, "Local State"), "utf8"));
 			profile = join(this.directory, state.profile.last_used);
 		}
-		const db = new Database(join(profile, "History"), {
-			readonly: true,
-		});
+		const db = openSqlite(join(profile, "History"));
 		return db.prepare<[], HistoryEntry>("SELECT id,url FROM urls").all();
 	}
 }
@@ -84,9 +98,7 @@ export class Firefox implements BrowserEngine {
 	}
 
 	getHistories() {
-		const db = new Database(join(this.directory, "places.sqlite"), {
-			readonly: true,
-		});
+		const db = openSqlite(join(this.directory, "places.sqlite"));
 		return db.prepare<[], HistoryEntry>("SELECT id,url FROM moz_places").all();
 	}
 }
