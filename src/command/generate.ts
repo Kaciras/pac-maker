@@ -42,7 +42,7 @@ export default async function (argv: GenerateOptions, config: PACMakerConfig) {
 			const p0 = greenBright(`${added}+`);
 			const p1 = redBright(`${removed}-`);
 			detail = ` ${p0}, ${p1}.`;
-		} catch (e) {
+		} catch {
 			// Old file is not exists or cannot parse.
 		}
 

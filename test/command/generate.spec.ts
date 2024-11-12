@@ -11,7 +11,7 @@ const stubPAC2 = readFixture("proxy-2.pac");
 useTempDirectory(testDir);
 
 function waitForCalledNth(mockedFn: any, n : number) {
-	// @ts-ignore https://github.com/vitejs/vite/issues/10481#issuecomment-1280335703
+	// @ts-expect-error https://github.com/vitejs/vite/issues/10481#issuecomment-1280335703
 	return waitFor(() => expect(mockedFn).toHaveBeenCalledTimes(n));
 }
 
