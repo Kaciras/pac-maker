@@ -31,9 +31,11 @@ vyprvpn.com
 cloud.dify.ai
 
 cosplaytele.com
+njav.tv
 www.hentaiclub.net
 www.v2ph.com
 hsex.icu
+ddplcms.com
 
 # subdomains are blocked, but not itself.
 *.ghost.io

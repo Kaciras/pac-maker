@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v4.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-11-11T02:32:36.739Z
+ * Generated at: 2024-12-05T04:30:44.685Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -5954,9 +5954,11 @@ globalThis.rules = {
 	"vyprvpn.com": 0,
 	"cloud.dify.ai": 0,
 	"cosplaytele.com": 0,
+	"njav.tv": 0,
 	"www.hentaiclub.net": 0,
 	"www.v2ph.com": 0,
 	"hsex.icu": 0,
+	"ddplcms.com": 0,
 	"*.ghost.io": 0,
 	"*.hath.network": 0,
 	"*.herokuapp.com": 0,
