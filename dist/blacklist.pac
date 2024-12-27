@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v4.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2024-12-05T04:30:44.685Z
+ * Generated at: 2024-12-27T01:37:35.954Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -5973,6 +5973,7 @@ globalThis.rules = {
 	"*.sentry-cdn.com": 0,
 	"5ch.net": 0,
 	"2ch.sc": 0,
+	"bitfan.id": 0,
 	"www.familyhandyman.com": 0,
 	"www.tianshie.com": 0,
 	"tianshi.info": 0,
