@@ -37,6 +37,13 @@ www.v2ph.com
 hsex.icu
 ddplcms.com
 
+# Z-Library
+z-lib.gl
+z-lib.fm
+z-lib.gs
+1lib.sk
+z-library.sk
+
 # subdomains are blocked, but not itself.
 *.ghost.io
 *.hath.network

@@ -9,5 +9,6 @@ riscv.builders
 bitbucket.org
 gofile.io
 npmjs.com
+developer.mozilla.org
 
 *.sentry-cdn.com

@@ -1,4 +1,4 @@
-# These websites ban Chinese IP
+# These websites ban China IP
 
 5ch.net
 2ch.sc
