@@ -1,5 +1,8 @@
 # Hostnames that blocked from China but missing in gfwlist
 
+imgflip.com
+zoom.com
+note.com
 www.extrabux.com
 proton.me
 diygod.me
@@ -31,6 +34,7 @@ vyprvpn.com
 cloud.dify.ai
 
 cosplaytele.com
+www.51cg1.com
 njav.tv
 www.hentaiclub.net
 www.v2ph.com
