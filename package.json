@@ -58,13 +58,13 @@
 		"@kaciras/eslint-config-core": "^3.3.0",
 		"@kaciras/eslint-config-typescript": "^3.3.0",
 		"@stryker-mutator/core": "^8.7.1",
-		"@swc/core": "1.11.9",
+		"@swc/core": "1.11.11",
 		"@types/better-sqlite3": "^7.6.12",
 		"@types/cli-progress": "^3.11.6",
 		"@types/ini": "^4.1.1",
 		"@types/yargs": "^17.0.33",
-		"eslint": "^9.22.0",
-		"mockttp": "^3.16.0",
+		"eslint": "^9.23.0",
+		"mockttp": "^3.17.0",
 		"typescript": "^5.8.2",
 		"wait-for-expect": "^3.0.2"
 	}
