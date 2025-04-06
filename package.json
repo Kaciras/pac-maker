@@ -43,7 +43,7 @@
 		"esbench": "^0.8.0",
 		"fetch-socks": "^1.3.2",
 		"ini": "^5.0.0",
-		"undici": "^7.6.0",
+		"undici": "^7.7.0",
 		"yargs": "^17.7.2"
 	},
 	"peerDependencies": {
@@ -58,14 +58,14 @@
 		"@kaciras/eslint-config-core": "^3.3.0",
 		"@kaciras/eslint-config-typescript": "^3.3.0",
 		"@stryker-mutator/core": "^8.7.1",
-		"@swc/core": "1.11.13",
-		"@types/better-sqlite3": "^7.6.12",
+		"@swc/core": "1.11.16",
+		"@types/better-sqlite3": "^7.6.13",
 		"@types/cli-progress": "^3.11.6",
 		"@types/ini": "^4.1.1",
 		"@types/yargs": "^17.0.33",
-		"eslint": "^9.23.0",
+		"eslint": "^9.24.0",
 		"mockttp": "^3.17.0",
-		"typescript": "^5.8.2",
+		"typescript": "^5.8.3",
 		"wait-for-expect": "^3.0.2"
 	}
 }
