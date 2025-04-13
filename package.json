@@ -2,7 +2,7 @@
 	"name": "pac-maker",
 	"version": "4.0.0",
 	"description": "Proxy Auto-Configuration (PAC) file generator & loader, support proxy Node's `fetch` with PAC",
-	"author": "Kaciras <Kaciras@protonmail.com>",
+	"author": "Kaciras <contact@kaciras.com>",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -43,7 +43,7 @@
 		"esbench": "^0.8.0",
 		"fetch-socks": "^1.3.2",
 		"ini": "^5.0.0",
-		"undici": "^7.7.0",
+		"undici": "^7.8.0",
 		"yargs": "^17.7.2"
 	},
 	"peerDependencies": {
@@ -58,7 +58,7 @@
 		"@kaciras/eslint-config-core": "^3.3.0",
 		"@kaciras/eslint-config-typescript": "^3.3.0",
 		"@stryker-mutator/core": "^8.7.1",
-		"@swc/core": "1.11.16",
+		"@swc/core": "1.11.20",
 		"@types/better-sqlite3": "^7.6.13",
 		"@types/cli-progress": "^3.11.6",
 		"@types/ini": "^4.1.1",
