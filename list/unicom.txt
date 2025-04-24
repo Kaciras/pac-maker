@@ -10,5 +10,6 @@ bitbucket.org
 gofile.io
 npmjs.com
 developer.mozilla.org
+framerusercontent.com
 
 *.sentry-cdn.com
