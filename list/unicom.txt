@@ -11,5 +11,7 @@ gofile.io
 npmjs.com
 developer.mozilla.org
 framerusercontent.com
+greenssh.com
+opentunnel.net
 
 *.sentry-cdn.com
