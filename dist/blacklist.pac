@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v4.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2025-08-20T10:38:25.574Z
+ * Generated at: 2025-09-16T01:52:18.351Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1414,6 +1414,8 @@ globalThis.rules = {
 	"axureformac.com": 0,
 	"azerimix.com": 0,
 	"azirevpn.com": 0,
+	"bt4gprx.com": 0,
+	"bt4g.org": 0,
 	"betterhash.net": 0,
 	"binance.org": 0,
 	"bitget.com": 0,
@@ -1641,6 +1643,7 @@ globalThis.rules = {
 	"bvpn.com": 0,
 	"bwh1.net": 0,
 	"bypasscensorship.org": 0,
+	"covenantswatch.org.tw": 0,
 	"cpu-monkey.com": 0,
 	"coffeemanga.to": 0,
 	"ctinews.com": 0,
@@ -2262,6 +2265,9 @@ globalThis.rules = {
 	"eyevio.jp": 0,
 	"eyny.com": 0,
 	"ezpeer.com": 0,
+	"feedly.com": 0,
+	"fuckccp.xyz": 0,
+	"fuckccp.com": 0,
 	"furrybar.com": 0,
 	"forbes.com": 0,
 	"financialexpress.com": 0,
@@ -2918,6 +2924,8 @@ globalThis.rules = {
 	"hyperrate.com": 0,
 	"hypothes.is": 0,
 	"ebook.hyread.com.tw": 0,
+	"ipify.org": 0,
+	"itiger.com": 0,
 	"itch.io": 0,
 	"infura.io": 0,
 	"president.ir": 0,
@@ -3379,6 +3387,7 @@ globalThis.rules = {
 	"lyfhk.net": 0,
 	"lzjscript.com": 0,
 	"lzmtnews.org": 0,
+	"mcusercontent.com": 0,
 	"metamask.io": 0,
 	"missav.ws": 0,
 	"news.mt.co.kr": 0,
@@ -4261,6 +4270,7 @@ globalThis.rules = {
 	"rutracker.org": 0,
 	"rutube.ru": 0,
 	"rxhj.net": 0,
+	"sina.com.hk": 0,
 	"swapspace.co": 0,
 	"storry.tv": 0,
 	"standard.co.uk": 0,
@@ -4420,7 +4430,6 @@ globalThis.rules = {
 	"bbs.sina.com": 0,
 	"dailynews.sina.com": 0,
 	"home.sina.com": 0,
-	"news.sina.com.hk": 0,
 	"sinchew.com.my": 0,
 	"singaporepools.com.sg": 0,
 	"singfortibet.com": 0,
@@ -4628,6 +4637,8 @@ globalThis.rules = {
 	"blog.syx86.com": 0,
 	"szbbs.net": 0,
 	"szetowah.org.hk": 0,
+	"talkatone.com": 0,
+	"tanks.gg": 0,
 	"thehansindia.com": 0,
 	"rtm.tnt-ea.com": 0,
 	"tellapart.com": 0,
@@ -5065,6 +5076,7 @@ globalThis.rules = {
 	"blog.expofutures.com": 0,
 	"contests.twilio.com": 0,
 	"typora.io": 0,
+	"udomain.hk": 0,
 	"upbit.com": 0,
 	"demo.unlock-music.dev": 0,
 	"u9un.com": 0,
@@ -5655,7 +5667,6 @@ globalThis.rules = {
 	"coindesk.com": 0,
 	"lantern.io": 0,
 	"vyprvpn.com": 0,
-	"feedly.com": 0,
 	"www.moppysound.com": 0,
 	"baoyu.io": 0,
 	"cosplaytele.com": 0,
