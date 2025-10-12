@@ -10,7 +10,7 @@ const mockedBrowser = {
 
 const findAllBrowsers = jest.fn(() => [mockedBrowser]);
 
-jest.unstable_mockModule("../src/browser.js", () => ({ findAllBrowsers }));
+jest.unstable_mockModule("../../src/browser.js", () => ({ findAllBrowsers }));
 
 useTempDirectory(testDir);
 

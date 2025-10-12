@@ -3,7 +3,7 @@ import { createInstance, LRUCache } from "@kaciras/utilities/node";
 import { socksDispatcher } from "fetch-socks";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
 
-type DispatchHandlers = Dispatcher.DispatchHandlers;
+type DispatchHandler = Dispatcher.DispatchHandler;
 type DispatchOptions = Dispatcher.DispatchOptions;
 
 export interface PACDispatcherOptions extends Agent.Options {
@@ -61,7 +61,7 @@ export function createAgent(proxy: ParsedProxy, options: AgentOptions = {}) {
 	}
 }
 
-interface PACDispatchHandlers extends DispatchHandlers {
+interface PACDispatchHandler extends DispatchHandler {
 
 	dispatchNext(): boolean;
 
@@ -114,7 +114,7 @@ export class PACDispatcher extends Dispatcher {
 		return agents.map(dispose);
 	}
 
-	dispatch(options: DispatchOptions, handlers: DispatchHandlers) {
+	dispatch(options: DispatchOptions, handlers: DispatchHandler) {
 		const { agentOptions, cache, findProxy } = this;
 		const { path, origin } = options;
 
@@ -122,7 +122,7 @@ export class PACDispatcher extends Dispatcher {
 		const proxies = parseProxies(p)[Symbol.iterator]();
 		const errors: Error[] = [];
 
-		const agentSelector: PACDispatchHandlers = {
+		const agentSelector: PACDispatchHandler = {
 			onError(error: Error) {
 				errors.push(error);
 				this.dispatchNext();

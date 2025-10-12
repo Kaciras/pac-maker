@@ -2,7 +2,7 @@ import { BlockList, connect } from "node:net";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
 import { buildConnector, MockAgent } from "undici";
-import { createAgent } from "../src/index.js";
+import { createAgent } from "../src/proxy.js";
 
 const mockConnect = jest.fn<buildConnector.connector>();
 const mockConnector = jest.fn<typeof buildConnector>(() => mockConnect);
