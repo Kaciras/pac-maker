@@ -37,7 +37,7 @@
 	},
 	"dependencies": {
 		"@kaciras/deasync": "^1.1.0",
-		"@kaciras/utilities": "^1.0.4",
+		"@kaciras/utilities": "^1.0.5",
 		"chalk": "^5.6.2",
 		"cli-progress": "^3.12.0",
 		"esbench": "^0.8.0",
@@ -67,7 +67,7 @@
 		"@types/cli-progress": "^3.11.6",
 		"@types/ini": "^4.1.1",
 		"@types/yargs": "^17.0.33",
-		"eslint": "^9.37.0",
+		"eslint": "^9.38.0",
 		"expect": "^30.2.0",
 		"jest": "^30.2.0",
 		"mockttp": "^4.2.0",
