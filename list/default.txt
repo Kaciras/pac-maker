@@ -12,6 +12,7 @@ newsapi.org
 www.utorrent.com
 gonglue.us
 gearvpn.com
+tgstat.com
 www.spring-plus.net
 2dfan.com
 www.xinjiangpolicefiles.org
@@ -34,9 +35,10 @@ feedly.com
 cloud.dify.ai
 www.moppysound.com
 baoyu.io
+nerdy.dev
 
 cosplaytele.com
-www.51cg1.com
+51cg1.com
 njav.tv
 www.hentaiclub.net
 www.v2ph.com

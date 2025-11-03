@@ -13,5 +13,6 @@ developer.mozilla.org
 framerusercontent.com
 greenssh.com
 opentunnel.net
+www.tiangal.com
 
 *.sentry-cdn.com
