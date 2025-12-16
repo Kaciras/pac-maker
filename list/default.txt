@@ -1,5 +1,6 @@
 # Hostnames that blocked from China but missing in gfwlist
 
+esu.lol
 imgflip.com
 zoom.com
 note.com
@@ -33,16 +34,19 @@ lantern.io
 vyprvpn.com
 feedly.com
 cloud.dify.ai
+anyrouter.top
 www.moppysound.com
 baoyu.io
 nerdy.dev
 linux.do
+basedinchina.com
 
 cosplaytele.com
 51cg1.com
 njav.tv
 www.hentaiclub.net
 www.v2ph.com
+avcar.vip
 hsex.icu
 www.loverslab.com
 ddplcms.com

@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v4.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2025-11-20T04:16:24.256Z
+ * Generated at: 2025-12-16T17:09:49.625Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1199,6 +1199,7 @@ globalThis.rules = {
 	"9bis.com": 0,
 	"9bis.net": 0,
 	"9news.com.au": 0,
+	"anuneko.com": 0,
 	"ai.dev": 0,
 	"adguard-vpn.com": 0,
 	"aoxvpn.com": 0,
@@ -2521,6 +2522,7 @@ globalThis.rules = {
 	"fuyu.org.tw": 0,
 	"fw.cm": 0,
 	"fxcm-chinese.com": 0,
+	"greatfirevpn.com": 0,
 	"garudalinux.org": 0,
 	"about.gitlab.com": 0,
 	"gitlab.net": 0,
@@ -3116,6 +3118,7 @@ globalThis.rules = {
 	"izaobao.us": 0,
 	"izles.net": 0,
 	"izlesem.org": 0,
+	"jhelab.org": 0,
 	"justmysockscn.com": 0,
 	"justmysocks.net": 0,
 	"jav321.com": 0,
@@ -3651,6 +3654,7 @@ globalThis.rules = {
 	"myspacecdn.com": 0,
 	"mytalkbox.com": 0,
 	"mytizi.com": 0,
+	"namu.wiki": 0,
 	"nirsoft.net": 0,
 	"naver.com": 0,
 	"maven.neoforged.net": 0,
@@ -3916,6 +3920,8 @@ globalThis.rules = {
 	"ozvoice.org": 0,
 	"ozxw.com": 0,
 	"ozyoyo.com": 0,
+	"podwise.ai": 0,
+	"picsart.com": 0,
 	"images.prismic.io": 0,
 	"api.palworldgame.com": 0,
 	"pewresearch.org": 0,
@@ -4184,6 +4190,8 @@ globalThis.rules = {
 	"qusi8.net": 0,
 	"nemesis2.qx.net": 0,
 	"qxbbs.org": 0,
+	"radiojar.com": 0,
+	"radio.co": 0,
 	"rustdesk.com": 0,
 	"rentry.co": 0,
 	"radmin-vpn.com": 0,
@@ -5327,6 +5335,7 @@ globalThis.rules = {
 	"vrporn.com": 0,
 	"vtunnel.com": 0,
 	"vuku.cc": 0,
+	"wikiunblocked.org": 0,
 	"websdr.org": 0,
 	"wikipedia.com": 0,
 	"wxw.moe": 0,
@@ -5627,6 +5636,7 @@ globalThis.rules = {
 	"yyjlymb.xyz": 0,
 	"yysub.net": 0,
 	"yzzk.com": 0,
+	"zaochenbao.com": 0,
 	"z-library.ec": 0,
 	"z-library.sk": 0,
 	"z-lib.fm": 0,
@@ -5692,6 +5702,7 @@ globalThis.rules = {
 	"zvereff.com": 0,
 	"zyxel.com": 0,
 	"zzcartoon.com": 0,
+	"esu.lol": 0,
 	"imgflip.com": 0,
 	"zoom.com": 0,
 	"note.com": 0,
@@ -5714,14 +5725,17 @@ globalThis.rules = {
 	"coindesk.com": 0,
 	"lantern.io": 0,
 	"vyprvpn.com": 0,
+	"anyrouter.top": 0,
 	"www.moppysound.com": 0,
 	"baoyu.io": 0,
 	"nerdy.dev": 0,
+	"basedinchina.com": 0,
 	"cosplaytele.com": 0,
 	"51cg1.com": 0,
 	"njav.tv": 0,
 	"www.hentaiclub.net": 0,
 	"www.v2ph.com": 0,
+	"avcar.vip": 0,
 	"hsex.icu": 0,
 	"www.loverslab.com": 0,
 	"ddplcms.com": 0,
@@ -5757,9 +5771,11 @@ globalThis.rules = {
 	"innei.in": 0,
 	"www.evergreenhealth.com": 0,
 	"zoom.us": 0,
+	"polymarketcn.com": 0,
 	"img.picui.cn": 0,
 	"www.healthline.com": 0,
 	"miiskin.com": 0,
+	"claude.com": 0,
 	"unwrap.ai": 0,
 	"genspark.ai": 0
 };

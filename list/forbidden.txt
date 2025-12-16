@@ -14,6 +14,7 @@ www.ondemandchina.com
 innei.in
 www.evergreenhealth.com
 zoom.us
+polymarketcn.com
 
 img.picui.cn
 www.healthline.com
@@ -21,5 +22,6 @@ miiskin.com
 
 openai.com
 claude.ai
+claude.com
 unwrap.ai
 genspark.ai
