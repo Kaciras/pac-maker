@@ -19,10 +19,14 @@ jobs:
           run_install: true
 
       - run: node test-color.js
+        env:
+          FORCE_COLOR: 1
 
       # When use "pnpm run test", don't add "--".
       - run: pnpm test -- --coverage
         env:
+          # Some tests assert the colored output.
+          # https://github.com/nodejs/node/issues/57998
           FORCE_COLOR: 1
           NODE_OPTIONS: --experimental-vm-modules
 
