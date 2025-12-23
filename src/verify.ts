@@ -1,13 +1,11 @@
 import { BlockList } from "node:net";
 import { resolve } from "node:dns/promises";
-import { styleText } from "node:util";
+import { InspectColor, styleText } from "node:util";
 import { Agent, buildConnector, Dispatcher, fetch } from "undici";
 import { SingleBar } from "cli-progress";
 import { parseProxies } from "./loader.js";
 import { createAgent } from "./proxy.js";
 
-// 傻逼 @types/node 怎么不导出这个类型
-type ForegroundColors = Parameters<typeof styleText>[0];
 type Connector = buildConnector.connector;
 
 /**
@@ -229,7 +227,7 @@ export class HostsBlockInfo {
 		this.pg(Unavailable, "redBright", "Can't access event with a proxy");
 	}
 
-	private pg(hosts: string[], color: ForegroundColors, type: string) {
+	private pg(hosts: string[], color: InspectColor, type: string) {
 		if (hosts.length > 0) {
 			console.log();
 			console.log(styleText(color, `${type} (${hosts.length}):`));
