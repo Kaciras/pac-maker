@@ -38,7 +38,6 @@
 	"dependencies": {
 		"@kaciras/deasync": "^1.1.0",
 		"@kaciras/utilities": "^1.0.5",
-		"chalk": "^5.6.2",
 		"cli-progress": "^3.12.0",
 		"esbench": "^0.8.0",
 		"fetch-socks": "^1.3.2",

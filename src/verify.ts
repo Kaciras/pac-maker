@@ -1,11 +1,13 @@
 import { BlockList } from "node:net";
 import { resolve } from "node:dns/promises";
+import { styleText } from "node:util";
 import { Agent, buildConnector, Dispatcher, fetch } from "undici";
-import chalk, { ChalkInstance } from "chalk";
 import { SingleBar } from "cli-progress";
 import { parseProxies } from "./loader.js";
 import { createAgent } from "./proxy.js";
 
+// 傻逼 @types/node 怎么不导出这个类型
+type ForegroundColors = Parameters<typeof styleText>[0];
 type Connector = buildConnector.connector;
 
 /**
@@ -14,8 +16,6 @@ type Connector = buildConnector.connector;
  * - "Unavailable": Can't access the site even with a proxy.
  */
 export type BlockType = "DNS" | "TCP" | "Unavailable";
-
-const { redBright, greenBright } = chalk;
 
 const gfwIPs = new BlockList();
 gfwIPs.addSubnet("127.0.0.0", 8);
@@ -158,14 +158,12 @@ export class HostBlockVerifier {
 		const blocked: Record<string, BlockType> = {};
 
 		const run = async () => {
-			let { value, done } = iterator.next();
-			while (!done) {
-				const type = await this.verify(value);
+			for (const v of iterator) {
+				const type = await this.verify(v);
 				if (type) {
-					blocked[value] = type;
+					blocked[v] = type;
 				}
 				progress.increment();
-				({ value, done } = iterator.next());
 			}
 		};
 
@@ -225,16 +223,16 @@ export class HostsBlockInfo {
 		const p = (blocked / total * 100).toFixed();
 
 		console.log(`Checked ${total} hosts, ${blocked} (${p}%) are blocked.`);
-		this.pg(Unblocked, greenBright, "Not in blocking");
-		this.pg(DNS, redBright, "DNS cache pollution");
-		this.pg(TCP, redBright, "TCP reset");
-		this.pg(Unavailable, redBright, "Can't access event with a proxy");
+		this.pg(Unblocked, "greenBright", "Not in blocking");
+		this.pg(DNS, "redBright", "DNS cache pollution");
+		this.pg(TCP, "redBright", "TCP reset");
+		this.pg(Unavailable, "redBright", "Can't access event with a proxy");
 	}
 
-	private pg(hosts: string[], color: ChalkInstance, type: string) {
+	private pg(hosts: string[], color: ForegroundColors, type: string) {
 		if (hosts.length > 0) {
 			console.log();
-			console.log(color(`${type} (${hosts.length}):`));
+			console.log(styleText(color, `${type} (${hosts.length}):`));
 			for (const hostname of hosts) console.log(hostname);
 		}
 	}

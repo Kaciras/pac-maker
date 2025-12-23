@@ -1,10 +1,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import chalk from "chalk";
+import { styleText } from 'node:util';
 import { buildPAC, HostnameListLoader } from "../generator.js";
 import { ensureDirectory } from "../utils.js";
 import { BuiltinPAC, loadPAC, PACMakerConfig } from "../loader.js";
-
-const { redBright, greenBright } = chalk;
 
 interface GenerateOptions {
 	watch?: true;
@@ -39,8 +37,8 @@ export default async function (argv: GenerateOptions, config: PACMakerConfig) {
 		let detail = "";
 		try {
 			const { added, removed } = diff(path, script);
-			const p0 = greenBright(`${added}+`);
-			const p1 = redBright(`${removed}-`);
+			const p0 = styleText("greenBright", `${added}+`);
+			const p1 = styleText("redBright", `${removed}-`);
 			detail = ` ${p0}, ${p1}.`;
 		} catch {
 			// Old file is not exists or cannot parse.
