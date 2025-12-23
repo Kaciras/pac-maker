@@ -23,6 +23,7 @@ jobs:
       # When use "pnpm run test", don't add "--".
       - run: pnpm test -- --coverage
         env:
+          FORCE_COLOR: 1
           NODE_OPTIONS: --experimental-vm-modules
 
       - uses: codecov/codecov-action@v5
