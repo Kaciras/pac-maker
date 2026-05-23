@@ -41,7 +41,7 @@
 		"cli-progress": "^3.12.0",
 		"esbench": "^0.8.1",
 		"ini": "^7.0.0",
-		"undici": "^8.2.0",
+		"undici": "^8.3.0",
 		"yargs": "^18.0.0"
 	},
 	"devDependencies": {
@@ -56,10 +56,10 @@
 		"@types/cli-progress": "^3.11.6",
 		"@types/ini": "^4.1.1",
 		"@types/yargs": "^17.0.35",
-		"eslint": "^10.3.0",
+		"eslint": "^10.4.0",
 		"expect": "^30.4.1",
 		"jest": "^30.4.2",
-		"mockttp": "^4.4.1",
+		"mockttp": "^4.4.2",
 		"typescript": "^6.0.3",
 		"wait-for-expect": "^4.0.0"
 	}
