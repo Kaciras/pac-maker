@@ -72,7 +72,7 @@ export interface BuiltinPAC extends PACGlobals {
  * @return an object represent the script exports.
  */
 export function loadPAC<T = PACGlobals>(code: string, timeout = 5000) {
-	const context = Object.create(EnvFunctions);
+	const context = Object.create({ ...EnvFunctions });
 	runInNewContext(code, context, { timeout });
 	return Object.assign(Object.create(null), context) as T;
 }
