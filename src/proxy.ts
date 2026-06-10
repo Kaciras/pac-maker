@@ -5,6 +5,7 @@ import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
 
 type DispatchHandler = Dispatcher.DispatchHandler;
 type DispatchOptions = Dispatcher.DispatchOptions;
+type DispatchController = Dispatcher.DispatchController;
 
 export interface PACDispatcherOptions extends Agent.Options {
 	/**
@@ -63,9 +64,9 @@ export function createAgent(proxy: ParsedProxy, options: AgentOptions = {}) {
 
 interface PACDispatchHandler extends DispatchHandler {
 
-	dispatchNext(): boolean;
+	dispatchWithProxy(proxy: ParsedProxy): boolean;
 
-	dispatchWithProxy(value: ParsedProxy): boolean;
+	tryNext(errorController?: DispatchController): boolean;
 }
 
 /**
@@ -123,21 +124,22 @@ export class PACDispatcher extends Dispatcher {
 		const errors: Error[] = [];
 
 		const agentSelector: PACDispatchHandler = {
-			onError(error: Error) {
+			onResponseError(controller, error) {
 				errors.push(error);
-				this.dispatchNext();
+				this.tryNext(controller);
 			},
-			dispatchNext() {
+			tryNext(errorController?: DispatchController) {
 				const { done, value } = proxies.next();
 				if (done) {
-					handlers.onError?.(new AggregateError(errors, "All proxies are failed"));
+					const e = new AggregateError(errors, "All proxies are failed");
+					handlers.onResponseError?.(errorController!, e);
 					return false;
 				}
 				try {
 					return this.dispatchWithProxy(value);
 				} catch (e) {
 					errors.push(e);
-					return this.dispatchNext();
+					return this.tryNext();
 				}
 			},
 			dispatchWithProxy(value: ParsedProxy) {
@@ -151,6 +153,6 @@ export class PACDispatcher extends Dispatcher {
 			},
 		};
 
-		return createInstance(handlers, agentSelector).dispatchNext();
+		return createInstance(handlers, agentSelector).tryNext();
 	}
 }
