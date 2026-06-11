@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { styleText } from 'node:util';
+import { styleText } from "node:util";
 import { buildPAC, HostnameListLoader } from "../generator.js";
 import { ensureDirectory } from "../utils.js";
 import { BuiltinPAC, loadPAC, PACMakerConfig } from "../loader.js";

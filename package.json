@@ -37,7 +37,7 @@
 	},
 	"dependencies": {
 		"@kaciras/deasync": "^1.1.0",
-		"@kaciras/utilities": "^1.0.5",
+		"@kaciras/utilities": "^1.1.0",
 		"cli-progress": "^3.12.0",
 		"esbench": "^0.8.1",
 		"ini": "^7.0.0",

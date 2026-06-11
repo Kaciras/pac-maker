@@ -40,7 +40,7 @@ it("should log changed hostname count", async () => {
 
 it("should rebuild when source have updates", async () => {
 	const config = getTestConfig();
-	await generate({ watch: true }, config).then();
+	await generate({ watch: true }, config);
 	await waitForCalledNth(console.info, 2);
 
 	config.sources["HTTP [::1]:2080"][0].update(["kaciras.com", "foo.bar"]);

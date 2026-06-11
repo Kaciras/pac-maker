@@ -12,8 +12,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       '@kaciras/utilities':
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: ^1.1.0
+        version: 1.1.0
       cli-progress:
         specifier: ^3.12.0
         version: 3.12.0
@@ -702,6 +702,9 @@ packages:
 
   '@kaciras/utilities@1.0.5':
     resolution: {integrity: sha512-/nSy9UWaqp6XPpUy5krsnLcqAmKGUccoiJbgDT2hPhruAdU4cluy8tjDtnWjnRiy9L2h9tHbTXjkpEw/MAjmdg==}
+
+  '@kaciras/utilities@1.1.0':
+    resolution: {integrity: sha512-He0WFiBNCizahxDJ4h9sSzsIwYkSnQZYwQKY3dY0CU3YXo1FuGSeW+s5wuTDgTnEjkzK/NCU6fML1nK/yKlbPA==}
 
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
@@ -4007,6 +4010,8 @@ snapshots:
       - typescript
 
   '@kaciras/utilities@1.0.5': {}
+
+  '@kaciras/utilities@1.1.0': {}
 
   '@napi-rs/wasm-runtime@0.2.12':
     dependencies:
