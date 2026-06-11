@@ -1,6 +1,5 @@
-import { Agent, buildConnector, Dispatcher, ProxyAgent } from "undici";
+import { Agent, buildConnector, Dispatcher, ProxyAgent, Socks5ProxyAgent } from "undici";
 import { createInstance, LRUCache } from "@kaciras/utilities/node";
-import { socksDispatcher } from "fetch-socks";
 import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
 
 type DispatchHandler = Dispatcher.DispatchHandler;
@@ -43,22 +42,25 @@ type AgentOptions = Omit<PACDispatcherOptions, "agentTTL">;
  * Create an undici `Agent` that dispatch requests to the proxy server.
  */
 export function createAgent(proxy: ParsedProxy, options: AgentOptions = {}) {
-	const { protocol, host, hostname, port } = proxy;
+	const { protocol, host } = proxy;
 	switch (protocol) {
 		case "DIRECT":
 			return new Agent(options);
 		case "SOCKS":
 		case "SOCKS5":
-			return socksDispatcher({ type: 5, host: hostname, port }, options);
-		case "SOCKS4":
-			return socksDispatcher({ type: 4, host: hostname, port }, options);
+			// ProxyAgent 的 connect 选项和 Socks5ProxyAgent 的不一样。
+			let sOpts = { ...options } as Socks5ProxyAgent.Options;
+			if (options.connect) {
+				sOpts = { ...options, connect: buildConnector(options.connect) };
+			}
+			return new Socks5ProxyAgent(`socks://${host}`, sOpts);
 		case "PROXY":
 		case "HTTP":
 			return new ProxyAgent({ ...options, uri: `http://${host}` });
 		case "HTTPS":
 			return new ProxyAgent({ ...options, uri: `https://${host}` });
 		default:
-			throw new Error(`Unknown proxy protocol: ${protocol}`);
+			throw new Error(`Unsupported proxy type: ${protocol}`);
 	}
 }
 
@@ -84,7 +86,7 @@ export class PACDispatcher extends Dispatcher {
 	/**
 	 * Create a new PACDispatcher instance.
 	 *
-	 * @param pac The PAC script code or the FindProxyForURL function.
+	 * @param pac The PAC script code or the `FindProxyForURL` function.
 	 * @param options Agent options
 	 */
 	constructor(pac: string | FindProxy, options: PACDispatcherOptions = {}) {

@@ -1,13 +1,10 @@
-import type { socksDispatcher } from "fetch-socks";
 import type { PACDispatcherOptions } from "../src/proxy.js";
 import { AddressInfo } from "node:net";
 import * as tp from "node:timers/promises";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
 import { getLocal } from "mockttp";
-import { fetch, MockAgent } from "undici";
-import { createTunnelProxy, readFixture } from "./share.js";
 
-const mockSocksDispatcher = jest.fn<typeof socksDispatcher>();
+const mockSocksDispatcher = jest.fn();
 
 function mockSocks() {
 	const agent = new MockAgent();
@@ -16,11 +13,14 @@ function mockSocks() {
 	return agent;
 }
 
-jest.mock("fetch-socks", () => ({
-	socksDispatcher: mockSocksDispatcher,
+jest.mock("undici", () => ({
+	...jest.requireActual<any>("undici"),
+	Socks5ProxyAgent: mockSocksDispatcher,
 }));
 
 // Dynamic import is required for mocking an ES Modules.
+const { fetch, MockAgent } = await import( "undici");
+const { createTunnelProxy, readFixture } = await import("./share.js");
 const { PACDispatcher } = await import("../src/proxy.js");
 
 function pac(proxy: string | null, options?: PACDispatcherOptions) {
@@ -78,7 +78,7 @@ it("should make fetch fail with invalid proxy", async () => {
 
 	const promise = fetch("http://foo.bar", { dispatcher });
 
-	await expectProxyFailed(promise, ["Unknown proxy protocol: INVALID"]);
+	await expectProxyFailed(promise, ["Unsupported proxy type: INVALID"]);
 });
 
 it("should make fetch fail with invalid proxy 2", async () => {
@@ -104,11 +104,7 @@ it("should throw error if all proxies failed", async () => {
 	await expectProxyFailed(promise, ["Foobar", "Foobar"]);
 });
 
-it.each([
-	null,
-	"",
-	"DIRECT",
-])("should connect directly with %s", async proxy => {
+it.each([null, "", "DIRECT"])("should connect directly with %s", async proxy => {
 	const dispatcher = pac(proxy);
 	await httpServer
 		.forGet("/foobar")
@@ -168,33 +164,17 @@ it("should establish connection over HTTPS tunnel proxy", async () => {
 it.each<any>([
 	{
 		dispatcher: pac("SOCKS 127.0.0.1:1080"),
-		socks: {
-			type: 5,
-			host: "127.0.0.1",
-			port: 1080,
-		},
-	},
-	{
-		dispatcher: pac("SOCKS4 socks.example.com:80"),
-		socks: {
-			type: 4,
-			host: "socks.example.com",
-			port: 80,
-		},
+		socks: "socks://127.0.0.1:1080",
 	},
 	{
 		dispatcher: pac("SOCKS5 [::22]:10086", {
 			bodyTimeout: 123,
-			connect: { rejectUnauthorized: false },
+			proxyTls: { keepAlive: false },
 		}),
-		socks: {
-			type: 5,
-			host: "[::22]",
-			port: 10086,
-		},
+		socks: "socks://[::22]:10086",
 		agentOpts: {
 			bodyTimeout: 123,
-			connect: { rejectUnauthorized: false },
+			proxyTls: { keepAlive: false },
 		},
 	},
 ])("should pass parameters to socks dispatcher %#", async params => {
