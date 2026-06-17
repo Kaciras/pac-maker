@@ -19,7 +19,7 @@ jobs:
           run_install: true
 
       # When use "pnpm run test", don't add "--".
-      - run: pnpm test -- --coverage
+      - run: pnpm test --coverage
         env:
           # Some tests assert the colored output.
           # https://github.com/nodejs/node/issues/57998
