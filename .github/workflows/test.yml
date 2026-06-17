@@ -26,6 +26,6 @@ jobs:
           FORCE_COLOR: 1
           NODE_OPTIONS: --experimental-vm-modules
 
-      - uses: codecov/codecov-action@v6
+      - uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
