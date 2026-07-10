@@ -3,8 +3,8 @@ import { resolve } from "node:dns/promises";
 import { InspectColor, styleText } from "node:util";
 import { Agent, buildConnector, Dispatcher, fetch } from "undici";
 import { SingleBar } from "cli-progress";
-import { parseProxies } from "./loader.js";
-import { createAgent } from "./proxy.js";
+import { parseProxies } from "./loader.ts";
+import { createAgent } from "./proxy.ts";
 
 type Connector = buildConnector.connector;
 

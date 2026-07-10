@@ -1,8 +1,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { HostnameListLoader, HostRules } from "../generator.js";
-import { loadPAC, PACMakerConfig } from "../loader.js";
-import { BrowserEngine, findAllBrowsers } from "../browser.js";
+import { HostnameListLoader, HostRules } from "../generator.ts";
+import { loadPAC, PACMakerConfig } from "../loader.ts";
+import { BrowserEngine, findAllBrowsers } from "../browser.ts";
 
 interface AnalyzeOptions {
 	json?: string;

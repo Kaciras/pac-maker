@@ -1,6 +1,6 @@
 import { Agent, buildConnector, Dispatcher, ProxyAgent, Socks5ProxyAgent } from "undici";
 import { createInstance, LRUCache } from "@kaciras/utilities/node";
-import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.js";
+import { FindProxy, loadPAC, ParsedProxy, parseProxies } from "./loader.ts";
 
 type DispatchHandler = Dispatcher.DispatchHandler;
 type DispatchOptions = Dispatcher.DispatchOptions;

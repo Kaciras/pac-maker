@@ -1,8 +1,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { styleText } from "node:util";
-import { buildPAC, HostnameListLoader } from "../generator.js";
-import { ensureDirectory } from "../utils.js";
-import { BuiltinPAC, loadPAC, PACMakerConfig } from "../loader.js";
+import { buildPAC, HostnameListLoader } from "../generator.ts";
+import { ensureDirectory } from "../utils.ts";
+import { BuiltinPAC, loadPAC, PACMakerConfig } from "../loader.ts";
 
 interface GenerateOptions {
 	watch?: true;

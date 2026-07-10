@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, it, jest } from "@jest/globals";
-import { fixturePath, getTestConfig, readFixture, testDir, useTempDirectory } from "../share.js";
+import { fixturePath, getTestConfig, readFixture, testDir, useTempDirectory } from "../share.ts";
 
 const mockedBrowser = {
 	toString: () => "Mocked Borwser",
@@ -10,11 +10,11 @@ const mockedBrowser = {
 
 const findAllBrowsers = jest.fn(() => [mockedBrowser]);
 
-jest.unstable_mockModule("../../src/browser.js", () => ({ findAllBrowsers }));
+jest.unstable_mockModule("../../src/browser.ts", () => ({ findAllBrowsers }));
 
 useTempDirectory(testDir);
 
-const { default: analyze } = await import("../../src/command/analyze.js");
+const { default: analyze } = await import("../../src/command/analyze.ts");
 
 it("should works", async () => {
 	const config = getTestConfig();

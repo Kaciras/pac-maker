@@ -1,4 +1,4 @@
-import type { PACDispatcherOptions } from "../src/proxy.js";
+import type { PACDispatcherOptions } from "../src/proxy.ts";
 import { AddressInfo } from "node:net";
 import * as tp from "node:timers/promises";
 import { afterAll, beforeAll, expect, it, jest } from "@jest/globals";
@@ -20,8 +20,8 @@ jest.mock("undici", () => ({
 
 // Dynamic import is required for mocking an ES Modules.
 const { fetch, MockAgent } = await import( "undici");
-const { createTunnelProxy, readFixture } = await import("./share.js");
-const { PACDispatcher } = await import("../src/proxy.js");
+const { createTunnelProxy, readFixture } = await import("./share.ts");
+const { PACDispatcher } = await import("../src/proxy.ts");
 
 function pac(proxy: string | null, options?: PACDispatcherOptions) {
 	return new PACDispatcher(() => proxy, options);

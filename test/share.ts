@@ -7,8 +7,8 @@ import { TlsOptions } from "node:tls";
 import * as http from "node:http";
 import * as https from "node:https";
 import { afterAll, afterEach, beforeAll, beforeEach } from "@jest/globals";
-import { root } from "../src/utils.js";
-import { ofArray } from "../src/source.js";
+import { root } from "../src/utils.ts";
+import { ofArray } from "../src/source.ts";
 
 /**
  * The temporary directory to save test working data.

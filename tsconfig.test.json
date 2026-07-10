@@ -3,6 +3,6 @@
 	"include": ["test", "benchmark"],
 	"compilerOptions": {
 		"noEmit": true,
-		"allowImportingTsExtensions": true
+		"rewriteRelativeImportExtensions": false
 	}
 }

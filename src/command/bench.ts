@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { memoryUsage } from "node:process";
 import { exposeGC } from "@kaciras/utilities/node";
 import { ExecutionTimeMeasurement, Profiler, runSuite, SummaryTable } from "esbench";
-import { loadPAC } from "../loader.js";
+import { loadPAC } from "../loader.ts";
 
 /**
  * This function is only available with v8 flag --expose_gc.

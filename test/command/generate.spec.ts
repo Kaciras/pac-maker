@@ -2,8 +2,8 @@ import { copyFileSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, it } from "@jest/globals";
 import waitFor from "wait-for-expect";
-import { fixturePath, getTestConfig, readFixture, testDir, useTempDirectory } from "../share.js";
-import generate from "../../src/command/generate.js";
+import { fixturePath, getTestConfig, readFixture, testDir, useTempDirectory } from "../share.ts";
+import generate from "../../src/command/generate.ts";
 
 const stubPAC1 = readFixture("proxy-1.pac");
 const stubPAC2 = readFixture("proxy-2.pac");

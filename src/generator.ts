@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { EventEmitter } from "node:events";
-import { importJson, root } from "./utils.js";
-import { HostnameSource } from "./source.js";
-import { BuiltinPAC, loadPAC } from "./loader.js";
+import { importJson, root } from "./utils.ts";
+import { HostnameSource } from "./source.ts";
+import { BuiltinPAC, loadPAC } from "./loader.ts";
 
 /**
  * Key is a PAC proxy string, value is an array of hostnames.

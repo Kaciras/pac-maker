@@ -11,8 +11,8 @@ import {
 	HostnameSource,
 	MemorySource,
 	ofArray,
-} from "../src/source.js";
-import { fixturePath, readFixture, testDir, useTempDirectory } from "./share.js";
+} from "../src/source.ts";
+import { fixturePath, readFixture, testDir, useTempDirectory } from "./share.ts";
 
 // Used to stop watch progress to ensure program exit.
 let source: HostnameSource;

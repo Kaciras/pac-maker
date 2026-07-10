@@ -11,6 +11,8 @@
 		"outDir": "lib",
 		"sourceMap": true,
 		"declaration": true,
-		"useUnknownInCatchVariables": false
+		"useUnknownInCatchVariables": false,
+		"allowImportingTsExtensions": true,
+		"rewriteRelativeImportExtensions": true
 	}
 }

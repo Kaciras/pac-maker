@@ -27,11 +27,11 @@ jest.unstable_mockModule("undici", async () => ({
 	buildConnector: mockConnector,
 }));
 
-jest.unstable_mockModule("../src/proxy.js", () => ({
+jest.unstable_mockModule("../src/proxy.ts", () => ({
 	createAgent: mockCreateAgent,
 }));
 
-const { HostBlockVerifier, HostsBlockInfo } = await import("../src/verify.js");
+const { HostBlockVerifier, HostsBlockInfo } = await import("../src/verify.ts");
 
 const httpServer = getLocal();
 await httpServer.forAnyRequest().thenReply(200);

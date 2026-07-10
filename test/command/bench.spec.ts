@@ -1,5 +1,5 @@
 import { expect, it } from "@jest/globals";
-import { fixturePath } from "../share.js";
+import { fixturePath } from "../share.ts";
 
 function assertMetrics(line: string, unit: string, low: number, high: number) {
 	const [, n, u] = /([0-9.]+) (\w+)/.exec(line)!;

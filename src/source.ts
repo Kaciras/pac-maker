@@ -3,7 +3,7 @@ import { basename, join } from "node:path";
 import { FSWatcher, watch } from "node:fs";
 import { Awaitable } from "@kaciras/utilities/node";
 import { Dispatcher, fetch } from "undici";
-import { root } from "./utils.js";
+import { root } from "./utils.ts";
 
 export type ChangeHandler = (newValues: string[]) => void;
 

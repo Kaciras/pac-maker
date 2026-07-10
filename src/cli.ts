@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import yargs, { Argv } from "yargs";
 import { importCWD } from "@kaciras/utilities/node";
-import { commands, PACMakerConfig } from "./index.js";
+import { commands, PACMakerConfig } from "./index.ts";
 
 type Command = (argv: any, config: PACMakerConfig) => Promise<unknown>;
 
