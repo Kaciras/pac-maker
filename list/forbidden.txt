@@ -1,5 +1,6 @@
 # These websites ban China IP
 
+seesaawiki.jp
 5ch.net
 2ch.sc
 4chan.org
