@@ -41,8 +41,8 @@
 		"cli-progress": "^3.12.0",
 		"esbench": "^0.8.1",
 		"ini": "^7.0.0",
-		"undici": "^8.5.0",
-		"yargs": "^18.0.0"
+		"undici": "^8.9.0",
+		"yargs": "^18.1.0"
 	},
 	"devDependencies": {
 		"@jest/globals": "^30.4.1",
@@ -51,14 +51,14 @@
 		"@kaciras/eslint-config-typescript": "^3.4.2",
 		"@stryker-mutator/core": "^9.6.1",
 		"@stryker-mutator/jest-runner": "^9.6.1",
-		"@swc/core": "1.15.43",
+		"@swc/core": "1.15.47",
 		"@swc/jest": "^0.2.39",
 		"@types/cli-progress": "^3.11.6",
 		"@types/ini": "^4.1.1",
 		"@types/yargs": "^17.0.35",
-		"eslint": "^10.7.0",
+		"eslint": "^10.8.0",
 		"jest": "^30.4.2",
-		"mockttp": "^4.5.0",
+		"mockttp": "^4.6.0",
 		"typescript": "^7.0.2",
 		"wait-for-expect": "^4.0.0"
 	}
