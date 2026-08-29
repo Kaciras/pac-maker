@@ -56,9 +56,9 @@
 		"@types/cli-progress": "^3.11.6",
 		"@types/ini": "^4.1.1",
 		"@types/yargs": "^17.0.35",
-		"eslint": "^10.8.1",
+		"eslint": "^10.9.1",
 		"jest": "^30.4.2",
-		"mockttp": "^4.6.0",
+		"mockttp": "^4.6.1",
 		"typescript": "^7.0.2",
 		"wait-for-expect": "^4.0.0"
 	}
