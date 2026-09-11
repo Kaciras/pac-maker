@@ -17,11 +17,12 @@ const { values, positionals: [name] } = parseArgs({
 			type: 'string',
 		},
 	},
+	strict: false,
 	allowPositionals: true,
 	args: process.argv.slice(2),
 });
 
-const config = await importCWD(values.config, ["pac.config.js"]);
+const config = await importCWD(values.config as string | undefined, ["pac.config.js"]);
 
 const commandFn = (commands as Record<string, Command>)[name];
 if (commandFn) {

@@ -50,11 +50,7 @@ it("should works", async () => {
 	// This property is environment depend, and never used.
 	delete (argv as any)["$0"];
 
-	expect(argv).toStrictEqual({
-		bar: "baz",
-		foo: true,
-		_: ["testCmd"],
-	});
+	expect(argv).toStrictEqual({ bar: "baz", foo: true });
 	expect(config).toBeDefined();
 	expect(testCmd).toHaveBeenCalledTimes(1);
 });
