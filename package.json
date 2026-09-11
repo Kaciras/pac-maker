@@ -41,8 +41,7 @@
 		"cli-progress": "^3.12.0",
 		"esbench": "^0.8.1",
 		"ini": "^7.0.0",
-		"undici": "^8.10.2",
-		"yargs": "^18.1.0"
+		"undici": "^8.10.2"
 	},
 	"devDependencies": {
 		"@jest/globals": "^30.5.1",
@@ -55,7 +54,6 @@
 		"@swc/jest": "^0.2.39",
 		"@types/cli-progress": "^3.11.6",
 		"@types/ini": "^4.1.1",
-		"@types/yargs": "^17.0.35",
 		"eslint": "^10.10.0",
 		"jest": "^30.5.1",
 		"mockttp": "^4.6.2",
