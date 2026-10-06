@@ -2,7 +2,7 @@
  * Proxy Auto-Configuration file made by pac-maker v5.0.0
  * https://github.com/Kaciras/pac-maker
  *
- * Generated at: 2026-09-11T10:05:55.026Z
+ * Generated at: 2026-10-06T01:46:39.578Z
  *
  * Learn more about PAC file:
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file
@@ -1529,6 +1529,7 @@ globalThis.rules = {
 	"bvpn.com": 0,
 	"bwh1.net": 0,
 	"bypasscensorship.org": 0,
+	"chineseposters.net": 0,
 	"ctee.com.tw": 0,
 	"chatgpt.site": 0,
 	"cht.com.tw": 0,
@@ -1974,6 +1975,7 @@ globalThis.rules = {
 	"expressvpn.com": 0,
 	"eyevio.jp": 0,
 	"eyny.com": 0,
+	"fuyin116.com": 0,
 	"freedom.gov": 0,
 	"hyperbeam.com": 0,
 	"flowgpt.com": 0,
@@ -2124,6 +2126,7 @@ globalThis.rules = {
 	"fw.cm": 0,
 	"fxcm-chinese.com": 0,
 	"f95zone.to": 0,
+	"c.go-mpulse.net": 0,
 	"getmonero.org": 0,
 	"gate.com": 0,
 	"guangming.com.my": 0,
@@ -2703,6 +2706,7 @@ globalThis.rules = {
 	"lzjscript.com": 0,
 	"lzmtnews.org": 0,
 	"leonardo.ai": 0,
+	"muse.ai": 0,
 	"historylines.net": 0,
 	"kiwix.org": 0,
 	"mceindex.com": 0,
@@ -2868,6 +2872,7 @@ globalThis.rules = {
 	"myparagliding.com": 0,
 	"mypopescu.com": 0,
 	"myspacecdn.com": 0,
+	"note.com": 0,
 	"nthlink.com": 0,
 	"neodb.social": 0,
 	"nfscofficial.com": 0,
@@ -3236,6 +3241,8 @@ globalThis.rules = {
 	"pursuestar.com": 0,
 	"pximg.net": 0,
 	"python.com.tw": 0,
+	"qobuz.com": 0,
+	"quakemachinex.com": 0,
 	"qmp4.com": 0,
 	"qianmo.tw": 0,
 	"qbittorrent.org": 0,
@@ -3349,6 +3356,7 @@ globalThis.rules = {
 	"rxhj.net": 0,
 	"raphael.app": 0,
 	"rule34.us": 0,
+	"sing-box.sagernet.org": 0,
 	"supjav.com": 0,
 	"api.shuaiapi.com": 0,
 	"sb.sb": 0,
@@ -3955,6 +3963,7 @@ globalThis.rules = {
 	"uyghurstudies.org": 0,
 	"uyghurtribunal.com": 0,
 	"uymaarip.com": 0,
+	"vava8.com": 0,
 	"v.recipes": 0,
 	"vox.com": 0,
 	"vimeocdn.com": 0,
@@ -4033,6 +4042,7 @@ globalThis.rules = {
 	"vrchat.com": 0,
 	"vrporn.com": 0,
 	"vtunnel.com": 0,
+	"wallhaven.cc": 0,
 	"wtfpass.com": 0,
 	"write.as": 0,
 	"windy.com": 0,
@@ -4322,7 +4332,6 @@ globalThis.rules = {
 	"esu.lol": 0,
 	"imgflip.com": 0,
 	"zoom.com": 0,
-	"note.com": 0,
 	"www.extrabux.com": 0,
 	"diygod.me": 0,
 	"newsapi.org": 0,
